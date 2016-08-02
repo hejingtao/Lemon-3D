@@ -1,0 +1,30 @@
+
+	<div class="input-list">
+		<div class="input-item">
+			<span class="title">姓名：</span>
+			<input type="text" ng-model="newEmployee.name">
+		</div>
+		<div class="input-item">
+			<span class="title">电话：</span>
+			<input type="text" ng-model="newEmployee.phone">
+		</div>
+		<div class="input-item">
+			<span class="title">职位：</span>
+			<input type="text" ng-model="newEmployee.job">
+		</div>
+
+		<div class="input-item">
+			<span class="title">部门：</span>
+			<div class="select ">
+				<div class="content " ng-class="{'selected': structureState}" ng-bind="structureName" ng-click="structureSelect()"></div>
+				<img src="/assets/images/icon/item-select.png" ng-click="structureSelect()" alt="">
+				<ul class="option-list fade" ng-if="structureState">
+					<li ng-repeat="item in structureList" ng-click="chooseStructure(item.name,item.id)">{{item.name}}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="btn-list">
+		<span class="btn" ng-click="addEmployee()">确定</span>
+		<span class="btn" ui-sref="admin">取消</span>
+	</div>

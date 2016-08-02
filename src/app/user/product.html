@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Lemon3D</title>
+<!-- START stylesheets -->
+<link rel="stylesheet" href="/assets/css/style.css" />
+<link href="/assets/libs/css/font-awesome.min.css" rel="stylesheet">
+<link href="/assets/libs/css/colpick.css" rel="stylesheet">
+
+ <script data-main="/assets/js/operate" src="/assets/js/require.js"></script>
+
+<!--  <script data-main="../public/javascripts/operate" src="../public/javascripts/libs/colpick.js"></script>
+ --><!-- END stylesheets -->
+<!-- <script type="text/javascript" src="../public/libs/jquery-2.2.3.js"></script>
+<script type="text/javascript" src="../public/libs/three/three.js"></script>
+<script type="text/javascript" src="../public/libs/three/stats.min.js"></script>
+<script type="text/javascript" src="../public/libs/three/dat.gui.js"></script>
+<script type="text/javascript" src="../public/libs/three/materials/ShadowMaterial.js"></script> -->
+<!-- 视图控制 -->
+<!-- <script type="text/javascript" src="../public/libs/three/controls/OrbitControls.js"></script>
+<script type="text/javascript" src="../public/libs/three/controls/TrackballControls.js"></script>
+<script type="text/javascript" src="../public/libs/three/controls/TransformControls.js"></script>
+<script type="text/javascript" src="../public/libs/three/Projector.js"></script> -->
+<!-- 主程序 -->
+<!-- <script type="text/javascript" src="../public/javascripts/pre.js"></script>
+<script type="text/javascript" src="../public/javascripts/main.js"></script>
+ -->
+</head>
+<body id="operate-index">
+
+
+<div id="Stats-output">
+</div>
+<div id="operate-nav-top">
+    <div class="nav-logo"><img src="/assets/images/icon/Lemon3D.png" alt=""></div>
+
+    <div class="nav-left">
+        <ul>
+          <li>首页</li>
+          <li>最新作品</li>
+          <li>排行</li>
+          <li>社区</li>
+        </ul>
+    </div>
+    
+    <div class="nav-right">
+        <ul>
+            <li >个人中心</li>
+        </ul>
+    </div>
+
+    <div class="nav-middle">
+        <ul>
+<!--             <li id="clear">清空</li>
+            <li id="screenshot">截图</li>
+            <li id="recover">本地载入</li>
+            <li id="save">本地保存</li> -->
+            <li id="recover">作者：Struggle</li>
+            <li >2016-06-01 12:30:30</li>
+        </ul>
+    </div>
+
+</div>
+<div id="operate-content">
+    <div class="left">
+        <div id="WebGL-output"></div>
+        <div id="operate-top-left">
+            <div id="view-control">
+                <div id="up" class="control-common button">▲</div>
+                <div id="down" class="control-common button">▼</div>
+                <div id="left" class="control-common button">◀</div>
+                <div id="right" class="control-common button">▶</div>
+                <div id="middle" class="control-common button">⦿</div>
+            </div>
+
+            <div id="view-scale">
+                <div id="close" class="scale-common button">+</div>
+                <div id="far" class="scale-common button">-</div>
+            </div>
+        </div>
+        <div id="operate-top-right">
+           <div class="top">造型</div>
+           <div class="middle">
+               <div class="color" ><span>颜色</span></div>
+               <div id="texture" class="texture"><span>贴图</span></div>
+               <div id="copy">克隆</div>
+               <div id="deleted">删除</div>
+               <div class="texture-list" id="texture-list">
+                   <div class="title">texture List</div>
+                        
+                    <div class="texture-content" data-texture-type="blank">
+                       <img src="" alt="" data-texture-type="blank">
+                       <span class="name" data-texture-type="blank">空白</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="seafloor">
+                       <img src="/assets/images/texture/rock.png" alt="" data-texture-type="seafloor">
+                       <span class="name" data-texture-type="seafloor">岩石</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="board01">
+                       <img src="/assets/images/texture/board01.png" alt="" data-texture-type="board01">
+                       <span class="name" data-texture-type="board01">木板1</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="floorWood">
+                       <img src="/assets/libs/three/textures/general/floor-wood.jpg" alt="" data-texture-type="floorWood">
+                       <span class="name" data-texture-type="floorWood">木板2</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="darkerWood">
+                       <img src="/assets/libs/three/textures/general/darker_wood.jpg" alt="" data-texture-type="darkerWood">
+                       <span class="name" data-texture-type="darkerWood">木板3</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="stone">
+                       <img src="/assets/libs/three/textures/general/stone.jpg" alt="" data-texture-type="stone">
+                       <span class="name" data-texture-type="stone">墙壁1</span>
+                   </div>
+                   
+
+                   <div class="texture-content" data-texture-type="brickWall">
+                       <img src="/assets/libs/three/textures/general/brick-wall.jpg" alt="" data-texture-type="brickWall">
+                       <span class="name" data-texture-type="brickWall">墙壁2</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="plaster">
+                       <img src="/assets/libs/three/textures/general/plaster.jpg" alt=""  data-texture-type="plaster">
+                       <span class="name"  data-texture-type="plaster">石膏</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="bathroom">
+                       <img src="/assets/libs/three/textures/general/bathroom.jpg" alt=""  data-texture-type="bathroom">
+                       <span class="name"  data-texture-type="bathroom">bathroom</span>
+                   </div>
+
+
+                   <div class="texture-content"  data-texture-type="metal">
+                       <img src="/assets/libs/three/textures/general/metal-floor.jpg" alt="" data-texture-type="metal">
+                       <span class="name" data-texture-type="metal">metal</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="metalRust">
+                       <img src="/assets/libs/three/textures/general/metal-rust.jpg" alt="" data-texture-type="metalRust">
+                       <span class="name" data-texture-type="metalRust">metalRust</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="wood2">
+                       <img src="/assets/libs/three/textures/general/wood-2.jpg" alt="" data-texture-type="wood2">
+                       <span class="name" data-texture-type="wood2">wood2</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="weave">
+                       <img src="/assets/libs/three/textures/general/weave.jpg" alt=""  data-texture-type="weave">
+                       <span class="name"  data-texture-type="weave">weave</span>
+                   </div>
+               </div>
+
+
+           </div>
+           <div class="bottom"></div>
+        </div>
+    </div>
+    <div class="right">
+        <!-- <ul id="operate-option">
+            <li id="model"><span><img src="../public/images/cube.png" alt=""><br>cube</span><span id="circle"><img id="circle" src="../public/images/cube.png" alt=""><br>circle</span></li>
+            <li>21</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul> -->
+        <ul id="accordion" class="accordion">
+        <li>
+            <div class="link"><i class="fa fa-ellipsis-v"></i>操作<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li ><div><img src="/assets/images/icon/ic_toggle_star.png" alt=""></div><span>Start</span></li>
+                <li ><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>fork</span></li>
+                <li ><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>说明文档</span></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-ellipsis-v"></i>发布评论<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li id="3d-comment"><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>3D评论</span></li>
+                <li ><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>普通评论</span></li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="comment-list">
+      <li>
+        <div class="name">张三 <span>1楼</span></div>
+        <div class="content">不错不错</div>
+        <div class="time">2016-06-01 13:20:15</div>
+      </li>
+      <li>
+        <div class="name">李四 <span>2楼</span></div>
+        <div class="content">挺独特的城堡哈哈</div>
+        <div class="time">2016-06-01 13:25:19</div>
+      </li>
+      <li>
+        <div class="name">Struggle <span>3楼</span></div>
+        <div class="content">谢谢大家支持</div>
+        <div class="time">2016-06-01 13:25:19</div>
+      </li>
+    </ul>
+
+    </div>
+    
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+</script>
+
+</body>
+</html>
