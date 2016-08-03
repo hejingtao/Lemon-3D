@@ -47,14 +47,13 @@ function handleError(name, error) {
 * @public        
 */ 
 function login(loginData) { 
-  var apiLoginUrl = ENV.baseUrl + '/users/log_in';
+  var apiLoginUrl = ENV.baseUrl + '/user/login';
   return $http({ 
     method: 'POST', 
     url: apiLoginUrl, 
     params: { 
-      'user[dial_code]': 86, 
-      'user[cellphone]': loginData.phone,
-      'user[password]' : loginData.password
+      'userAccount': loginData.account, 
+      'userPassword': loginData.password
     }
   }) 
   .then(loginComplete); 
@@ -65,18 +64,19 @@ function login(loginData) {
   function loginComplete(response) { 
     if (response.status === 200 ) {
      // 将token存入localStorage
-     $localStorage.authtoken = response.data.auth_token; 
+     $localStorage.authtoken = response.data.userCurrentToken; 
      console.log($localStorage.authtoken);
      // 设置授权状态
      setAuthorizationParams(true);
-     $localStorage.userData = response.data
+     $localStorage.userData = response.data.user;
      // 设置用户信息
-     $localStorage.USER_NAME = $rootScope.USER_NAME = response.data.user.name;
-     $localStorage.USER_PHONE = $rootScope.USER_PHONE = response.data.user.cellphone;
-     $localStorage.USER_EMAIL = $rootScope.USER_EMAIL = response.data.user.email;
+     $localStorage.USER_ID = $rootScope.USER_ID = response.data.user.userId;
+     $localStorage.USER_NAME = $rootScope.USER_NAME = response.data.user.userName;
+     $localStorage.USER_PHONE = $rootScope.USER_PHONE = response.data.user.userPhone;
+     $localStorage.USER_ACCOUNT = $rootScope.USER_ACCOUNT = response.data.user.userAccount;
 
+     $state.go('index',{},{'reload': true});
 
-     // response.data.privileges[0].role == 'admin'? $state.go('admin') : $state.go('user');
     }else { 
         if(response.code == 1005){
           tools.alert('账号或密码错误')
@@ -100,16 +100,10 @@ function login(loginData) {
 * */ 
 
 function logout() { 
-  var apiLogoutUrl = ENV.baseUrl + '/users/log_out'; 
-  return $http.delete(apiLogoutUrl) 
-  .then(logoutComplete)
 
-
-  function logoutComplete(response) { 
       setAuthorizationParams(false);
       $rootScope.$storage.authtoken = null;
-  } 
-
+      $state.go('index',{},{'reload': true});
 } 
 
 /**        

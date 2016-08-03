@@ -1,12 +1,14 @@
 
 var app = angular.module('Lemon3D', [
-  'Eiffel.auth', //权限控制
+  
   'ngAnimate', //动画
   'ngStorage', //本地存储
-  'Eiffel.router', //路由定义
-  'Eiffel.partials', //页面组件
-  'Eiffel.service',
-  'Eiffel.directive'
+
+  'Lemon3D.auth', //权限控制
+  'Lemon3D.router', //路由定义
+  'Lemon3D.partials', //页面组件
+  'Lemon3D.service',
+  'Lemon3D.directive'
   ]);
 
 

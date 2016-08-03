@@ -23,61 +23,119 @@ angular.module('Lemon3D.router',['ui.router'])
       }   
   })
   // 忘记密码界面
-  .state('forgetPassword', {
-    url: '/forgetPassword',
+  .state('register', {
+    url: '/register',
     views: {
         "main": {
-          templateUrl: 'login/forgetPassword.html',
-          controller: 'forget'
+          templateUrl: 'login/register.html',
+          controller: 'register'
         }
       }   
   })
-  // 忘记密码界面 子界面
-  .state('forgetPassword.step1', {
-    url: '/step1',
+
+
+  /**
+   * index模块
+   * ------------------------------------------------------------------
+   */
+  // 首页
+  .state('index', {
+    url: '/',
     views: {
-        "forget-step@forgetPassword": {
-          templateUrl: 'login/template/forgetPassword-step1.html',
-          controller: 'forget_step1'
+        "main": {
+          templateUrl: 'index/index.html',
+          controller: 'index'
         }
       }   
   })
-  // 忘记密码界面 子界面
-  .state('forgetPassword.step2', {
-    url: '/step2',
+  // 热门排行
+  .state('popular', {
+    url: '/',
     views: {
-        "forget-step@forgetPassword": {
-          templateUrl: 'login/template/forgetPassword-step2.html',
-          controller: 'forget_step2'
+        "main": {
+          templateUrl: 'index/popular.html',
+          controller: 'popular'
         }
       }   
   })
-  // 忘记密码界面 子界面
-  .state('forgetPassword.step3', {
-    url: '/step3',
-    views: {
-        "forget-step@forgetPassword": {
-          templateUrl: 'login/template/forgetPassword-step3.html',
-          controller: 'forget_step3'
-        }
-      }   
-  })
+
 
   /**
    * user模块
    * ------------------------------------------------------------------
    */
   // 用户主界面
-  .state('user', {
-    url: '/user',
+  .state('userCentre', {
+    url: '/userCentre',
     views: {
         "main": {
-          templateUrl: 'user/user.html',
-          controller: 'user'
+          templateUrl: 'user/userCentre.html',
+          controller: 'userCentre'
+        }
+      }   
+  })
+  // 关注列表
+  .state('userFollowing', {
+    url: '/userFollowing',
+    views: {
+        "main": {
+          templateUrl: 'user/userFollowing.html',
+          controller: 'userFollowing'
+        }
+      }   
+  })
+  // 私信中心
+  .state('userMessage', {
+    url: '/userMessage',
+    views: {
+        "main": {
+          templateUrl: 'user/userMessage.html',
+          controller: 'userMessage'
+        }
+      }   
+  })
+  // 私信中心
+  .state('productList', {
+    url: '/productList',
+    views: {
+        "main": {
+          templateUrl: 'user/productList.html',
+          controller: 'productList'
         }
       }   
   })
 
+
+  /**
+   * product模块
+   * ------------------------------------------------------------------
+   */
+  // 编辑作品
+  .state('operate', {
+    url: '/operate',
+    views: {
+        "main": {
+          templateUrl: 'product/operate.html',
+          controller: 'operate'
+        }
+      }   
+  })
+
+
+  /**
+   * 社区模块
+   * ------------------------------------------------------------------
+   */
+  // 编辑作品
+  .state('community', {
+    url: '/community',
+    views: {
+        "main": {
+          templateUrl: 'community/community.html',
+          controller: 'community'
+        }
+      }   
+  })
 
 
   $urlRouterProvider.otherwise(function($injector, $location){

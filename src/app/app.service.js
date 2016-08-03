@@ -12,7 +12,7 @@ angular.module('Lemon3D.service',[ ])
  */
 .service('ENV', function() {
   return{
-    baseUrl: 'http://'
+    baseUrl: 'http://119.29.209.29/lemon3d'
   }
 })
 
