@@ -1,5 +1,8 @@
+// 此项目作用域
 var Lemon = {};
 
+
+// 字体模型加载
 Lemon.textGeo = null;
 Lemon.TextGeoFuc = function(text){
 
@@ -29,6 +32,8 @@ Lemon.TextGeoFuc = function(text){
 
 	}
 
+
+// 模型数据定义
 Lemon.Geometry = {
 
 	comment : new THREE.SphereGeometry( 4, 10, 10, 0 ),
@@ -96,8 +101,12 @@ Lemon.Geometry = {
 	}()
 }
 
+
+// 材质定义
 Lemon.Material = {
+    // 带线框的basic材质
 	wireframe : function(id){
+
 		var tempMaterial = new THREE.MeshBasicMaterial( {color: 0x000000, opacity: 0.1, transparent: true,wireframe:true });
 		// tempMaterial.modelId = 1;
 		// console.log('tempMaterial:' );
@@ -107,8 +116,9 @@ Lemon.Material = {
 		return tempMaterial;
 	},
 
-
+    // basic材质
 	basic : function(id){
+
 		var tempMaterial = new THREE.MeshBasicMaterial( { color: 0xDC143C  } );
 		tempMaterial.userData = {};
 		tempMaterial.userData.type = 'basic';
@@ -119,7 +129,9 @@ Lemon.Material = {
 		return tempMaterial;
 	},
 
+    // Lamber材质
 	base : function(id){
+
 		var tempMaterial = new THREE.MeshLambertMaterial( { color: 0xDC143C} );
 		tempMaterial.userData = {};
 		tempMaterial.userData.type = 'base';
@@ -130,8 +142,9 @@ Lemon.Material = {
 		return tempMaterial;
 	},
 
-
+    // 未放置时的临时模型
 	temp : function(id){
+
 		var tempMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000, opacity: 0.5, transparent: true } );
 		tempMaterial.userData = {};
 		tempMaterial.userData.type = 'temp';
@@ -145,6 +158,9 @@ Lemon.Material = {
 
 
 }
+
+
+// 贴图定义
 Lemon.TextureList = {
 	blank: {
 		type: 'blank'
@@ -209,7 +225,9 @@ Lemon.TextureList = {
 }
 
 
+// 使用贴图
 Lemon.useTexture = function(name) {
+    
 			console.log('name'+name);
 			var textureType = Lemon.TextureList[name].type;
             if(textureType == 'blank'){

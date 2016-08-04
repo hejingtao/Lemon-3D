@@ -41,12 +41,18 @@
         three: {
             exports: 'THREE'
         },
-        "colpick" : ['jquery'],
-        "Layer" : ['jquery'],
+
+        // thrreJs user code
+        // 依赖关系：operate << loadScene << class << model
         "model" : ['three','jquery'],
         "class": ['three','jquery','model','Layer'],
         "loadScene": ['three','jquery','model','class'],
-        //框架文件
+
+        // jQuery libs
+        "colpick" : ['jquery'],
+        "Layer" : ['jquery'],
+
+        //threejs libs
         "ShadowMaterial": ['three'],
         "OrbitControls": ['three'],
         "TransformControls": ['three'],
@@ -56,7 +62,7 @@
         "SceneExporter": ['three'],
         "SceneLoader": ['three'],
         "MaterialExporter": ['three'],
-
+            // file loader
         "OBJLoader": ['three'],
         "DDSLoader": ['three'],
         "TGALoader": ['three'],
@@ -87,6 +93,7 @@ require([
     'GeometryExporter','SceneExporter','SceneLoader','MaterialExporter'
     ],
 function($, THREE, Layer) {
+    // 初始化，总入口
    function init() {
         //渲染场景- loadScenes
         render();
@@ -120,6 +127,8 @@ function($, THREE, Layer) {
 
 
         });
+
+
         $('#3d-comment').bind("click",function(){
             control.object = undefined;
             control.visible = false;
@@ -182,6 +191,8 @@ function($, THREE, Layer) {
         $('#redo').bind("click",function(){
             objects[1].material = Lemon.useTexture('board01');
         });
+
+
         // 恢复数据
         $('#recover').bind("click",function(){
             Lemon.layer.prompt({
@@ -219,6 +230,7 @@ function($, THREE, Layer) {
 
         });
 
+
         // 监听文件上传
         $('#upload').bind("click",function(){
                 $('#upload-file').click();
@@ -235,6 +247,7 @@ function($, THREE, Layer) {
 
         });
 
+
         // 监听模型选择
         $('.ModelList').bind("mousedown",function(event){
                 control.object = undefined;
@@ -249,6 +262,8 @@ function($, THREE, Layer) {
 
                 console.log("data-model-type "+$(event.target).data("modelType"));
         })
+
+
         // 监听Text选择
         $('.TextList').bind("mousedown",function(event){
                 if($(event.target).data("modelType") == null){
@@ -275,6 +290,8 @@ function($, THREE, Layer) {
                 Lemon.TextGeoFuc($('#text-input-content').val());
                 
             });
+
+
         // 线框显示控制
         $('#nav-top-01').bind('click',function(){
             objects.forEach(function(e){
@@ -288,6 +305,8 @@ function($, THREE, Layer) {
             })
             Lemon.wireframeStatus = !Lemon.wireframeStatus;
         });
+
+
         //克隆模型
          $("#copy").bind('click',function(event){
             console.log(Lemon.SELECTED.userData.parent);
@@ -309,6 +328,8 @@ function($, THREE, Layer) {
                 console.log(objects);
                 scene.add(cloneMesh);
          });
+
+
          //删除模型
          $("#deleted").bind('click',function(event){
             console.log(Lemon.SELECTED);
@@ -334,6 +355,8 @@ function($, THREE, Layer) {
                 scene.remove(deletedObject);
                 
          });
+
+
         // 贴图显示控制
         $("#texture").bind('click',function(event){
             console.log('click textuure')
@@ -346,6 +369,7 @@ function($, THREE, Layer) {
         $('#texture-list').bind('click',function(){
              return false;
         });
+
 
         // 监听贴图选择
          $('.texture-content').bind("mousedown",function(event){

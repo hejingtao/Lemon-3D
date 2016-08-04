@@ -100,6 +100,7 @@ Lemon.EventListener = {
         // var helper = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
 
 
+// 评论状态定义
 Lemon.commentStatus = false;
 Lemon.creatCommentDiv = (function(){
     return function(){
@@ -119,6 +120,7 @@ Lemon.hiddenCommentDiv = function(){
         Lemon.commentStatus = false;
     }
 }
+
 
 // 事件列表
 Lemon.EventList={

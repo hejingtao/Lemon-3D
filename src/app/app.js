@@ -3,10 +3,11 @@ var app = angular.module('Lemon3D', [
   
   'ngAnimate', //动画
   'ngStorage', //本地存储
-
+  'oc.lazyLoad',
+  
   'Lemon3D.auth', //权限控制
   'Lemon3D.router', //路由定义
-  'Lemon3D.partials', //页面组件
+  // 'Lemon3D.partials', //页面组件
   'Lemon3D.service',
   'Lemon3D.directive'
   ]);
@@ -21,30 +22,30 @@ app.run(
     // 是否需要选择
     $rootScope.isNeedChoose = 0;
 
-    // 初始化时判断是否有token存在，设置登陆状态
-    if($localStorage.isAuth == true){
-      // 登陆状态
-      $rootScope.loginState = true;
-      // authtoken
-      $rootScope.authtoken = $localStorage.authtoken;
-      // 用户角色
-      $rootScope.role = $localStorage.role;
-      // 用户信息
-      $rootScope.USER_NAME = $localStorage.USER_NAME;
-      $rootScope.USER_JOB = $localStorage.USER_JOB;
-      $rootScope.USER_STRUCTURE = $localStorage.USER_STRUCTURE;
-      $rootScope.USER_PHONE = $localStorage.USER_PHONE;
-      $rootScope.USER_EMAIL = $localStorage.USER_EMAIL; 
-      $rootScope.mainOrganizationId = $localStorage.mainOrganizationId;
+    // // 初始化时判断是否有token存在，设置登陆状态
+    // if($localStorage.isAuth == true){
+    //   // 登陆状态
+    //   $rootScope.loginState = true;
+    //   // authtoken
+    //   $rootScope.authtoken = $localStorage.authtoken;
+    //   // 用户角色
+    //   $rootScope.role = $localStorage.role;
+    //   // 用户信息
+    //   $rootScope.USER_NAME = $localStorage.USER_NAME;
+    //   $rootScope.USER_JOB = $localStorage.USER_JOB;
+    //   $rootScope.USER_STRUCTURE = $localStorage.USER_STRUCTURE;
+    //   $rootScope.USER_PHONE = $localStorage.USER_PHONE;
+    //   $rootScope.USER_EMAIL = $localStorage.USER_EMAIL; 
+    //   $rootScope.mainOrganizationId = $localStorage.mainOrganizationId;
       
-      $rootScope.identityList = $localStorage.identityList;
+    //   $rootScope.identityList = $localStorage.identityList;
 
-      $rootScope.userData = $localStorage.userData;
-      console.log($rootScope.userData );
-    }else{
-      $state.go('login');
-      $rootScope.loginState = false;
-    }
+    //   $rootScope.userData = $localStorage.userData;
+    //   console.log($rootScope.userData );
+    // }else{
+    //   $state.go('login');
+    //   $rootScope.loginState = false;
+    // }
 
 
 

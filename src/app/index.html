@@ -22,12 +22,13 @@
 <script type="text/javascript" src="/assets/libs/angular/angular-animate.min.js"></script>
 <script type="text/javascript" src="/assets/libs/angular/ngStorage.min.js"></script>
 <script type="text/javascript" src="/assets/libs/angular/ng-file-upload-all.min.js"></script>
+<script type="text/javascript" src="/assets/libs/angular/ocLazyLoad.min.js"></script>
 
 <script type="text/javascript" src="/app.js"></script>
 <script type="text/javascript" src="/partials.min.js"></script>
 <!-- jQuery START  -->
 <!-- jQuery1.x 兼容ie ，jQuery弹出层插件layer -->
-<script type="text/javascript" src="/assets/libs/jQuery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="/assets/libs/jQuery/jquery-2.2.3.js"></script>
 <script type="text/javascript" src="/assets/libs/jQuery/layer/layer.js"></script>
 <!-- pdf -->
 <script src="/assets/libs/pdf/viewer/compatibility.js"></script>
@@ -40,6 +41,8 @@
 <link rel="stylesheet" href="/assets/libs/pdf/viewer/viewer.css"/>
 <link rel="resource" type="application/l10n" href="/assets/libs/pdf/viewer/locale/locale.properties"/>
 
+
+<!--  <script data-main="/assets/js/operate" src="/assets/js/require.js"></script> -->
 </head>
 
 <body class="container" ng-controller="main">
@@ -47,20 +50,5 @@
 <div ui-view="main" style="height:100%;width:100%;"></div>
 
 
-<script>
-
- $(document).ready(
- 	function(){ 
-		$(".container").css('width', $(window).width()); 
-		$(".oa-nav").css('height', $('.oa-container').height()); 
- 		$(window).resize(
-	 			function(){ 
-	 				$(".container").css('width', $(window).width()); 
-	 				// $(".container").css('height', $(window).height()); 
-	 			}
-	 			
- 			); 
- 	}); 
-</script>
 </body>
 </html>

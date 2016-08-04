@@ -18,20 +18,20 @@ angular.module('Lemon3D.router',['ui.router'])
     views: {
         "main": {
           templateUrl: 'login/login.html',
-          controller: 'login'
+          // controller: 'login'
         }
       }   
   })
   // 忘记密码界面
-  .state('register', {
-    url: '/register',
-    views: {
-        "main": {
-          templateUrl: 'login/register.html',
-          controller: 'register'
-        }
-      }   
-  })
+  // .state('register', {
+  //   url: '/register',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'login/register.html',
+  //         controller: 'register'
+  //       }
+  //     }   
+  // })
 
 
   /**
@@ -49,15 +49,15 @@ angular.module('Lemon3D.router',['ui.router'])
       }   
   })
   // 热门排行
-  .state('popular', {
-    url: '/',
-    views: {
-        "main": {
-          templateUrl: 'index/popular.html',
-          controller: 'popular'
-        }
-      }   
-  })
+  // .state('popular', {
+  //   url: '/',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'index/popular.html',
+  //         controller: 'popular'
+  //       }
+  //     }   
+  // })
 
 
   /**
@@ -65,45 +65,45 @@ angular.module('Lemon3D.router',['ui.router'])
    * ------------------------------------------------------------------
    */
   // 用户主界面
-  .state('userCentre', {
-    url: '/userCentre',
-    views: {
-        "main": {
-          templateUrl: 'user/userCentre.html',
-          controller: 'userCentre'
-        }
-      }   
-  })
-  // 关注列表
-  .state('userFollowing', {
-    url: '/userFollowing',
-    views: {
-        "main": {
-          templateUrl: 'user/userFollowing.html',
-          controller: 'userFollowing'
-        }
-      }   
-  })
-  // 私信中心
-  .state('userMessage', {
-    url: '/userMessage',
-    views: {
-        "main": {
-          templateUrl: 'user/userMessage.html',
-          controller: 'userMessage'
-        }
-      }   
-  })
-  // 私信中心
-  .state('productList', {
-    url: '/productList',
-    views: {
-        "main": {
-          templateUrl: 'user/productList.html',
-          controller: 'productList'
-        }
-      }   
-  })
+  // .state('userCentre', {
+  //   url: '/userCentre',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'user/userCentre.html',
+  //         controller: 'userCentre'
+  //       }
+  //     }   
+  // })
+  // // 关注列表
+  // .state('userFollowing', {
+  //   url: '/userFollowing',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'user/userFollowing.html',
+  //         controller: 'userFollowing'
+  //       }
+  //     }   
+  // })
+  // // 私信中心
+  // .state('userMessage', {
+  //   url: '/userMessage',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'user/userMessage.html',
+  //         controller: 'userMessage'
+  //       }
+  //     }   
+  // })
+  // // 私信中心
+  // .state('productList', {
+  //   url: '/productList',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'user/productList.html',
+  //         controller: 'productList'
+  //       }
+  //     }   
+  // })
 
 
   /**
@@ -126,16 +126,16 @@ angular.module('Lemon3D.router',['ui.router'])
    * 社区模块
    * ------------------------------------------------------------------
    */
-  // 编辑作品
-  .state('community', {
-    url: '/community',
-    views: {
-        "main": {
-          templateUrl: 'community/community.html',
-          controller: 'community'
-        }
-      }   
-  })
+  // 
+  // .state('community', {
+  //   url: '/community',
+  //   views: {
+  //       "main": {
+  //         templateUrl: 'community/community.html',
+  //         controller: 'community'
+  //       }
+  //     }   
+  // })
 
 
   $urlRouterProvider.otherwise(function($injector, $location){
