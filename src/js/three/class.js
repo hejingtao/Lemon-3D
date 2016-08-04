@@ -4,11 +4,13 @@ layer.config({
 });
 Lemon.layer = layer;
 
+
 // 选中的模型
 Lemon.SELECTED = null;
 
 // 添加临时模型
 Lemon.addTempModel = function(){
+
     if(Lemon.tempMeshStatus = true){
         console.log('remove tempMesh');
         Lemon.tempMeshStatus = false;
@@ -29,13 +31,71 @@ Lemon.setmodelType = function(id){
 	Lemon.modelType = id;
 }
 // 控制右上栏目显示
-Lemon.colorPicker = function(status){
+Lemon.modelOperate = function(status){
     if(status){
         $('#operate-top-right').css('display','block');
     }else{
         $('#operate-top-right').css('display','none');
     }
 }
+
+
+
+//保存截图文件
+var strDownloadMime = "image/octet-stream";
+var saveFile = function (strData, filename) {
+    var link = document.createElement('a');
+    if (typeof link.download === 'string') {
+        document.body.appendChild(link); //Firefox requires the link to be in the body
+        link.download = filename;
+        link.href = strData;
+        link.click();
+        document.body.removeChild(link); //remove the link when done
+    } else {
+        location.replace(uri);
+    }
+}
+
+
+
+// 评论状态定义
+Lemon.commentStatus = false;
+Lemon.creatCommentDiv = (function(){
+    return function(){
+        if(!Lemon.tempCommentDiv){
+            Lemon.tempCommentDiv = document.createElement("div"); 
+            Lemon.tempCommentDiv.id = "comment"; 
+            document.body.appendChild(Lemon.tempCommentDiv); 
+        }
+
+        return Lemon.tempCommentDiv;
+    }
+})();
+Lemon.hiddenCommentDiv = function(){
+    if(Lemon.commentStatus == true){
+        console.log('hideen comment');
+        Lemon.commentDiv.style.cssText="display:none;";
+        Lemon.commentStatus = false;
+    }
+}
+
+
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * 事件模块
+ * ------------------------------------------------------------------
+ */
 
 // 已经绑定的事件名，防止重复绑定
 Lemon.bindList = [];
@@ -100,27 +160,6 @@ Lemon.EventListener = {
         // var helper = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
 
 
-// 评论状态定义
-Lemon.commentStatus = false;
-Lemon.creatCommentDiv = (function(){
-    return function(){
-        if(!Lemon.tempCommentDiv){
-            Lemon.tempCommentDiv = document.createElement("div"); 
-            Lemon.tempCommentDiv.id = "comment"; 
-            document.body.appendChild(Lemon.tempCommentDiv); 
-        }
-
-        return Lemon.tempCommentDiv;
-    }
-})();
-Lemon.hiddenCommentDiv = function(){
-    if(Lemon.commentStatus == true){
-        console.log('hideen comment');
-        Lemon.commentDiv.style.cssText="display:none;";
-        Lemon.commentStatus = false;
-    }
-}
-
 
 // 事件列表
 Lemon.EventList={
@@ -141,6 +180,7 @@ Lemon.EventList={
             //     helper.lookAt( intersects[ 0 ].face.normal );
             //     helper.position.copy( intersects[ 0 ].point );
             // }
+
             // 指向Model时改变鼠标手势
             if ( intersects.length > 0 && intersects[0].object.able != 'false') {
                 container.style.cursor = 'pointer';
@@ -180,7 +220,8 @@ Lemon.EventList={
             raycaster.setFromCamera( mouse, camera );
             // 根据点的位置获取相对距离
             var intersects = raycaster.intersectObjects( objects, true );
-            // 指示鼠标位置  后期删除
+            
+            // 指示鼠标位置
             // helper.position.set( 0, 0, 0 );
             // helper.lookAt( intersects[ 0 ].face.normal );
             // helper.position.copy( intersects[ 0 ].point );
@@ -191,6 +232,8 @@ Lemon.EventList={
                 Lemon.tempMesh.position.copy( intersect.point ).add( intersect.face.normal );
                 Lemon.tempMesh.position.divideScalar( 10 ).floor().multiplyScalar( 10 ).addScalar( 10 );
            		Lemon.tempMesh.position.y = 10;
+
+                // 添加鼠标位置
                 // scene.add( helper );
             }
             render();
@@ -245,7 +288,7 @@ Lemon.EventList={
             var intersects = raycaster.intersectObjects( objects,true);
             console.log(objects);
             if ( intersects.length > 0  && intersects[0].object.able != 'false') {
-                Lemon.colorPicker(true);
+                Lemon.modelOperate(true);
                 control.object = undefined;
                 // 添加控制控件
                 if(intersects[ 0 ].object.userData.parent){
@@ -267,7 +310,7 @@ Lemon.EventList={
                 // controls.enabled = false;
                 container.style.cursor = 'move';
             }else{
-                Lemon.colorPicker(false);
+                Lemon.modelOperate(false);
                 control.object = undefined;
                 control.visible = false;
 
@@ -458,7 +501,7 @@ Lemon.EventList={
 
                     scene.add( voxel );
                     objects.push( voxel );
-                    Lemon.colorPicker(true);
+                    Lemon.modelOperate(true);
                     Lemon.SELECTED = voxel; 
                     control.attach( voxel );
                     scene.remove(Lemon.tempMesh);

@@ -37,6 +37,7 @@
 
 
         // 新建相机，并且添加至场景 
+        $('body').css("height",($(window).height())+"px");
         $('#operate-content').css("height",($(window).height() - 50)+"px");
         var camera = new THREE.PerspectiveCamera(45, $('#operate-content .left').width() / $('#operate-content .left').height(), 0.1, 20000);
         scene.add(camera);
@@ -188,56 +189,15 @@
         control.visible = false;
 
 
-        //保存文件
-        var saveFile = function (strData, filename) {
-            var link = document.createElement('a');
-            if (typeof link.download === 'string') {
-                document.body.appendChild(link); //Firefox requires the link to be in the body
-                link.download = filename;
-                link.href = strData;
-                link.click();
-                document.body.removeChild(link); //remove the link when done
-            } else {
-                location.replace(uri);
-            }
-        }
-        // 添加渲染DOM节点 截图
+
+        // 添加渲染DOM节点
         container = document.getElementById("WebGL-output").appendChild(renderer.domElement);
         
 
-        // 截图
-        var strDownloadMime = "image/octet-stream";
-        $('#screenshot').bind("click",function(){
-            var imgData, imgNode;
-
-            try {
-                var strMime = "image/jpeg";
-                imgData = renderer.domElement.toDataURL(strMime);
-
-                saveFile(imgData.replace(strMime, strDownloadMime), "test.jpg");
-
-            } catch (e) {
-                console.log(e);
-                return;
-            }
-                
-        });
-
+        // 绑定默认事件
         Lemon.EventListener.bind("default");
 
             
-            
-
-
-        //浏览器大小改变时自动变换大小
-        window.addEventListener( 'resize', onWindowResize, false );
-        function onWindowResize() {
-
-            camera.aspect = $('#operate-content .left').width() / $('#operate-content .left').height();
-            camera.updateProjectionMatrix();
-            renderer.setSize( $('#operate-content .left').width(), $('#operate-content .left').height() );
-        }
-        
         // 场景渲染定义
         function animate() {
 

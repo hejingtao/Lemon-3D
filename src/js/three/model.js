@@ -55,6 +55,7 @@ Lemon.Geometry = {
 	tetrahedron : new THREE.TetrahedronGeometry( 10, 0 ),
 
 	arrow: function(){
+
 		var vertices=[
 			new THREE.Vector3( 0, 0, 0 ),
 
@@ -104,6 +105,7 @@ Lemon.Geometry = {
 
 // 材质定义
 Lemon.Material = {
+
     // 带线框的basic材质
 	wireframe : function(id){
 
@@ -162,6 +164,7 @@ Lemon.Material = {
 
 // 贴图定义
 Lemon.TextureList = {
+
 	blank: {
 		type: 'blank'
 	},
@@ -227,187 +230,235 @@ Lemon.TextureList = {
 
 // 使用贴图
 Lemon.useTexture = function(name) {
-    
-			console.log('name'+name);
-			var textureType = Lemon.TextureList[name].type;
-            if(textureType == 'blank'){
-            	var mat = Lemon.Material.base();
-        		return mat;
-            }else if(textureType == 'dds'){
-            	var loader = new THREE.DDSLoader();
-        		var texture = loader.load(Lemon.TextureList[name].file);
-            }else if(textureType == 'tga'){
-            	var loader = new THREE.TGALoader();
-	    		var texture = loader.load(Lemon.TextureList[name].file);
-            }else{
-            	var texture = THREE.ImageUtils.loadTexture(Lemon.TextureList[name].file);
-            }
 
-	        var mat = new THREE.MeshBasicMaterial();
-	        mat.map = texture;
+	console.log('name'+name);
+	var textureType = Lemon.TextureList[name].type;
+    if(textureType == 'blank'){
+    	var mat = Lemon.Material.base();
+		return mat;
+    }else if(textureType == 'dds'){
+    	var loader = new THREE.DDSLoader();
+		var texture = loader.load(Lemon.TextureList[name].file);
+    }else if(textureType == 'tga'){
+    	var loader = new THREE.TGALoader();
+		var texture = loader.load(Lemon.TextureList[name].file);
+    }else{
+    	var texture = THREE.ImageUtils.loadTexture(Lemon.TextureList[name].file);
+    }
 
-	        if(textureType == 'bump'){
-	        	var bump = THREE.ImageUtils.loadTexture(Lemon.TextureList[name].file2);
-		        mat.bumpMap = bump;
-		        mat.bumpScale = 0.2;
-	        }
-	        if(textureType == 'normalMap'){
-	        	var normal = THREE.ImageUtils.loadTexture(Lemon.TextureList[name].file2);
-		        mat.normalMap = normal;
-	        }
-	        mat.side = THREE.DoubleSide;
-	        mat.userData = {};
-	        mat.userData.type = textureType;
-	        mat.textureName = name;
-	        return mat;
+    var mat = new THREE.MeshBasicMaterial();
+    mat.map = texture;
 
-        }
+    if(textureType == 'bump'){
+    	var bump = THREE.ImageUtils.loadTexture(Lemon.TextureList[name].file2);
+        mat.bumpMap = bump;
+        mat.bumpScale = 0.2;
+    }
+    if(textureType == 'normalMap'){
+    	var normal = THREE.ImageUtils.loadTexture(Lemon.TextureList[name].file2);
+        mat.normalMap = normal;
+    }
+    mat.side = THREE.DoubleSide;
+    mat.userData = {};
+    mat.userData.type = textureType;
+    mat.textureName = name;
+    return mat;
+
+}
+
 
 
 
 // 加载模型文件
 Lemon.loadModelFuc = null;
 Lemon.loadModel = function(postfix){
-          var loader= null;
-          var loaderStatus = false;
 
-          switch(postfix){
-            case ".obj":
-                loader = new THREE.OBJLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                      
-                        var urlData = this.result;
-                        loader.load(urlData,function (loadedMesh) {
+      var loader= null;
+      var loaderStatus = false;
 
-                            var material = new THREE.MeshLambertMaterial({color: 0x5C3A21});
-                            loadedMesh.children.forEach(function (child) {
-                                child.material = material;
-                                child.userData.parent = loadedMesh;
-                                child.geometry.computeFaceNormals();
-                                child.geometry.computeVertexNormals();
-                            });
+      switch(postfix){
 
-                            loadedMesh.scale.set(100, 100, 100);
-                            loadedMesh.rotation.x = -0.3;
-                            loadedMesh.position.y = 5;
-                            scene.add(loadedMesh);
-                            objects.push(loadedMesh);
-                        });
-                      }; 
+        case ".obj":
 
-                break;
-            case ".dae":
-                var loader = new THREE.ColladaLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
+            loader = new THREE.OBJLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                  
                     var urlData = this.result;
-                    var mesh;
-                    loader.load(urlData, function (loadedMesh) {
-                        mesh = loadedMesh.scene.children[0].children[0].clone();
-                        mesh.scale.set(4, 4, 4);
-                        scene.add(mesh);
-                        objects.push(mesh);
-                    });
-                }
-                break;
-            case ".stl":
-                var loader = new THREE.STLLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
-                    loader.load(urlData, function (geometry) {
-                        console.log(geometry);
-                        var mat = new THREE.MeshLambertMaterial({color: 0x7777ff});
-                        group = new THREE.Mesh(geometry, mat);
-                        group.rotation.x = -0.5 * Math.PI;
-                        group.scale.set(0.6, 0.6, 0.6);
-                        scene.add(group);
-                        objects.push(group);
-                    });
-                }
-                break;
-            case ".vtk":
-                var loader = new THREE.VTKLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
-                    loader.load(urlData, function (geometry) {
-                        var mat = new THREE.MeshLambertMaterial({color: 0xaaffaa});
-                        group = new THREE.Mesh(geometry, mat);
-                        group.scale.set(50, 50, 50);
-                        scene.add(group);
-                        objects.push(group);
-                    });
-                }
-                break;
-            case ".pdb":  //error
-                var loader = new THREE.PDBLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var mesh;
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
-                    loader.load(urlData, function (geometry, geometryBonds) {
-                        //        loader.load("../assets/models/diamond.pdb", function (geometry, geometryBonds) {
-                        var i = 0;
+                    loader.load(urlData,function (loadedMesh) {
 
-                        geometry.vertices.forEach(function (position) {
-                            var sphere = new THREE.SphereGeometry(0.2);
-                            var material = new THREE.MeshPhongMaterial({color: geometry.colors[i++]});
-                            var mesh = new THREE.Mesh(sphere, material);
-                            mesh.position.copy(position);
-                            group.add(mesh);
+                        var material = new THREE.MeshLambertMaterial({color: 0x5C3A21});
+                        loadedMesh.children.forEach(function (child) {
+                            child.material = material;
+                            child.userData.parent = loadedMesh;
+                            child.geometry.computeFaceNormals();
+                            child.geometry.computeVertexNormals();
                         });
 
-                        for (var j = 0; j < geometryBonds.vertices.length; j += 2) {
-                            var path = new THREE.SplineCurve3([geometryBonds.vertices[j], geometryBonds.vertices[j + 1]]);
-                            var tube = new THREE.TubeGeometry(path, 1, 0.04);
-                            var material = new THREE.MeshPhongMaterial({color: 0xcccccc});
-                            var mesh = new THREE.Mesh(tube, material);
-                            group.add(mesh);
-                        }
+                        loadedMesh.scale.set(100, 100, 100);
+                        loadedMesh.rotation.x = -0.3;
+                        loadedMesh.position.y = 5;
+                        scene.add(loadedMesh);
+                        objects.push(loadedMesh);
+                    });
+                  }; 
+            break;
 
-                        scene.add(group);
-                        objects.push(group);
-                    });
-                }
-                break;
-            case ".ply":
-                var loader = new THREE.PLYLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
-                loader.load(urlData, function (geometry) {
-                    var material = new THREE.PointCloudMaterial({
-                        color: 0xffffff,
-                        size: 0.4,
-                        opacity: 0.6,
-                        transparent: true,
-                        blending: THREE.AdditiveBlending,
-                        // map: generateSprite()
-                    });
-                    group = new THREE.PointCloud(geometry, material);
-                    group.sortParticles = true;
-                    objects.push(group);
-                    scene.add(group);
+
+        case ".dae":
+
+            var loader = new THREE.ColladaLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var urlData = this.result;
+                var mesh;
+                loader.load(urlData, function (loadedMesh) {
+                    mesh = loadedMesh.scene.children[0].children[0].clone();
+                    mesh.scale.set(4, 4, 4);
+                    scene.add(mesh);
+                    objects.push(mesh);
                 });
             }
             break;
-            case ".awd":
-                var loader = new THREE.AWDLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
+
+
+        case ".stl":
+
+            var loader = new THREE.STLLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var group = new THREE.Object3D();
+                var urlData = this.result;
+                loader.load(urlData, function (geometry) {
+                    console.log(geometry);
+                    var mat = new THREE.MeshLambertMaterial({color: 0x7777ff});
+                    group = new THREE.Mesh(geometry, mat);
+                    group.rotation.x = -0.5 * Math.PI;
+                    group.scale.set(0.6, 0.6, 0.6);
+                    scene.add(group);
+                    objects.push(group);
+                });
+            }
+            break;
+
+
+        case ".vtk":
+
+            var loader = new THREE.VTKLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var group = new THREE.Object3D();
+                var urlData = this.result;
+                loader.load(urlData, function (geometry) {
+                    var mat = new THREE.MeshLambertMaterial({color: 0xaaffaa});
+                    group = new THREE.Mesh(geometry, mat);
+                    group.scale.set(50, 50, 50);
+                    scene.add(group);
+                    objects.push(group);
+                });
+            }
+            break;
+
+
+        case ".pdb":  //error
+
+            var loader = new THREE.PDBLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var mesh;
+                var group = new THREE.Object3D();
+                var urlData = this.result;
+                loader.load(urlData, function (geometry, geometryBonds) {
+                    //        loader.load("../assets/models/diamond.pdb", function (geometry, geometryBonds) {
+                    var i = 0;
+
+                    geometry.vertices.forEach(function (position) {
+                        var sphere = new THREE.SphereGeometry(0.2);
+                        var material = new THREE.MeshPhongMaterial({color: geometry.colors[i++]});
+                        var mesh = new THREE.Mesh(sphere, material);
+                        mesh.position.copy(position);
+                        group.add(mesh);
+                    });
+
+                    for (var j = 0; j < geometryBonds.vertices.length; j += 2) {
+                        var path = new THREE.SplineCurve3([geometryBonds.vertices[j], geometryBonds.vertices[j + 1]]);
+                        var tube = new THREE.TubeGeometry(path, 1, 0.04);
+                        var material = new THREE.MeshPhongMaterial({color: 0xcccccc});
+                        var mesh = new THREE.Mesh(tube, material);
+                        group.add(mesh);
+                    }
+
+                    scene.add(group);
+                    objects.push(group);
+                });
+            }
+            break;
+
+
+        case ".ply":
+
+            var loader = new THREE.PLYLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var group = new THREE.Object3D();
+                var urlData = this.result;
+            loader.load(urlData, function (geometry) {
+                var material = new THREE.PointCloudMaterial({
+                    color: 0xffffff,
+                    size: 0.4,
+                    opacity: 0.6,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending,
+                    // map: generateSprite()
+                });
+                group = new THREE.PointCloud(geometry, material);
+                group.sortParticles = true;
+                objects.push(group);
+                scene.add(group);
+            });
+        }
+        break;
+
+
+        case ".awd":
+
+            var loader = new THREE.AWDLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var group = new THREE.Object3D();
+                var urlData = this.result;
+            loader.load(urlData, function (model) {
+
+                model.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.material = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
+                        console.log(child.geometry);
+                    }
+                });
+
+                model.scale.set(0.1, 0.1, 0.1);
+                objects.push(model);
+                scene.add(model);
+
+            });
+        }
+        break;
+
+
+        case ".json": //assimp   error
+
+            var loader = new THREE.AssimpJSONLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+                var group = new THREE.Object3D();
+                var urlData = this.result;
                 loader.load(urlData, function (model) {
+
+                    console.log(model);
 
                     model.traverse(function (child) {
                         if (child instanceof THREE.Mesh) {
-                            child.material = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
+        //                    child.material = new THREE.MeshLambertMaterial({color:0xaaaaaa});
                             console.log(child.geometry);
                         }
                     });
@@ -417,91 +468,77 @@ Lemon.loadModel = function(postfix){
                     scene.add(model);
 
                 });
-            }
-            break;
-            case ".json": //assimp   error
-                var loader = new THREE.AssimpJSONLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
-                    loader.load(urlData, function (model) {
+        }
+        break;
 
-                        console.log(model);
 
-                        model.traverse(function (child) {
-                            if (child instanceof THREE.Mesh) {
-            //                    child.material = new THREE.MeshLambertMaterial({color:0xaaaaaa});
-                                console.log(child.geometry);
-                            }
-                        });
+        case ".wrl": 
 
-                        model.scale.set(0.1, 0.1, 0.1);
-                        objects.push(model);
-                        scene.add(model);
-
-                    });
-            }
-            break;
-            case ".wrl": 
-                var loader = new THREE.VRMLLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
-                    var group = new THREE.Object3D();
-                    var urlData = this.result;
-                    loader.load(urlData, function (model) {
-
-                        console.log(model);
-
-                        model.traverse(function (child) {
-                            if (child instanceof THREE.Mesh) {
-                               child.material = new THREE.MeshLambertMaterial({color:0xaaaaaa});
-                                console.log(child.geometry);
-                            }
-                        });
-
-                        model.scale.set(10, 10, 10);
-                        objects.push(model);
-                        scene.add(model);
-
-                    });
-            }
-            break;
-            case ".babylon": //   error
-                var loader = new THREE.BabylonLoader();
-                loaderStatus = true;
-                Lemon.loadModelFuc = function () {
+            var loader = new THREE.VRMLLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
                 var group = new THREE.Object3D();
                 var urlData = this.result;
-                loader.load(urlData, function (loadedScene) {
+                loader.load(urlData, function (model) {
 
-                    // babylon loader contains a complete scene.
-                    console.log(loadedScene.children[1].material = new THREE.MeshLambertMaterial());
-                    scene = loadedScene;
+                    console.log(model);
+
+                    model.traverse(function (child) {
+                        if (child instanceof THREE.Mesh) {
+                           child.material = new THREE.MeshLambertMaterial({color:0xaaaaaa});
+                            console.log(child.geometry);
+                        }
+                    });
+
+                    model.scale.set(10, 10, 10);
+                    objects.push(model);
+                    scene.add(model);
 
                 });
-            }
-            break;
-            default:
-                console.log('暂时不支持该后缀！');
-                loaderStatus = false;
-          }
-          if(loaderStatus){
-            var resultFile = document.getElementById("upload-file").files[0];
-                if (resultFile) {
-                    var reader = new FileReader();
-                    reader.onloadstart = function(){
-                        Lemon.modelLoading = Lemon.layer.load(1, {shade: [0.5, '#ffffff'],time: 10*1000});
-                    }
-                    reader.onloadend = function(){
-                        Lemon.layer.close(Lemon.modelLoading);  
-                    }
-                    reader.onload = Lemon.loadModelFuc;
+        }
+        break;
 
-                      reader.readAsDataURL(resultFile);
-                    
-                }
+
+        case ".babylon": //   error
+
+            var loader = new THREE.BabylonLoader();
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+            var group = new THREE.Object3D();
+            var urlData = this.result;
+            loader.load(urlData, function (loadedScene) {
+
+                // babylon loader contains a complete scene.
+                console.log(loadedScene.children[1].material = new THREE.MeshLambertMaterial());
+                scene = loadedScene;
+
+            });
+        }
+        break;
+
+
+        default:
+
+            console.log('暂时不支持该后缀！');
+            loaderStatus = false;
+      }
+
+      if(loaderStatus){
+
+        var resultFile = document.getElementById("upload-file").files[0];
+        if (resultFile) {
+
+            var reader = new FileReader();
+            reader.onloadstart = function(){
+                Lemon.modelLoading = Lemon.layer.load(1, {shade: [0.5, '#ffffff'],time: 10*1000});
             }
-          console.log(reader);
-          console.log($('#upload-file').val());
+            reader.onloadend = function(){
+                Lemon.layer.close(Lemon.modelLoading);  
+            }
+            reader.onload = Lemon.loadModelFuc;
+            reader.readAsDataURL(resultFile);
+        }
+      }
+      console.log(reader);
+      console.log($('#upload-file').val());
 }

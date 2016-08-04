@@ -6,7 +6,14 @@
 
 
 app.controller('operate', function($scope, $rootScope, $timeout, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
-         $ocLazyLoad.load('/assets/js/require.js');
-         $ocLazyLoad.load('/assets/js/operate.js');
+	$rootScope.operateState = true;   
+    $ocLazyLoad.load({
+	  serie: true,
+	  files: [
+	    '/assets/js/require.js',
+	    '/assets/js/operate.js'
+	  ]
+	});
+
  })
 

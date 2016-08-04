@@ -4,7 +4,7 @@ var app = angular.module('Lemon3D', [
   'ngAnimate', //动画
   'ngStorage', //本地存储
   'oc.lazyLoad',
-  
+
   'Lemon3D.auth', //权限控制
   'Lemon3D.router', //路由定义
   // 'Lemon3D.partials', //页面组件
@@ -15,7 +15,7 @@ var app = angular.module('Lemon3D', [
 
 app.run(
   function($rootScope, $state,  $localStorage, authService, tools) {
-
+    $rootScope.operateState = false;
     // 绑定$localStorage至$storage中
     $rootScope.$storage = $localStorage;
     // 身份切换

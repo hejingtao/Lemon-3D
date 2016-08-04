@@ -129,6 +129,25 @@ function($, THREE, Layer) {
         });
 
 
+        // 截图
+        $('#screenshot').bind("click",function(){
+
+            var imgData, imgNode;
+
+            try {
+                var strMime = "image/jpeg";
+                imgData = renderer.domElement.toDataURL(strMime);
+
+                saveFile(imgData.replace(strMime, strDownloadMime), "test.jpg");
+
+            } catch (e) {
+                console.log(e);
+                return;
+            }
+        });
+
+        
+        // 3d评论
         $('#3d-comment').bind("click",function(){
             control.object = undefined;
             control.visible = false;
@@ -349,7 +368,7 @@ function($, THREE, Layer) {
                     }
                 }
                 console.log(objects);
-                Lemon.colorPicker(false);
+                Lemon.modelOperate(false);
                 control.object = undefined;
                 control.visible = false;
                 scene.remove(deletedObject);
@@ -396,6 +415,16 @@ function($, THREE, Layer) {
         })
         
 
+        //浏览器大小改变时自动变换大小
+        window.addEventListener( 'resize', onWindowResize, false );
+        function onWindowResize() {
+
+            camera.aspect = $('#operate-content .left').width() / $('#operate-content .left').height();
+            camera.updateProjectionMatrix();
+            renderer.setSize( $('#operate-content .left').width(), $('#operate-content .left').height() );
+        }
+
+
 //———————————————— 颜色选择器
         $('.color').colpick({
 
@@ -430,32 +459,31 @@ function($, THREE, Layer) {
 
 //—————————————————— START 侧边栏手风琴效果    
         var Accordion = function(el, multiple) {
-        this.el = el || {};
-        this.multiple = multiple || false;
 
-        // Variables privadas
-        var links = this.el.find('.link');
-        // Evento
-        links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+            this.el = el || {};
+            this.multiple = multiple || false;
+
+            // Variables privadas
+            var links = this.el.find('.link');
+            // Evento
+            links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+            }
+
+            Accordion.prototype.dropdown = function(e) {
+                var $el = e.data.el;
+                    $this = $(this),
+                    $next = $this.next();
+
+                $next.slideToggle();
+                $this.parent().toggleClass('open');
+
+                if (!e.data.multiple) {
+                    $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+                };
+            }   
+            var accordion = new Accordion($('#accordion'), false);
         }
-
-        Accordion.prototype.dropdown = function(e) {
-            var $el = e.data.el;
-                $this = $(this),
-                $next = $this.next();
-
-            $next.slideToggle();
-            $this.parent().toggleClass('open');
-
-            if (!e.data.multiple) {
-                $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
-            };
-        }   
-        var accordion = new Accordion($('#accordion'), false);
 //—————————————————————— END
-    
-    }
-
              
     //主程序，DOM加载完毕后操作
   $(function(){
