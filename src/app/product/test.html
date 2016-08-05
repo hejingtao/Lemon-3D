@@ -1,0 +1,378 @@
+
+<div id="operate-index">
+<link href="/assets/libs/css/colpick.css" rel="stylesheet">
+
+
+<div id="Stats-output">
+</div>
+<div id="operate-nav-top">
+    <div class="nav-logo"><img src="/assets/images/icon/Lemon3D.png" alt=""></div>
+
+    <div class="nav-left">
+        <ul>
+          <li>首页</li>
+          <li>最新作品</li>
+          <li>排行</li>
+          <li>社区</li>
+        </ul>
+    </div>
+    
+    <div class="nav-right">
+        <ul>
+            <li >个人中心</li>
+        </ul>
+    </div>
+
+    <div class="nav-middle">
+        <ul>
+<!--             <li id="clear">清空</li>
+            <li id="screenshot">截图</li>
+            <li id="recover">本地载入</li>
+            <li id="save">本地保存</li> -->
+            <li id="undo">撤销</li>
+            <li id="redo">重做</li>
+        </ul>
+    </div>
+
+</div>
+<div id="operate-content">
+    <div class="left">
+        <div id="WebGL-output"></div>
+        <div id="operate-top-left">
+            <div id="view-control">
+                <div id="up" class="control-common button">▲</div>
+                <div id="down" class="control-common button">▼</div>
+                <div id="left" class="control-common button">◀</div>
+                <div id="right" class="control-common button">▶</div>
+                <div id="middle" class="control-common button">⦿</div>
+            </div>
+
+            <div id="view-scale">
+                <div id="close" class="scale-common button">+</div>
+                <div id="far" class="scale-common button">-</div>
+            </div>
+        </div>
+        <div id="operate-top-right">
+           <div class="top">造型</div>
+           <div class="middle">
+               <div class="color" ><span>颜色</span></div>
+               <div id="texture" class="texture"><span>贴图</span></div>
+               <div id="copy">克隆</div>
+               <div id="deleted">删除</div>
+               <div class="texture-list" id="texture-list">
+                   <div class="title">texture List</div>
+                        
+                    <div class="texture-content" data-texture-type="blank">
+                       <img src="" alt="" data-texture-type="blank">
+                       <span class="name" data-texture-type="blank">空白</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="seafloor">
+                       <img src="/assets/images/texture/rock.png" alt="" data-texture-type="seafloor">
+                       <span class="name" data-texture-type="seafloor">岩石</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="board01">
+                       <img src="/assets/images/texture/board01.png" alt="" data-texture-type="board01">
+                       <span class="name" data-texture-type="board01">木板1</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="floorWood">
+                       <img src="/assets/libs/three/textures/general/floor-wood.jpg" alt="" data-texture-type="floorWood">
+                       <span class="name" data-texture-type="floorWood">木板2</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="darkerWood">
+                       <img src="/assets/libs/three/textures/general/darker_wood.jpg" alt="" data-texture-type="darkerWood">
+                       <span class="name" data-texture-type="darkerWood">木板3</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="stone">
+                       <img src="/assets/libs/three/textures/general/stone.jpg" alt="" data-texture-type="stone">
+                       <span class="name" data-texture-type="stone">墙壁1</span>
+                   </div>
+                   
+
+                   <div class="texture-content" data-texture-type="brickWall">
+                       <img src="/assets/libs/three/textures/general/brick-wall.jpg" alt="" data-texture-type="brickWall">
+                       <span class="name" data-texture-type="brickWall">墙壁2</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="plaster">
+                       <img src="/assets/libs/three/textures/general/plaster.jpg" alt=""  data-texture-type="plaster">
+                       <span class="name"  data-texture-type="plaster">石膏</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="bathroom">
+                       <img src="/assets/libs/three/textures/general/bathroom.jpg" alt=""  data-texture-type="bathroom">
+                       <span class="name"  data-texture-type="bathroom">bathroom</span>
+                   </div>
+
+
+                   <div class="texture-content"  data-texture-type="metal">
+                       <img src="/assets/libs/three/textures/general/metal-floor.jpg" alt="" data-texture-type="metal">
+                       <span class="name" data-texture-type="metal">metal</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="metalRust">
+                       <img src="/assets/libs/three/textures/general/metal-rust.jpg" alt="" data-texture-type="metalRust">
+                       <span class="name" data-texture-type="metalRust">metalRust</span>
+                   </div>
+
+                   <div class="texture-content"  data-texture-type="wood2">
+                       <img src="/assets/libs/three/textures/general/wood-2.jpg" alt="" data-texture-type="wood2">
+                       <span class="name" data-texture-type="wood2">wood2</span>
+                   </div>
+
+                   <div class="texture-content" data-texture-type="weave">
+                       <img src="/assets/libs/three/textures/general/weave.jpg" alt=""  data-texture-type="weave">
+                       <span class="name"  data-texture-type="weave">weave</span>
+                   </div>
+               </div>
+
+
+           </div>
+           <div class="bottom"></div>
+        </div>
+    </div>
+    <div class="right">
+        <!-- <ul id="operate-option">
+            <li id="model"><span><img src="../public/images/cube.png" alt=""><br>cube</span><span id="circle"><img id="circle" src="../public/images/cube.png" alt=""><br>circle</span></li>
+            <li>21</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul> -->
+        <ul id="accordion" class="accordion">
+        <li>
+            <div class="link"><i class="fa fa-paint-brush"></i>操作<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li id=""><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>在线保存</span></li>
+                <li id="screenshot"><div><img src="/assets/images/icon/ic_image_collections.png" alt=""></div><span>截图</span></li>
+                <li id="save"><div><img src="/assets/images/icon/ic_file_file_download.png" alt=""></div><span>本地保存</span></li>
+                <li id="recover"><div><img src="/assets/images/icon/ic_file_file_upload.png" alt=""></div><span>本地恢复</span></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-cloud-upload"></i>上传<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <div class="upload">
+                    <div class="detail">
+                        请选择文件进行上传
+                    </div>
+                    <div class="button">
+                        <input type="file" id="upload-file">
+                        <span id="upload">导入</span>
+                    </div>
+                </div>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-cubes "></i>模型<i class="fa fa-chevron-down"></i></div>
+            <ul class="ModelList submenu">
+                <li>
+                    <div ><img data-model-type="cube" src="/assets/images/list/cube.png" alt=""></div>
+                    <span data-model-type="cube" >正方体</span>
+                </li>
+                <li>
+                    <div ><img data-model-type="cuboid" src="/assets/images/list/cuboid.png" alt=""></div>
+                    <span data-model-type="cuboid" >长方体</span>
+                </li>
+                <li>
+                    <div ><img data-model-type="sphere" src="/assets/images/list/sphere.png" alt=""></div>
+                    <span data-model-type="sphere" >球体</span>
+                </li>
+                <li>
+                    <div ><img data-model-type="cylinder" src="/assets/images/list/cylinder.png" alt=""></div>
+                    <span data-model-type="cylinder" >圆柱体</span>
+                </li>
+                <li>
+                    <div ><img data-model-type="cone" src="/assets/images/list/cone.png" alt=""></div>
+                    <span data-model-type="cone" >圆锥体</span>
+                </li>
+                <li>
+                    <div ><img data-model-type="torus" src="/assets/images/list/torus.png" alt=""></div>
+                    <span data-model-type="torus" >圆环体</span>
+                </li>
+                <li>
+                    <div ><img data-model-type="tetrahedron" src="/assets/images/list/tetrahedron.png" alt=""></div>
+                    <span data-model-type="tetrahedron" >正四面体</span>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-sort-numeric-asc"></i>数字<i class="fa fa-chevron-down"></i></div>
+            <ul class="TextList submenu">
+                <li>
+                    <div class="model-font" data-model-type="1">1</div>
+                    <span data-model-type="1" >1</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="2">2</div>
+                    <span data-model-type="2" >2</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="3">3</div>
+                    <span data-model-type="3" >3</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="4">4</div>
+                    <span data-model-type="4" >4</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="5">5</div>
+                    <span data-model-type="5" >5</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="6">6</div>
+                    <span data-model-type="6" >6</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="7">7</div>
+                    <span data-model-type="7" >7</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="8">8</div>
+                    <span data-model-type="8" >8</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="9">9</div>
+                    <span data-model-type="9" >9</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="0">0</div>
+                    <span data-model-type="0" >0</span>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-sort-alpha-asc"></i>字母<i class="fa fa-chevron-down"></i></div>
+            <ul class="TextList submenu">
+                <li id="text-input">
+                  <div class="content"><input id="text-input-content" type="text" ></div>
+                  <span id="text-btn">生成</span>
+                </li>
+                <li>
+                    <div class="model-font"  data-model-type="A">A</div>
+                    <span data-model-type="A" >A</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="B">B</div>
+                    <span data-model-type="B" >B</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="C">C</div>
+                    <span data-model-type="C" >C</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="D">D</div>
+                    <span data-model-type="D" >D</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="E">E</div>
+                    <span data-model-type="E" >E</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="F">F</div>
+                    <span data-model-type="F" >F</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="G">G</div>
+                    <span data-model-type="G" >G</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="H">H</div>
+                    <span data-model-type="H" >H</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="I">I</div>
+                    <span data-model-type="I" >I</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="J">J</div>
+                    <span data-model-type="J" >J</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="K">K</div>
+                    <span data-model-type="K" >K</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="L">L</div>
+                    <span data-model-type="L" >L</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="">M</div>
+                    <span data-model-type="M" >M</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="N">N</div>
+                    <span data-model-type="N" >N</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type=O">O</div>
+                    <span data-model-type="O" >O</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="P">P</div>
+                    <span data-model-type="P" >P</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="Q">Q</div>
+                    <span data-model-type="Q" >Q</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="R">R</div>
+                    <span data-model-type="R" >R</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="S">S</div>
+                    <span data-model-type="S" >S</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="T">T</div>
+                    <span data-model-type="T" >T</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="U">U</div>
+                    <span data-model-type="U" >U</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="V">V</div>
+                    <span data-model-type="V" >V</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="W">W</div>
+                    <span data-model-type="W" >W</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="S">S</div>
+                    <span data-model-type="S" >S</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="Y">Y</div>
+                    <span data-model-type="Y" >Y</span>
+                </li>
+                <li>
+                    <div class="model-font" data-model-type="Z">Z</div>
+                    <span data-model-type="Z" >Z</span>
+                </li>
+            </ul>
+        </li>
+
+
+    </ul>
+    </div>
+    
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+</script>
+
+</div>
+

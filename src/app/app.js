@@ -15,7 +15,7 @@ var app = angular.module('Lemon3D', [
 
 app.run(
   function($rootScope, $state,  $localStorage, authService, tools) {
-    $rootScope.operateState = false;
+    $rootScope.bodyState = 'index';
     // 绑定$localStorage至$storage中
     $rootScope.$storage = $localStorage;
     // 身份切换

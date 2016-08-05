@@ -4,7 +4,29 @@
  * ------------------------------------------------------------------
  */
 
-var login = function($scope, $rootScope, $localStorage, authService, tools) {
+  // $rootScope.bodyState = 'index';  
+  //   $ocLazyLoad.load({
+  //   serie: false,
+  //   files: [
+  //     '',
+
+  //   ]
+  // });
+
+app.controller('login', function($scope, $ocLazyLoad,  authService, tools, ENV) {
+
+  $rootScope.bodyState = 'index';  
+    $ocLazyLoad.load({
+    serie: true,
+    files: [
+      '/assets/libs/index/page1/css/component.css',
+      '/assets/libs/index/page1/js/TweenLite.min.js',
+      '/assets/libs/index/page1/js/EasePack.min.js',
+      '/assets/libs/index/page1/js/rAF.js',
+      '/assets/libs/index/page1/js/page-1.js'
+    ]
+  });
+
 
   $scope.login = function(){
     var reg = /^1[0-9]{10}$/;
@@ -17,12 +39,25 @@ var login = function($scope, $rootScope, $localStorage, authService, tools) {
     }
     authService.login({'account':$scope.account, 'password': $scope.password})
   }
-}
+})
 
 
 // 注册
 // @@页面不完善，未绑定model
-var register = function($scope, $rootScope, $localStorage, authService, tools) {
+
+app.controller('register', function($scope, $rootScope, $localStorage, authService, tools) {
+
+  $rootScope.bodyState = 'index';  
+    $ocLazyLoad.load({
+    serie: true,
+    files: [
+      '/assets/libs/index/page1/css/component.css',
+      '/assets/libs/index/page1/js/TweenLite.min.js',
+      '/assets/libs/index/page1/js/EasePack.min.js',
+      '/assets/libs/index/page1/js/rAF.js',
+      '/assets/libs/index/page1/js/page-1.js'
+    ]
+  });
 
   $scope.register = function(){
 
@@ -49,16 +84,17 @@ var register = function($scope, $rootScope, $localStorage, authService, tools) {
       });
   }
 
-}
+})
+
 
 // @@忘记密码，页面未完成
-var forget = function($scope, $rootScope, $interval, $http, $state, tools) {
+app.controller('forget', function($scope, $rootScope, $interval, $http, $state, tools) {
 
   $rootScope.stepNum = 1;
-}
+})
 
 
-var forget_step1 = function($scope, $rootScope, $interval, $http, $state, ENV, tools) {
+app.controller('forget_step1', function($scope, $rootScope, $interval, $http, $state, ENV, tools) {
 
     $rootScope.phoneNum = '';
     $rootScope.codeContent = '';
@@ -117,9 +153,9 @@ var forget_step1 = function($scope, $rootScope, $interval, $http, $state, ENV, t
         }
       }
 
-}
+})
 
-var forget_step2 = function($scope, $rootScope, $interval, $http, $state, ENV, tools) {
+app.controller('forget_step2', function($scope, $rootScope, $interval, $http, $state, ENV, tools) {
 
   $scope.lastPage = function(){
 
@@ -144,9 +180,9 @@ var forget_step2 = function($scope, $rootScope, $interval, $http, $state, ENV, t
         return null;
        }
     }
-}
+})
 
-var forget_step3 = function($scope, $interval, $state) {
+app.controller('forget_step3', function($scope, $interval, $state) {
   
     $scope.timeNum = 5;
     timepromise = $interval(function() {
@@ -157,5 +193,5 @@ var forget_step3 = function($scope, $interval, $state) {
         timepromise = null;
       }
     },1000);
-}
+})
 

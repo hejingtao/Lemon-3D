@@ -8,6 +8,32 @@ angular.module('Lemon3D.router',['ui.router'])
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
+
+  /**
+   * index模块
+   * ------------------------------------------------------------------
+   */
+  // 首页
+  .state('index', {
+    url: '/',
+    views: {
+        "main": {
+          templateUrl: 'index/index.html',
+          controller: 'index'
+        }
+      }   
+  })
+  // 热门排行
+  .state('popular', {
+    url: '/',
+    views: {
+        "main": {
+          templateUrl: 'index/popular.html',
+          controller: 'popular'
+        }
+      }   
+  })
+
   /**
    * 登录模块
    * ------------------------------------------------------------------
@@ -34,30 +60,6 @@ angular.module('Lemon3D.router',['ui.router'])
   // })
 
 
-  /**
-   * index模块
-   * ------------------------------------------------------------------
-   */
-  // 首页
-  .state('index', {
-    url: '/',
-    views: {
-        "main": {
-          templateUrl: 'index/index.html',
-          controller: 'index'
-        }
-      }   
-  })
-  // 热门排行
-  // .state('popular', {
-  //   url: '/',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'index/popular.html',
-  //         controller: 'popular'
-  //       }
-  //     }   
-  // })
 
 
   /**
@@ -65,45 +67,45 @@ angular.module('Lemon3D.router',['ui.router'])
    * ------------------------------------------------------------------
    */
   // 用户主界面
-  // .state('userCentre', {
-  //   url: '/userCentre',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'user/userCentre.html',
-  //         controller: 'userCentre'
-  //       }
-  //     }   
-  // })
+  .state('userCentre', {
+    url: '/userCentre',
+    views: {
+        "main": {
+          templateUrl: 'user/userCentre.html',
+          controller: 'userCentre'
+        }
+      }   
+  })
   // // 关注列表
-  // .state('userFollowing', {
-  //   url: '/userFollowing',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'user/userFollowing.html',
-  //         controller: 'userFollowing'
-  //       }
-  //     }   
-  // })
+  .state('userFollowing', {
+    url: '/userFollowing',
+    views: {
+        "main": {
+          templateUrl: 'user/userFollowing.html',
+          controller: 'userFollowing'
+        }
+      }   
+  })
   // // 私信中心
-  // .state('userMessage', {
-  //   url: '/userMessage',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'user/userMessage.html',
-  //         controller: 'userMessage'
-  //       }
-  //     }   
-  // })
+  .state('userMessage', {
+    url: '/userMessage',
+    views: {
+        "main": {
+          templateUrl: 'user/userMessage.html',
+          controller: 'userMessage'
+        }
+      }   
+  })
   // // 私信中心
-  // .state('productList', {
-  //   url: '/productList',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'user/productList.html',
-  //         controller: 'productList'
-  //       }
-  //     }   
-  // })
+  .state('productList', {
+    url: '/productList',
+    views: {
+        "main": {
+          templateUrl: 'user/productList.html',
+          controller: 'productList'
+        }
+      }   
+  })
 
 
   /**
@@ -120,22 +122,31 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
-
+  // 作品展示
+  .state('product', {
+    url: '/product',
+    views: {
+        "main": {
+          templateUrl: 'product/product.html',
+          controller: 'product'
+        }
+      }   
+  })
 
   /**
    * 社区模块
    * ------------------------------------------------------------------
    */
   // 
-  // .state('community', {
-  //   url: '/community',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'community/community.html',
-  //         controller: 'community'
-  //       }
-  //     }   
-  // })
+  .state('community', {
+    url: '/community',
+    views: {
+        "main": {
+          templateUrl: 'community/community.html',
+          controller: 'community'
+        }
+      }   
+  })
 
 
   $urlRouterProvider.otherwise(function($injector, $location){
