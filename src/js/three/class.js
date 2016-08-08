@@ -1,10 +1,3 @@
-// 初始化layer
-layer.config({
-    path: '/assets/libs/jQuery/layer/', //layer.js所在的目录，可以是绝对目录，也可以是相对目录
-});
-Lemon.layer = layer;
-
-
 // 选中的模型
 Lemon.SELECTED = null;
 
@@ -79,6 +72,47 @@ Lemon.hiddenCommentDiv = function(){
     }
 }
 
+
+
+// 框选 相关方法
+function clearEventBubble(evt) { 
+
+  if (evt.stopPropagation) 
+    evt.stopPropagation(); 
+  else 
+    evt.cancelBubble = true; 
+  if (evt.preventDefault) 
+    evt.preventDefault(); 
+  else 
+    evt.returnValue = false; 
+} 
+function isObjectInSelect(object3D){
+
+    if(object3D.able == 'false') return false;
+    // 获取控制区域宽高
+    var width = $('#WebGL-output').width(), height = $(window).height() - 50;
+    var widthHalf = width / 2, heightHalf = height / 2;
+
+    // 关键算法
+    var vector = new THREE.Vector3();
+    var projector = new THREE.Projector();
+    projector.projectVector( vector.setFromMatrixPosition( object3D.matrixWorld ), camera );
+    // 2D坐标
+    vector.x = ( vector.x * widthHalf ) + widthHalf;
+    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+    // 简化代码名
+    var top = Lemon.selectFrame.top - 50;
+    var left = Lemon.selectFrame.left;
+    var width = Lemon.selectFrame.width;
+    var height = Lemon.selectFrame.height;
+    // 判断是否在选框范围内
+    if(vector.x > left && vector.x <(left+width) && vector.y >top && vector.y< (top+height)){
+        return true;
+    }else{
+        return false;
+    }
+
+}
 
 /**
  *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
@@ -166,6 +200,7 @@ Lemon.EventList={
 	//鼠标移动 
 	"mousemove" : {  
 		default: function( event ) {
+
             event.preventDefault();
             
             mouse.x = ( event.clientX / $('#operate-content .left').width() ) * 2 - 1;
@@ -184,8 +219,9 @@ Lemon.EventList={
             // 指向Model时改变鼠标手势
             if ( intersects.length > 0 && intersects[0].object.able != 'false') {
                 container.style.cursor = 'pointer';
-                
+                // 判断是否指向评论球
                 if(intersects[0].object.comment == 'comment'){
+
                     console.log('show comment');
                     Lemon.commentStatus = true;
                     var commentX = (event.x || event.clientX); 
@@ -196,13 +232,11 @@ Lemon.EventList={
                     Lemon.commentDiv.style.left = commentX+5 + "px"; 
                     Lemon.commentDiv.style.top = commentY-5 + "px"; 
                     Lemon.commentDiv.innerHTML= intersects[0].object.commentContent;
-
-
                 }else if(Lemon.commentStatus == true){
                     Lemon.hiddenCommentDiv();
                 }
                 
-            } else {
+            }else {
                 if(Lemon.commentStatus == true){
                     Lemon.hiddenCommentDiv();
                 }
@@ -212,6 +246,7 @@ Lemon.EventList={
             }
         },
         model : function( event ) {
+
             event.preventDefault();
 
             mouse.x = ( event.clientX / $('#operate-content .left').width() ) * 2 - 1;
@@ -240,6 +275,7 @@ Lemon.EventList={
 
         },
         seletedMove: function(){
+
                   evt = window.event || arguments[0]; 
                   if (isSelect) { 
                     if (selDiv.style.display == "none") { 
@@ -277,16 +313,21 @@ Lemon.EventList={
     //鼠标按下
     "mousedown":{   
         default:function( event ) {
+
             event.preventDefault();
+            // 如果按下鼠标中键或者右键，直接隐藏模型控制
             if(event.which == 3 || event.which == 2){
 
             	console.log('right down');
             	control.visible = false;
             	return null;
             }
+
             raycaster.setFromCamera( mouse, camera );
             var intersects = raycaster.intersectObjects( objects,true);
+
             console.log(objects);
+            // 如果选中了模型
             if ( intersects.length > 0  && intersects[0].object.able != 'false') {
                 Lemon.modelOperate(true);
                 control.object = undefined;
@@ -315,52 +356,23 @@ Lemon.EventList={
                 control.visible = false;
 
                 // 框选  --------------
-                function clearEventBubble(evt) { 
-                  if (evt.stopPropagation) 
-                    evt.stopPropagation(); 
-                  else 
-                    evt.cancelBubble = true; 
-                  if (evt.preventDefault) 
-                    evt.preventDefault(); 
-                  else 
-                    evt.returnValue = false; 
-                } 
-                function showSelDiv(arr) { 
-                  var count = 0; 
-                  var selInfo = ""; 
-                  alert("共选择 " + count + " 个文件，分别是：\n" + selInfo); 
-                } 
-                function isObjectInFrustum(object3D){
-                    if(object3D.able == 'false') return false;
 
-                    object3D.geometry.computeBoundingSphere();
-                    var sphere = object3D.geometry.boundingSphere;
-
-                    var center = object3D.position;
-                    console.log(sphere);
-                    var negRadius = - sphere.radius;
-                    console.log('top:'+topPlane.distanceToPoint(center)+'left:'+leftPlane.distanceToPoint(center)+'right'+rightPlane.distanceToPoint(center)+'bottom'+bottomPlane.distanceToPoint(center)+'radius:'+negRadius);
-
-                    if(topPlane.distanceToPoint(center) < negRadius) return false;
-                    if(leftPlane.distanceToPoint(center) < negRadius) return false;
-                    if(rightPlane.distanceToPoint(center) < negRadius) return false;
-                    if(bottomPlane.distanceToPoint(center) < negRadius) return false;
-
-                    return true;
-                }
 
                     var isSelect = true; 
                     var evt = window.event || arguments[0]; 
+                    // 鼠标初始位置
                     var startX = (evt.x || evt.clientX); 
                     var startY = (evt.y-50 || evt.clientY-50); 
+                    // 创建选择框
                     var selDiv = document.createElement("div"); 
                     selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
                     selDiv.id = "selectDiv"; 
                     document.body.appendChild(selDiv); 
-                 
+                    
+                    // 选择框初始定位
                     selDiv.style.left = startX + "px"; 
                     selDiv.style.top = startY + "px"; 
-                 
+                    // 鼠标位置预订一
                     var _x = null; 
                     var _y = null; 
                     clearEventBubble(evt); 
@@ -368,82 +380,36 @@ Lemon.EventList={
                     document.onmousemove = function() { 
                       evt = window.event || arguments[0]; 
                       if (isSelect) { 
+                        // 显示选择框
                         if (selDiv.style.display == "none") { 
                           selDiv.style.display = ""; 
                         } 
+                        // 获取鼠标实时位置
                         _x = (evt.x || evt.clientX); 
                         _y = (evt.y-50 || evt.clientY-50); 
+     
+                        Lemon.selectFrame.left = Math.min(_x, startX); 
+                        Lemon.selectFrame.top = Math.min(_y, startY)+50; 
+
+                        Lemon.selectFrame.width = Math.abs(_x - startX); 
+                        Lemon.selectFrame.height = Math.abs(_y - startY); 
+
+                        // 判断选择框位置
                         selDiv.style.left = Math.min(_x, startX) + "px"; 
-                        selDiv.style.top = Math.min(_y, startY)+50 + "px"; 
+                        selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
+                        // 计算选择框长度、高度
                         selDiv.style.width = Math.abs(_x - startX) + "px"; 
                         selDiv.style.height = Math.abs(_y - startY) + "px"; 
                  
-                        // ---------------- 关键算法 ---------------------  
-                        var _l = selDiv.offsetLeft, _t = selDiv.offsetTop; 
-                        var _w = selDiv.offsetWidth, _h = selDiv.offsetHeight; 
-
-                        var topLeftCorner3D = new THREE.Vector3( Math.min(_x, startX) , Math.min(_y, startY), 2000 );
-                        var topRightCorner3D = new THREE.Vector3( Math.min(_x, startX)+Math.abs(_x - startX) , Math.min(_y, startY), 2000 );
-                        var bottomLeftCorner3D = new THREE.Vector3( Math.min(_x, startX) , Math.min(_y, startY)+Math.abs(_y - startY) , 2000 );
-                        var bottomRightCorner3D = new THREE.Vector3( Math.min(_x, startX)+Math.abs(_x - startX) , Math.min(_y, startY)+Math.abs(_y - startY), 2000);
-
-                        console.log('newX: '+_x+ ' startX: '+startX);
-                        console.log('newX: '+_y+ ' startX: '+startY);
-
-                        var smtopLeftCorner3D = new THREE.Vector3( Math.min(_x, startX) , Math.min(_y, startY), 0.1 ).unproject(camera);
-                        var smtopRightCorner3D = new THREE.Vector3( Math.min(_x, startX)+Math.abs(_x - startX) , Math.min(_y, startY), 0.1 ).unproject(camera);
-                        var smbottomLeftCorner3D = new THREE.Vector3( Math.min(_x, startX) , Math.min(_y, startY)+Math.abs(_y - startY) , 0.1 ).unproject(camera);
-                        var smbottomRightCorner3D = new THREE.Vector3( Math.min(_x, startX)+Math.abs(_x - startX) , Math.min(_y, startY)+Math.abs(_y - startY), 0.1).unproject(camera);
-
-                        topPlane = new THREE.Plane();
-                        rightPlane = new THREE.Plane();
-                        bottomPlane = new THREE.Plane();
-                        leftPlane = new THREE.Plane();
-                        nearPlane = new THREE.Plane();
-                        farPlane = new THREE.Plane();
-
-                        // console.log('______');
-                        // console.log(topLeftCorner3D);
-                        // console.log(topRightCorner3D);
-                        // console.log(bottomLeftCorner3D);
-                        // console.log(bottomRightCorner3D);
-                        // console.log('____');
-                        topPlane.setFromCoplanarPoints(camera.position, topLeftCorner3D, topRightCorner3D);
-                        rightPlane.setFromCoplanarPoints(camera.position, topRightCorner3D, bottomRightCorner3D);
-                        bottomPlane.setFromCoplanarPoints(camera.position, bottomRightCorner3D, bottomLeftCorner3D);
-                        leftPlane.setFromCoplanarPoints(camera.position, bottomLeftCorner3D, topLeftCorner3D);
-                        // nearPlane.setFromCoplanarPoints(smbottomLeftCorner3D, smtopLeftCorner3D, smtopRightCorner3D, smbottomRightCorner3D);
-                        // farPlane.setFromCoplanarPoints(bottomLeftCorner3D, topLeftCorner3D, topRightCorner3D, bottomRightCorner3D);
-                        
-                        vector = new THREE.Vector3();
-                        vector.set( 0, 0, 1 );
-                        vector.applyQuaternion( camera.quaternion );
-                        nearPlane.setFromNormalAndCoplanarPoint(vector,camera.position);
-                        var vector2 = new THREE.Vector3( 0, 0, 100 );
-                        vector2.applyQuaternion( camera.quaternion );
-                        vector2.add(camera.position);
-                        farPlane.setFromNormalAndCoplanarPoint(vector,vector2);
-
-
-                    camera.updateMatrix(); // make sure camera's local matrix is updated
-                    camera.updateMatrixWorld(); // make sure camera's world matrix is updated
-                    camera.matrixWorldInverse.getInverse( camera.matrixWorld );
-                    var projScreenMatrix = new THREE.Matrix4();
-                    projScreenMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
-
-
-                        frustum = new THREE.Frustum(topPlane, bottomPlane, leftPlane, rightPlane,nearPlane ,farPlane);
-                        
-                        frustum.setFromMatrix( new THREE.Matrix4().multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse ) );
-                        // console.log('frustum');
-                        // console.log(frustum);
-                        for(var i=0;i<objects.length;i++){
-                            if(isObjectInFrustum(objects[i])){
-                            // if(frustum.intersectsSphere(objects[i].geometry.boundingSphere) && objects[i].able != 'false'){
-                                // console.log('catch it !!!!!!!wow!!');
-                                // objects[i].material.color.set(0x0000ff);
+                        clearTimeout(Lemon.tempTimeout);
+                        Lemon.tempTimeout = setTimeout(function(){
+                            for(var i=0;i<objects.length;i++){
+                                if(isObjectInSelect(objects[i])){
+                                    console.log('catch it');
+                                }
                             }
-                        }
+                        },100)
+                        
                       } 
                       clearEventBubble(evt); 
                     } 
@@ -462,7 +428,7 @@ Lemon.EventList={
         },
         model : function( event ) {
 	                event.preventDefault();
-
+                    // 如果按下鼠标右键，取消添加模型
 	                if(event.which == 3){
 	                	Lemon.EventListener.bind("model",2);
 	                	Lemon.EventListener.bind("default");
@@ -523,6 +489,7 @@ Lemon.EventList={
         default:function( event ) {
             event.preventDefault();
 
+            // 如果松开鼠标中键或者右键，并且已经选中模型，则显示模型控制
             if((event.which == 3 || event.which == 2)&& control.object != undefined){
                 control.visible = true;
                 return null;

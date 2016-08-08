@@ -1,6 +1,18 @@
 // 此项目作用域
 var Lemon = {};
+// 初始化layer
+layer.config({
+    path: '/assets/libs/jQuery/layer/', //layer.js所在的目录，可以是绝对目录，也可以是相对目录
+});
+Lemon.layer = layer;
 
+
+Lemon.selectFrame={
+    'top': 0,
+    'left': 0,
+    'width': 0,
+    'height': 0
+};
 
 // 字体模型加载
 Lemon.textGeo = null;

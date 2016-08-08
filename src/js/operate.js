@@ -3,16 +3,18 @@
         jquery: '/assets/libs/jQuery/jquery-2.2.3',
         colpick: '/assets/libs/jQuery/colpick',
         three: '/assets/libs/three/js/three',
+        Layer: '/assets/libs/jQuery/layer/layer',
         stats: '/assets/libs/three/js/stats.min',
         datGui: '/assets/libs/three/js/dat.gui',
         ShadowMaterial: '/assets/libs/three/js/materials/ShadowMaterial',
         OrbitControls: '/assets/libs/three/js/controls/OrbitControls',
         TransformControls: '/assets/libs/three/js/controls/TransformControls',
         Projector: '/assets/libs/three/js/Projector',
+
         loadScene: '/assets/js/three/loadScene',
         model: '/assets/js/three/model',
         class: '/assets/js/three/class',
-        Layer: '/assets/libs/jQuery/layer/layer',
+        
 
         OBJLoader: '/assets/libs/three/js/loaders/OBJLoader',
         DDSLoader: '/assets/libs/three/js/loaders/DDSLoader',
@@ -44,9 +46,9 @@
 
         // thrreJs user code
         // 依赖关系：operate << loadScene << class << model
-        "model" : ['three','jquery'],
-        "class": ['three','jquery','model','Layer'],
-        "loadScene": ['three','jquery','model','class'],
+        "model" : ['three','jquery','Layer'],
+        "class": ['model'],
+        "loadScene": ['class'],
 
         // jQuery libs
         "colpick" : ['jquery'],
@@ -62,7 +64,7 @@
         "SceneExporter": ['three'],
         "SceneLoader": ['three'],
         "MaterialExporter": ['three'],
-            // file loader
+        // file loader
         "OBJLoader": ['three'],
         "DDSLoader": ['three'],
         "TGALoader": ['three'],
@@ -98,6 +100,51 @@ function($, THREE, Layer) {
         //渲染场景- loadScenes
         render();
         animate();
+
+                
+
+        $('#clear').bind("click",function(){
+            localStorage.clear();
+        });
+
+
+        $('#undo').bind("click",function(){
+            for(var i=0;i<objects.length;i++){
+                if(objects[i].able == 'false') return false;
+                
+                var width = $(window).width() - 50, height = $(window).height() - 50;
+                var widthHalf = width / 2, heightHalf = height / 2;
+
+                var vector = new THREE.Vector3();
+                var projector = new THREE.Projector();
+                projector.projectVector( vector.setFromMatrixPosition( objects[i].matrixWorld ), camera );
+
+                vector.x = ( vector.x * widthHalf ) + widthHalf;
+                vector.y = - ( vector.y * heightHalf ) + heightHalf;
+                console.log(vector.x);
+                console.log(vector.y);
+            }
+        });
+
+
+        $('#redo').bind("click",function(){
+            var width = $(window).width() - 50, height = $(window).height() - 50;
+            var widthHalf = width / 2, heightHalf = height / 2;
+            var voxel = new THREE.Mesh(  Lemon.Geometry['cube'], Lemon.Material.base() );
+            scene.add( voxel );
+            objects.push( voxel );
+
+
+            var vector = new THREE.Vector3();
+            var projector = new THREE.Projector();
+            projector.projectVector( vector.setFromMatrixPosition( voxel.matrixWorld ), camera );
+
+            vector.x = ( vector.x * widthHalf ) + widthHalf;
+            vector.y = - ( vector.y * heightHalf ) + heightHalf;
+            console.log(vector.x);
+            console.log(vector.y);
+        });
+
 
         // 保存当前数据
         $('#save').bind("click",function(){
@@ -199,17 +246,7 @@ function($, THREE, Layer) {
         });
 
 
-                
 
-        $('#clear').bind("click",function(){
-            localStorage.clear();
-        });
-        $('#undo').bind("click",function(){
-            objects[1].material = Lemon.useTexture('blank');
-        });
-        $('#redo').bind("click",function(){
-            objects[1].material = Lemon.useTexture('board01');
-        });
 
 
         // 恢复数据

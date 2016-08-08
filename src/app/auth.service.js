@@ -68,7 +68,7 @@ function login(loginData) {
      console.log($localStorage.authtoken);
      // 设置授权状态
      setAuthorizationParams(true);
-     $localStorage.userData = response.data.user;
+     $localStorage.userData = $rootScope.userData = response.data.user;
      // 设置用户信息
      $localStorage.USER_ID = $rootScope.USER_ID = response.data.user.userId;
      $localStorage.USER_NAME = $rootScope.USER_NAME = response.data.user.userName;
