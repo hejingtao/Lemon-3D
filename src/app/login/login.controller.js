@@ -69,10 +69,14 @@ app.controller('register', function($scope, $rootScope, $localStorage, authServi
           'userName': $scope.name,
           'userPassword': $scope.password,
           'userPhone': $scope.phone,
-          'userSex': $scope.sex,
-          'userDetail': $scope.detail,
-          'userPasswordQuestion': $scope.question,
-          'userPasswordAnswer': $scope.answer
+          'userSex': '男',
+          'userDetail': '这个人还没写简介',
+          'userPasswordQuestion': '答案是12345',
+          'userPasswordAnswer': '12345'
+          // 'userSex': $scope.sex,
+          // 'userDetail': $scope.detail,
+          // 'userPasswordQuestion': $scope.question,
+          // 'userPasswordAnswer': $scope.answer
         }
       }).
       success(function(data, status, headers, config) {

@@ -1,3 +1,152 @@
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * 命令模块
+ * ------------------------------------------------------------------
+ */
+
+Lemon.CommandStack = {
+    'redo': [],
+    'undo': []
+};
+
+Lemon.Command = {
+    execute: function(command){
+        command.execute();
+        Lemon.CommandStack.undo.push(command);
+    },
+    undo: function(){
+        
+        var tempCommand = Lemon.CommandStack.undo.pop();
+        tempCommand.undo();
+        Lemon.CommandStack.redo.push(tempCommand);
+    },
+    redo: function(){
+        var tempCommand = Lemon.CommandStack.redo.pop();
+        tempCommand.redo();
+        Lemon.CommandStack.redo.push(tempCommand);
+    }
+}
+// 改变贴图命令
+Lemon.ChangeTextureCommand = function(object,texture){
+
+    this.currentObj = object;
+    this.newTexture = texture;
+    this.oldTexture = '';
+
+    if(object.children.length != 0){
+        object.children.forEach(function(e){
+            if(e.material.userData.type != 'wireframe'){
+                this.oldTexture = e.material.textureName? e.material.textureName: 'blank';
+            }
+            
+        });
+    }else{
+        this.oldTexture = object.material.textureName? object.material.textureName: 'blank';
+    }
+}
+Lemon.ChangeTextureCommand.prototype = {
+
+        execute: function() {
+
+            this.setTexture(this.newTexture);
+        },
+        undo: function() {
+
+            this.setTexture(this.oldTexture);
+        },
+        setTexture : function(tempTexture){
+
+            if(this.currentObj.children.length != 0){
+
+                this.currentObj.children.forEach(function(e){
+                    if(e.material.userData.type != 'wireframe'){
+                        e.material = Lemon.useTexture(tempTexture);
+                    }
+                    
+                });
+            }else{
+                this.currentObj.material = Lemon.useTexture(tempTexture);
+            }
+        }
+}
+
+
+// 改变颜色命令
+Lemon.ChangeColorCommand = function(object,color,el){
+
+    this.currentObj = object;
+    this.newColor = color;
+    this.oldColor = '';
+    this.el = el;
+    if(object.children.length != 0){
+        object.children.forEach(function(e){
+            if(e.material.userData.type != 'wireframe'){
+                this.oldColor = e.material.color;
+            }
+            
+        });
+    }else{
+        this.oldColor = object.material.color;
+    }
+}
+Lemon.ChangeColorCommand.prototype = {
+
+        execute: function() {
+
+            this.setColor(this.newColor);
+            $(this.el).colpickHide();
+        },
+        undo: function() {
+
+            this.setColor(this.oldColor);
+        },
+        setColor : function(tempColor){
+
+            $(this.el).css('background-color', '#'+tempColor);
+            console.log(tempColor);
+            
+            if(this.currentObj.children.length != 0){
+                this.currentObj.children.forEach(function(e){
+                    if(e.material.userData.type != 'wireframe'){
+                        e.material.color.setHex('0x'+tempColor);
+                    }
+                    
+                });
+            }else{
+                this.currentObj.material.color.setHex('0x'+tempColor);
+            }
+        }
+}
+
+
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * 其他模块
+ * ------------------------------------------------------------------
+ */
+
 // 选中的模型
 Lemon.SELECTED = null;
 

@@ -9,9 +9,9 @@
     	<li class="nav-item">社区</li>
     </ul>
     <ul class="nav-item-list-right">
-    	<li class="nav-item" ui-sref="login">登录</li>
-    	<li class="nav-item" ui-sref="register">注册</li>
-		<li class="nav-item" ui-sref="userCentre">个人中心</li>
+    	<li class="nav-item" ng-if="!loginState" ui-sref="login">登录</li>
+    	<li class="nav-item" ng-if="!loginState" ui-sref="register">注册</li>
+		<li class="nav-item" ng-if="loginState" ui-sref="userCentre">个人中心</li>
     </ul>
     </div>
 </div>

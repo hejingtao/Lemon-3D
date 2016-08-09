@@ -23,29 +23,17 @@ app.run(
     $rootScope.isNeedChoose = 0;
 
     // // 初始化时判断是否有token存在，设置登陆状态
-    // if($localStorage.isAuth == true){
-    //   // 登陆状态
-    //   $rootScope.loginState = true;
-    //   // authtoken
-    //   $rootScope.authtoken = $localStorage.authtoken;
-    //   // 用户角色
-    //   $rootScope.role = $localStorage.role;
-    //   // 用户信息
-    //   $rootScope.USER_NAME = $localStorage.USER_NAME;
-    //   $rootScope.USER_JOB = $localStorage.USER_JOB;
-    //   $rootScope.USER_STRUCTURE = $localStorage.USER_STRUCTURE;
-    //   $rootScope.USER_PHONE = $localStorage.USER_PHONE;
-    //   $rootScope.USER_EMAIL = $localStorage.USER_EMAIL; 
-    //   $rootScope.mainOrganizationId = $localStorage.mainOrganizationId;
-      
-    //   $rootScope.identityList = $localStorage.identityList;
+    if($localStorage.isAuth == true){
+      // 登陆状态
+      $rootScope.loginState = true;
+      // authtoken
+      $rootScope.authtoken = $localStorage.authtoken;
 
-    //   $rootScope.userData = $localStorage.userData;
-    //   console.log($rootScope.userData );
-    // }else{
-    //   $state.go('login');
-    //   $rootScope.loginState = false;
-    // }
+      $rootScope.userData = $localStorage.userData;
+      console.log($rootScope.userData );
+    }else{
+      $rootScope.loginState = false;
+    }
 
 
 

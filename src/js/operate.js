@@ -435,17 +435,20 @@ function($, THREE, Layer) {
                 return null;
             }
             console.log(Lemon.SELECTED);
-            if(Lemon.SELECTED.children.length != 0){
-                Lemon.SELECTED.children.forEach(function(e){
-                    if(e.material.userData.type != 'wireframe'){
-                        e.material = Lemon.useTexture($(event.target).data("textureType"));
-                        console.log(e.userData.type);
-                    }
+            var textureName = $(event.target).data("textureType");
+            Lemon.Command.execute(new Lemon.ChangeTextureCommand(Lemon.SELECTED, textureName));
+
+            // if(Lemon.SELECTED.children.length != 0){
+            //     Lemon.SELECTED.children.forEach(function(e){
+            //         if(e.material.userData.type != 'wireframe'){
+            //             e.material = Lemon.useTexture($(event.target).data("textureType"));
+            //             console.log(e.userData.type);
+            //         }
                     
-                });
-            }else{
-                Lemon.SELECTED.material = Lemon.useTexture($(event.target).data("textureType"));
-            }
+            //     });
+            // }else{
+            //     Lemon.SELECTED.material = Lemon.useTexture($(event.target).data("textureType"));
+            // }
 
             
             console.log("data-textureType "+$(event.target).data("textureType"));
@@ -473,21 +476,23 @@ function($, THREE, Layer) {
 
             onSubmit:function(hsb,hex,rgb,el) {
 
+                
+
                 $(el).css('background-color', '#'+hex);
-                console.log(hex);
-                if(Lemon.SELECTED.children.length != 0){
-                    Lemon.SELECTED.children.forEach(function(e){
-                        if(e.material.userData.type != 'wireframe'){
-                            e.material.color.setHex('0x'+hex);
-                        }
+                Lemon.Command.execute(new Lemon.ChangeColorCommand(Lemon.SELECTED, hex, el));
+
+
+                // if(Lemon.SELECTED.children.length != 0){
+                //     Lemon.SELECTED.children.forEach(function(e){
+                //         if(e.material.userData.type != 'wireframe'){
+                //             e.material.color.setHex('0x'+hex);
+                //         }
                         
-                    });
-                }else{
-                    Lemon.SELECTED.material.color.setHex('0x'+hex);
-                }
-                
-                
-                $(el).colpickHide();
+                //     });
+                // }else{
+                //     Lemon.SELECTED.material.color.setHex('0x'+hex);
+                // }
+                // $(el).colpickHide();
 
             }
 

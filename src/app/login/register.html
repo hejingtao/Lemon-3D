@@ -27,20 +27,24 @@
 						<div class="title">注册</div>
 						<div class="info">
 							<div class="line">
+								<div class="left">昵称</div>
+								<div class="right"><input type="text" ng-model="name" placeholder="请输入用户名"></div>
+							</div>
+							<div class="line">
 								<div class="left">帐号</div>
-								<div class="right"><input type="text" placeholder="请输入用户名"></div>
+								<div class="right"><input type="text" ng-model="account" placeholder="请输入用户名"></div>
 							</div>
 							<div class="line">
 								<div class="left">密码</div>
-								<div class="right"><input type="password" placeholder="请输入密码"></div>
+								<div class="right"><input type="password" ng-model="password" placeholder="请输入密码"></div>
 							</div>
-							<div class="line">
+						<!-- 	<div class="line">
 								<div class="left">性别</div>
 								<div class="right"><input value="男" type="radio">男<input value="女" type="radio">女</div>
-							</div>
+							</div> -->
 							<div class="line">
-								<div class="left">简介</div>
-								<div class="right"><input type="text" placeholder="简单一句话介绍自己"></div>
+								<div class="left">手机</div>
+								<div class="right"><input type="text" ng-model="phone"  placeholder="请输入手机号"></div>
 							</div>
 							<div class="button"><span id="commit" ng-click="register()">注册</span></div>
 						</div>
