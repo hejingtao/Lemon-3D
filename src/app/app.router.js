@@ -132,7 +132,16 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
-
+  // test
+  .state('test', {
+    url: '/test',
+    views: {
+        "main": {
+          templateUrl: 'product/test.html',
+          controller: 'test'
+        }
+      }   
+  })
   /**
    * 社区模块
    * ------------------------------------------------------------------

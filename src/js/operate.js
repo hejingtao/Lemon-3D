@@ -109,40 +109,12 @@ function($, THREE, Layer) {
 
 
         $('#undo').bind("click",function(){
-            for(var i=0;i<objects.length;i++){
-                if(objects[i].able == 'false') return false;
-                
-                var width = $(window).width() - 50, height = $(window).height() - 50;
-                var widthHalf = width / 2, heightHalf = height / 2;
-
-                var vector = new THREE.Vector3();
-                var projector = new THREE.Projector();
-                projector.projectVector( vector.setFromMatrixPosition( objects[i].matrixWorld ), camera );
-
-                vector.x = ( vector.x * widthHalf ) + widthHalf;
-                vector.y = - ( vector.y * heightHalf ) + heightHalf;
-                console.log(vector.x);
-                console.log(vector.y);
-            }
+            Lemon.Command.undo();
         });
 
 
         $('#redo').bind("click",function(){
-            var width = $(window).width() - 50, height = $(window).height() - 50;
-            var widthHalf = width / 2, heightHalf = height / 2;
-            var voxel = new THREE.Mesh(  Lemon.Geometry['cube'], Lemon.Material.base() );
-            scene.add( voxel );
-            objects.push( voxel );
-
-
-            var vector = new THREE.Vector3();
-            var projector = new THREE.Projector();
-            projector.projectVector( vector.setFromMatrixPosition( voxel.matrixWorld ), camera );
-
-            vector.x = ( vector.x * widthHalf ) + widthHalf;
-            vector.y = - ( vector.y * heightHalf ) + heightHalf;
-            console.log(vector.x);
-            console.log(vector.y);
+            Lemon.Command.redo();
         });
 
 

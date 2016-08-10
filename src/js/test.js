@@ -1,3 +1,58 @@
+require.config({
+    paths: {
+        jquery: '/assets/libs/jQuery/jquery-2.2.3',
+        colpick: '/assets/libs/jQuery/colpick',
+        three: '/assets/libs/three/js/three',
+        Layer: '/assets/libs/jQuery/layer/layer',
+        stats: '/assets/libs/three/js/stats.min',
+        datGui: '/assets/libs/three/js/dat.gui',
+        ShadowMaterial: '/assets/libs/three/js/materials/ShadowMaterial',
+        // OrbitControls: '/assets/libs/three/js/controls/OrbitControls',
+        TransformControls: '/assets/libs/three/js/controls/TransformControls',
+        Projector: '/assets/libs/three/js/Projector',
+
+        loadScene: '/assets/js/three/loadScene',
+        model: '/assets/js/three/model',
+        class: '/assets/js/three/class',
+        VRControls: '/assets/libs/three/js/vr/VRControls',
+        VREffect: '/assets/libs/three/js/vr/VREffect',
+        webvrPolyfill: '/assets/libs/three/js/vr/webvr-polyfill'
+
+    },
+    shim: {
+        three: {
+            exports: 'THREE'
+        },
+
+        // thrreJs user code
+        // 依赖关系：operate << loadScene << class << model
+        "model" : ['three','jquery','Layer'],
+        "class": ['model'],
+
+        // jQuery libs
+        "Layer" : ['jquery'],
+
+        //threejs libs
+        "ShadowMaterial": ['three'],
+        "OrbitControls": ['three'],
+        "TransformControls": ['three'],
+        "Projector": ['three'],
+
+        "VRControls": ['three'],
+        "VREffect": ['three'],
+        "webvrPolyfill": ['three']
+        
+    }
+});
+
+require([
+    'jquery','three', 'colpick','stats','datGui',
+    'ShadowMaterial','OrbitControls','TransformControls','Projector',
+    'model',
+    'VRControls','VREffect','webvrPolyfill'
+    ],
+function($, THREE, Layer) {
+
         var container, stats;
         var camera, controls, scene, renderer;
         var objects = [], plane;
@@ -18,28 +73,17 @@
                 stats.domElement.style.top = '0px';
                 document.getElementById("Stats-output").appendChild(stats.domElement);
                 return stats;
-        }      
+        }
         
 
         // 创建场景             
         var scene = new THREE.Scene();
 
-// 箭头
-// var dir = new THREE.Vector3( 30, 30, 30 );
-// var origin = new THREE.Vector3( 10, 10, 10 );
-// var length = 100;
-// var hex = 0xff0000;
-
-// var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-// objects.push(arrowHelper);
-// scene.add( arrowHelper );
-
-
-
         // 新建相机，并且添加至场景 
         $('body').css("height",($(window).height())+"px");
-        $('#operate-content').css("height",($(window).height() - 50)+"px");
-        var camera = new THREE.PerspectiveCamera(45, $('#operate-content .left').width() / $('#operate-content .left').height(), 0.1, 20000);
+        $('#operate-content').css("width",($(window).width())+"px");
+        $('#operate-content').css("height",($(window).height())+"px");
+        var camera = new THREE.PerspectiveCamera(45, $('#operate-content').width() / $('#operate-content').height(), 0.1, 20000);
         scene.add(camera);
 
         // 渲染并且设置场景大小 
@@ -48,7 +92,7 @@
             preserveDrawingBuffer: true});
         renderer.setClearColor(new THREE.Color(0xfafafa, 1.0));
         // renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize($('#operate-content .left').width(), $('#operate-content .left').height());
+        renderer.setSize($('#operate-content').width(), $('#operate-content').height());
         
         // 视图控制 
         controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -143,59 +187,12 @@
             // scene.add(test) ;
         }
         
-        // 初始化控制器
-        control = new THREE.TransformControls( camera, renderer.domElement );
-        control.able = "false";
-        control.addEventListener( 'change', render );
-        window.addEventListener( 'keydown', function ( event ) {
-
-                    switch ( event.keyCode ) {
-
-                        case 81: // Q
-                            control.setSpace( control.space === "local" ? "world" : "local" );
-                            break;
-
-                        case 17: // Ctrl
-                            control.setTranslationSnap( 5 );
-                            control.setRotationSnap( THREE.Math.degToRad( 15 ) );
-                            break;
-
-                        case 87: // W
-                            control.setMode( "translate" );
-                            break;
-
-                        case 69: // E
-                            control.setMode( "rotate" );
-                            break;
-
-                        case 82: // R
-                            control.setMode( "scale" );
-                            break;
-
-                        case 187:
-                        case 107: // +, =, num+
-                            control.setSize( control.size + 0.1 );
-                            break;
-
-                        case 189:
-                        case 109: // -, _, num-
-                            control.setSize( Math.max( control.size - 0.1, 0.1 ) );
-                            break;
-                    }
-                });
-        // 添加控制器并隐藏
-        scene.add( control );
-        control.object = undefined;
-        control.visible = false;
 
 
 
         // 添加渲染DOM节点
         container = document.getElementById("WebGL-output").appendChild(renderer.domElement);
         
-
-        // 绑定默认事件
-        Lemon.EventListener.bind("default");
 
             
         // 场景渲染定义
@@ -204,10 +201,12 @@
              requestAnimationFrame( animate );
              stats.update();
              render();
-             controls.update();
+
              // transformControl.update();
         }
         function render() {
 
             renderer.render(scene, camera);
         }
+
+});

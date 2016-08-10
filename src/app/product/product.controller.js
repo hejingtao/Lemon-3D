@@ -31,3 +31,15 @@ app.controller('product', function($scope, $rootScope, $timeout, $state, $http, 
 	  ]
 	});
 })
+
+app.controller('test', function($scope, $rootScope, $timeout, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
+	
+	$rootScope.bodyState = 'operate'; 
+    $ocLazyLoad.load({
+	  serie: true,
+	  files: [
+	    '/assets/js/require.js',
+	    '/assets/js/test.js'
+	  ]
+	});
+})

@@ -32,7 +32,8 @@ app.run(
       $rootScope.userData = $localStorage.userData;
       console.log($rootScope.userData );
     }else{
-      $rootScope.loginState = false;
+      // $rootScope.loginState = false;
+      $rootScope.loginState = true;
     }
 
 
