@@ -17,24 +17,29 @@
 
 Lemon.CommandStack = {
     'redo': [],
-    'undo': []
+    'undo': [],
+    'length': 10
 };
 
 Lemon.Command = {
     execute: function(command){
+
         command.execute();
         Lemon.CommandStack.undo.push(command);
+        console.log(Lemon.CommandStack)
     },
     undo: function(){
         
         var tempCommand = Lemon.CommandStack.undo.pop();
         tempCommand.undo();
         Lemon.CommandStack.redo.push(tempCommand);
+        console.log(Lemon.CommandStack)
     },
     redo: function(){
         var tempCommand = Lemon.CommandStack.redo.pop();
         tempCommand.redo();
-        Lemon.CommandStack.redo.push(tempCommand);
+        Lemon.CommandStack.undo.push(tempCommand);
+        console.log(Lemon.CommandStack)
     }
 }
 // 改变贴图命令
@@ -65,6 +70,7 @@ Lemon.ChangeTextureCommand.prototype = {
 
             this.setTexture(this.oldTexture);
         },
+
         setTexture : function(tempTexture){
 
             if(this.currentObj.children.length != 0){
@@ -92,12 +98,12 @@ Lemon.ChangeColorCommand = function(object,color,el){
     if(object.children.length != 0){
         object.children.forEach(function(e){
             if(e.material.userData.type != 'wireframe'){
-                this.oldColor = e.material.color;
+                this.oldColor = e.material.color.getHexString();
             }
             
         });
     }else{
-        this.oldColor = object.material.color;
+        this.oldColor = object.material.color.getHexString();
     }
 }
 Lemon.ChangeColorCommand.prototype = {
@@ -111,8 +117,9 @@ Lemon.ChangeColorCommand.prototype = {
 
             this.setColor(this.oldColor);
         },
-        setColor : function(tempColor){
 
+        setColor : function(tempColor){
+            console.log(this.oldColor);
             $(this.el).css('background-color', '#'+tempColor);
             console.log(tempColor);
             
@@ -224,6 +231,27 @@ Lemon.hiddenCommentDiv = function(){
 
 
 // 框选 相关方法
+function selectdInit(event){
+
+    var isSelect = true; 
+    var evt = window.event || arguments[0]; 
+    // 鼠标初始位置
+    var startX = (evt.x || evt.clientX); 
+    var startY = (evt.y-50 || evt.clientY-50); 
+    // 创建选择框
+    var selDiv = document.createElement("div"); 
+    selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
+    selDiv.id = "selectDiv"; 
+    document.body.appendChild(selDiv); 
+    
+    // 选择框初始定位
+    selDiv.style.left = startX + "px"; 
+    selDiv.style.top = startY + "px"; 
+    // 鼠标位置预定义
+    var _x = null; 
+    var _y = null; 
+    clearEventBubble(evt); 
+}
 function clearEventBubble(evt) { 
 
   if (evt.stopPropagation) 
@@ -423,39 +451,42 @@ Lemon.EventList={
             render();
 
         },
-        seletedMove: function(){
+        selected: function(){
 
-                  evt = window.event || arguments[0]; 
-                  if (isSelect) { 
-                    if (selDiv.style.display == "none") { 
-                      selDiv.style.display = ""; 
-                    } 
-                    _x = (evt.x || evt.clientX); 
-                    _y = (evt.y || evt.clientY); 
-                    selDiv.style.left = Math.min(_x, startX) + "px"; 
-                    selDiv.style.top = Math.min(_y, startY) + "px"; 
-                    selDiv.style.width = Math.abs(_x - startX) + "px"; 
-                    selDiv.style.height = Math.abs(_y - startY) + "px"; 
-             
-                    // ---------------- 关键算法 ---------------------  
-                    var _l = selDiv.offsetLeft, _t = selDiv.offsetTop; 
-                    var _w = selDiv.offsetWidth, _h = selDiv.offsetHeight; 
-                    for ( var i = 0; i < selList.length; i++) { 
-                      var sl = selList[i].offsetWidth + selList[i].offsetLeft; 
-                      var st = selList[i].offsetHeight + selList[i].offsetTop; 
-                      if (sl > _l && st > _t && selList[i].offsetLeft < _l + _w && selList[i].offsetTop < _t + _h) { 
-                        if (selList[i].className.indexOf("seled") == -1) { 
-                          selList[i].className = selList[i].className + " seled"; 
+                      evt = window.event || arguments[0]; 
+                      if (isSelect) { 
+                        // 显示选择框
+                        if (selDiv.style.display == "none") { 
+                          selDiv.style.display = ""; 
                         } 
-                      } else { 
-                        if (selList[i].className.indexOf("seled") != -1) { 
-                          selList[i].className = "fileDiv"; 
-                        } 
+                        // 获取鼠标实时位置
+                        _x = (evt.x || evt.clientX); 
+                        _y = (evt.y-50 || evt.clientY-50); 
+     
+                        Lemon.selectFrame.left = Math.min(_x, startX); 
+                        Lemon.selectFrame.top = Math.min(_y, startY)+50; 
+
+                        Lemon.selectFrame.width = Math.abs(_x - startX); 
+                        Lemon.selectFrame.height = Math.abs(_y - startY); 
+
+                        // 判断选择框位置
+                        selDiv.style.left = Math.min(_x, startX) + "px"; 
+                        selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
+                        // 计算选择框长度、高度
+                        selDiv.style.width = Math.abs(_x - startX) + "px"; 
+                        selDiv.style.height = Math.abs(_y - startY) + "px"; 
+                 
+                        clearTimeout(Lemon.tempTimeout);
+                        Lemon.tempTimeout = setTimeout(function(){
+                            for(var i=0;i<objects.length;i++){
+                                if(isObjectInSelect(objects[i])){
+                                    console.log('catch it');
+                                }
+                            }
+                        },100)
+                        
                       } 
-                    } 
-             
-                  } 
-                  clearEventBubble(evt); 
+                      clearEventBubble(evt); 
         }
     },
 
@@ -506,71 +537,73 @@ Lemon.EventList={
 
                 // 框选  --------------
 
-
-                    var isSelect = true; 
-                    var evt = window.event || arguments[0]; 
-                    // 鼠标初始位置
-                    var startX = (evt.x || evt.clientX); 
-                    var startY = (evt.y-50 || evt.clientY-50); 
-                    // 创建选择框
-                    var selDiv = document.createElement("div"); 
-                    selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
-                    selDiv.id = "selectDiv"; 
-                    document.body.appendChild(selDiv); 
+                selectedInit(event);
+                Lemon.EventListener.bind("default",2);
+                Lemon.EventListener.bind("selected");
+                    // var isSelect = true; 
+                    // var evt = window.event || arguments[0]; 
+                    // // 鼠标初始位置
+                    // var startX = (evt.x || evt.clientX); 
+                    // var startY = (evt.y-50 || evt.clientY-50); 
+                    // // 创建选择框
+                    // var selDiv = document.createElement("div"); 
+                    // selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
+                    // selDiv.id = "selectDiv"; 
+                    // document.body.appendChild(selDiv); 
                     
-                    // 选择框初始定位
-                    selDiv.style.left = startX + "px"; 
-                    selDiv.style.top = startY + "px"; 
-                    // 鼠标位置预订一
-                    var _x = null; 
-                    var _y = null; 
-                    clearEventBubble(evt); 
+                    // // 选择框初始定位
+                    // selDiv.style.left = startX + "px"; 
+                    // selDiv.style.top = startY + "px"; 
+                    // // 鼠标位置预定义
+                    // var _x = null; 
+                    // var _y = null; 
+                    // clearEventBubble(evt); 
                  
-                    document.onmousemove = function() { 
-                      evt = window.event || arguments[0]; 
-                      if (isSelect) { 
-                        // 显示选择框
-                        if (selDiv.style.display == "none") { 
-                          selDiv.style.display = ""; 
-                        } 
-                        // 获取鼠标实时位置
-                        _x = (evt.x || evt.clientX); 
-                        _y = (evt.y-50 || evt.clientY-50); 
+                    // document.onmousemove = function() { 
+                    //   evt = window.event || arguments[0]; 
+                    //   if (isSelect) { 
+                    //     // 显示选择框
+                    //     if (selDiv.style.display == "none") { 
+                    //       selDiv.style.display = ""; 
+                    //     } 
+                    //     // 获取鼠标实时位置
+                    //     _x = (evt.x || evt.clientX); 
+                    //     _y = (evt.y-50 || evt.clientY-50); 
      
-                        Lemon.selectFrame.left = Math.min(_x, startX); 
-                        Lemon.selectFrame.top = Math.min(_y, startY)+50; 
+                    //     Lemon.selectFrame.left = Math.min(_x, startX); 
+                    //     Lemon.selectFrame.top = Math.min(_y, startY)+50; 
 
-                        Lemon.selectFrame.width = Math.abs(_x - startX); 
-                        Lemon.selectFrame.height = Math.abs(_y - startY); 
+                    //     Lemon.selectFrame.width = Math.abs(_x - startX); 
+                    //     Lemon.selectFrame.height = Math.abs(_y - startY); 
 
-                        // 判断选择框位置
-                        selDiv.style.left = Math.min(_x, startX) + "px"; 
-                        selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
-                        // 计算选择框长度、高度
-                        selDiv.style.width = Math.abs(_x - startX) + "px"; 
-                        selDiv.style.height = Math.abs(_y - startY) + "px"; 
+                    //     // 判断选择框位置
+                    //     selDiv.style.left = Math.min(_x, startX) + "px"; 
+                    //     selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
+                    //     // 计算选择框长度、高度
+                    //     selDiv.style.width = Math.abs(_x - startX) + "px"; 
+                    //     selDiv.style.height = Math.abs(_y - startY) + "px"; 
                  
-                        clearTimeout(Lemon.tempTimeout);
-                        Lemon.tempTimeout = setTimeout(function(){
-                            for(var i=0;i<objects.length;i++){
-                                if(isObjectInSelect(objects[i])){
-                                    console.log('catch it');
-                                }
-                            }
-                        },100)
+                    //     clearTimeout(Lemon.tempTimeout);
+                    //     Lemon.tempTimeout = setTimeout(function(){
+                    //         for(var i=0;i<objects.length;i++){
+                    //             if(isObjectInSelect(objects[i])){
+                    //                 console.log('catch it');
+                    //             }
+                    //         }
+                    //     },100)
                         
-                      } 
-                      clearEventBubble(evt); 
-                    } 
+                    //   } 
+                    //   clearEventBubble(evt); 
+                    // } 
                  
-                    document.onmouseup = function() { 
-                      isSelect = false; 
+                    // document.onmouseup = function() { 
+                    //   isSelect = false; 
 
-                      if (selDiv) { 
-                        document.body.removeChild(selDiv); 
-                      } 
-                       _x = null, _y = null, selDiv = null, startX = null, startY = null, evt = null; 
-                    } 
+                    //   if (selDiv) { 
+                    //     document.body.removeChild(selDiv); 
+                    //   } 
+                    //    _x = null, _y = null, selDiv = null, startX = null, startY = null, evt = null; 
+                    // } 
                 // 框选  END  --------------
 
             }
@@ -644,6 +677,16 @@ Lemon.EventList={
                 return null;
             }
             container.style.cursor = 'auto';
+        },
+        selected:function( event){
+
+            isSelect = false; 
+            if (selDiv) { 
+                document.body.removeChild(selDiv); 
+            } 
+            _x = null, _y = null, selDiv = null, startX = null, startY = null, evt = null; 
+            Lemon.EventListener.bind("selected",2);
+            Lemon.EventListener.bind("default");
         }
 	},
 
