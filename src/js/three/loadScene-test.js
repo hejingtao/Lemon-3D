@@ -1,59 +1,3 @@
-require.config({
-    paths: {
-        jquery: '/assets/libs/jQuery/jquery-2.2.3',
-        three: '/assets/libs/three/js/three',
-        Layer: '/assets/libs/jQuery/layer/layer',
-        stats: '/assets/libs/three/js/stats.min',
-        datGui: '/assets/libs/three/js/dat.gui',
-
-        ShadowMaterial: '/assets/libs/three/js/materials/ShadowMaterial',
-        OrbitControls: '/assets/libs/three/js/controls/OrbitControls',
-        TransformControls: '/assets/libs/three/js/controls/TransformControls',
-        Projector: '/assets/libs/three/js/Projector',
-
-        loadScene: '/assets/js/three/loadScene',
-        model: '/assets/js/three/model',
-        class: '/assets/js/three/class',
-        VRControls: '/assets/libs/three/js/vr/VRControls',
-        VREffect: '/assets/libs/three/js/vr/VREffect',
-        webvrPolyfill: '/assets/libs/three/js/vr/webvr-polyfill'
-
-    },
-    shim: {
-        three: {
-            exports: 'THREE'
-        },
-
-        // thrreJs user code
-        // 依赖关系：operate << loadScene << class << model
-        "model" : ['three','jquery','Layer'],
-        "class": ['model'],
-
-        // jQuery libs
-        "Layer" : ['jquery'],
-
-        //threejs libs
-        "ShadowMaterial": ['three'],
-        "OrbitControls": ['three'],
-        "TransformControls": ['three'],
-        "Projector": ['three'],
-
-        "VRControls": ['three','webvrPolyfill'],
-        "VREffect": ['three','webvrPolyfill'],
-        'webvrPolyfill': {
-　　　　　　deps: ['three']
-　　　　  }
-        
-    }
-});
-
-require([
-    'jquery','three','stats','datGui',
-    'ShadowMaterial','OrbitControls','TransformControls','Projector',
-    'model',
-    'VRControls','VREffect','webvrPolyfill'
-    ],
-function($, THREE) {
 
         var container, stats;
         var camera, controls, scene, renderer;
@@ -84,9 +28,10 @@ function($, THREE) {
         var scene = new THREE.Scene();
 
         // 新建相机，并且添加至场景 
-        $('#VR').css("width",($(window).width())+"px");
-        $('#VR').css("height",($(window).height())+"px");
-        var camera = new THREE.PerspectiveCamera(70, $('#VR').width() / $('#VR').height(), 1, 20000);
+        $('body').css("height",($(window).height())+"px");
+        $('#operate-content').css("width",($(window).width())+"px");
+        $('#operate-content').css("height",($(window).height())+"px");
+        var camera = new THREE.PerspectiveCamera(70, $('#operate-content').width() / $('#operate-content').height(), 1, 20000);
         scene.add(camera);
 
 
@@ -108,7 +53,7 @@ function($, THREE) {
             preserveDrawingBuffer: true});
         renderer.setClearColor(new THREE.Color(0xfafafa, 1.0));
         // renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize($('#VR').width(), $('#VR').height());
+        renderer.setSize($('#operate-content').width(), $('#operate-content').height());
         
         // 视图控制 
         controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -184,13 +129,19 @@ function($, THREE) {
         scene.add( plane );
         objects.push( plane );
         
-
+        // 移动时的工作plane
+        // workPlane = new THREE.Mesh(
+        //     new THREE.PlaneBufferGeometry( 2000, 2000, 8, 8 ),
+        //     new THREE.MeshBasicMaterial({ visible: false })
+        //     // new THREE.MeshBasicMaterial( { visible: false } )
+        // );
+        // scene.add( workPlane );
         
 
         // 设置相机位置，并且定义方向 
         camera.position.x = 0;
-        camera.position.y = 10;
-        camera.position.z = 10;
+        camera.position.y = 180;
+        camera.position.z = 180;
         camera.lookAt(scene.position);
         
 
@@ -224,8 +175,7 @@ function($, THREE) {
 
 
         // 添加渲染DOM节点
-        container = document.getElementById("VR").appendChild(renderer.domElement);
-
+        container = document.getElementById("WebGL-output").appendChild(renderer.domElement);
         window.addEventListener( 'resize', onWindowResize, false );
         function onWindowResize() {
 
@@ -257,7 +207,3 @@ function($, THREE) {
 
             vrEffect.render( scene, camera );
         }
-        render();
-        animate();
-
-});
