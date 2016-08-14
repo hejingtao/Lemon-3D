@@ -11,37 +11,124 @@
 
 /**
  * ------------------------------------------------------------------
+ * 其他模块
+ * ------------------------------------------------------------------
+ */
+
+// 选中的模型
+Lemon.SELECTED = null;
+
+// 添加临时模型
+Lemon.addTempModel = function(){
+
+    if(Lemon.tempMeshStatus = true){
+        console.log('remove tempMesh');
+        Lemon.tempMeshStatus = false;
+        scene.remove(Lemon.tempMesh);
+    }
+    console.log(Lemon.Geometry[Lemon.modelType]);
+    Lemon.tempMesh = new THREE.Mesh( Lemon.Geometry[Lemon.modelType], Lemon.Material.temp() );
+    Lemon.tempMesh.position.y = 10;
+    Lemon.tempMeshStatus = true;
+    scene.add( Lemon.tempMesh );
+}
+//初始化线框状态
+Lemon.wireframeStatus = true;
+// 初始化模型ID
+Lemon.modelType = 'cube';
+// 设置模型id
+Lemon.setmodelType = function(id){
+    Lemon.modelType = id;
+}
+// 控制右上栏目显示
+Lemon.modelOperate = function(status){
+    if(status){
+        $('#operate-top-right').css('display','block');
+    }else{
+        $('#operate-top-right').css('display','none');
+    }
+}
+
+// 评论状态定义
+Lemon.commentStatus = false;
+Lemon.creatCommentDiv = (function(){
+    return function(){
+        if(!Lemon.tempCommentDiv){
+            Lemon.tempCommentDiv = document.createElement("div"); 
+            Lemon.tempCommentDiv.id = "comment"; 
+            document.body.appendChild(Lemon.tempCommentDiv); 
+        }
+
+        return Lemon.tempCommentDiv;
+    }
+})();
+Lemon.hiddenCommentDiv = function(){
+    if(Lemon.commentStatus == true){
+        console.log('hideen comment');
+        Lemon.commentDiv.style.cssText="display:none;";
+        Lemon.commentStatus = false;
+    }
+}
+
+
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
  * 命令模块
  * ------------------------------------------------------------------
  */
 
+// 命令栈
 Lemon.CommandStack = {
     'redo': [],
     'undo': [],
-    'length': 10
+    'maxLength': 10
 };
-
+// 命令接受者
 Lemon.Command = {
     execute: function(command){
 
         command.execute();
         Lemon.CommandStack.undo.push(command);
+
         console.log(Lemon.CommandStack)
     },
     undo: function(){
-        
+
+        if(Lemon.CommandStack.undo.length == 0){return null};
+        // 撤销
         var tempCommand = Lemon.CommandStack.undo.pop();
         tempCommand.undo();
+        // 推入redo stack
         Lemon.CommandStack.redo.push(tempCommand);
+        if(Lemon.CommandStack.redo.length > Lemon.CommandStack.maxLength){ Lemon.CommandStack.redo.shift() };
+
         console.log(Lemon.CommandStack)
     },
     redo: function(){
+
+        if(Lemon.CommandStack.redo.length == 0){return null};
+        // 重做
         var tempCommand = Lemon.CommandStack.redo.pop();
-        tempCommand.redo();
+        tempCommand.execute();
+        // 推入redo stack
         Lemon.CommandStack.undo.push(tempCommand);
+        if(Lemon.CommandStack.undo.length > Lemon.CommandStack.maxLength){ Lemon.CommandStack.undo.shift() };
+
         console.log(Lemon.CommandStack)
     }
 }
+
 // 改变贴图命令
 Lemon.ChangeTextureCommand = function(object,texture){
 
@@ -119,9 +206,8 @@ Lemon.ChangeColorCommand.prototype = {
         },
 
         setColor : function(tempColor){
-            console.log(this.oldColor);
+
             $(this.el).css('background-color', '#'+tempColor);
-            console.log(tempColor);
             
             if(this.currentObj.children.length != 0){
                 this.currentObj.children.forEach(function(e){
@@ -150,49 +236,14 @@ Lemon.ChangeColorCommand.prototype = {
 
 /**
  * ------------------------------------------------------------------
- * 其他模块
+ * 文件操作模块
  * ------------------------------------------------------------------
  */
 
-// 选中的模型
-Lemon.SELECTED = null;
-
-// 添加临时模型
-Lemon.addTempModel = function(){
-
-    if(Lemon.tempMeshStatus = true){
-        console.log('remove tempMesh');
-        Lemon.tempMeshStatus = false;
-        scene.remove(Lemon.tempMesh);
-    }
-    console.log(Lemon.Geometry[Lemon.modelType]);
-    Lemon.tempMesh = new THREE.Mesh( Lemon.Geometry[Lemon.modelType], Lemon.Material.temp() );
-    Lemon.tempMesh.position.y = 10;
-    Lemon.tempMeshStatus = true;
-    scene.add( Lemon.tempMesh );
-}
-//初始化线框状态
-Lemon.wireframeStatus = true;
-// 初始化模型ID
-Lemon.modelType = 'cube';
-// 设置模型id
-Lemon.setmodelType = function(id){
-	Lemon.modelType = id;
-}
-// 控制右上栏目显示
-Lemon.modelOperate = function(status){
-    if(status){
-        $('#operate-top-right').css('display','block');
-    }else{
-        $('#operate-top-right').css('display','none');
-    }
-}
 
 
-
-//保存截图文件
-var strDownloadMime = "image/octet-stream";
-var saveFile = function (strData, filename) {
+//保存文件
+Lemon.saveFile = function (strData, filename) {
     var link = document.createElement('a');
     if (typeof link.download === 'string') {
         document.body.appendChild(link); //Firefox requires the link to be in the body
@@ -205,54 +256,171 @@ var saveFile = function (strData, filename) {
     }
 }
 
+// 遍历获取系统预定义模型数据
+Lemon.getSystemModel = function(){
 
+    var saveIndex = 0;
+    var tempModelList = [];
+    for(var i=0;i<objects.length;i++){
+        if(objects[i].able == 'false') continue;
+        // object.material.color.getHexString();
+        var tempMtr = {};
+        tempMtr.name = objects[i].material.textureName? objects[i].material.textureName: 'blank';
+        tempMtr.color =  objects[i].material.color.getHexString();
 
-// 评论状态定义
-Lemon.commentStatus = false;
-Lemon.creatCommentDiv = (function(){
-    return function(){
-        if(!Lemon.tempCommentDiv){
-            Lemon.tempCommentDiv = document.createElement("div"); 
-            Lemon.tempCommentDiv.id = "comment"; 
-            document.body.appendChild(Lemon.tempCommentDiv); 
+        var tempMesh = objects[i].clone();
+        tempMesh.material = Lemon.Material.base();
+        var tempModel = tempMesh.toJSON();
+
+        var tempObj = {
+            "geo": tempModel,
+            "mtrName": tempMtr
         }
+        tempModelList.push(tempObj);
 
-        return Lemon.tempCommentDiv;
+        saveIndex++;
     }
-})();
-Lemon.hiddenCommentDiv = function(){
-    if(Lemon.commentStatus == true){
-        console.log('hideen comment');
-        Lemon.commentDiv.style.cssText="display:none;";
-        Lemon.commentStatus = false;
+    var tempResult = {
+        'list': tempModelList,
+        'num': saveIndex
+    };
+    return tempResult;
+}
+
+// 保存系统预定义模型
+Lemon.saveLocalSystemModel = function(name){
+
+    var result = Lemon.getSystemModel();
+
+    for(var i=0;i<result.num;i++){
+
+        localStorage.setItem(name+"-model-"+i, JSON.stringify(result.list[i]));
     }
+
+    localStorage.setItem(name+"-model-num", result.num);
+    Lemon.layer.msg('保存成功！名称：'+name);
 }
 
 
+// 恢复localstorage中的系统预定义模型
+Lemon.recoverLocalSystemModel = function(name){
 
-// 框选 相关方法
-function selectdInit(event){
+     var modelNum = localStorage.getItem(name+"-model-num");
+     var tempModelList = [];
 
-    var isSelect = true; 
+     for(var i=0;i<modelNum;i++){
+
+        var tempModelJson = localStorage.getItem(name+"-model-"+i);
+
+        if (tempModelJson) {
+            var tempModel = JSON.parse(tempModelJson);
+
+            tempModelList.push(tempModel);
+        }
+     }
+     Lemon.recoverSystemModel(tempModelList);
+     layer.msg('读取成功！名称：'+name);
+}
+
+
+// 渲染系统预定义模型
+Lemon.recoverSystemModel = function(systemModelList){
+
+     var modelNum = systemModelList.length;
+     for(var i=0;i<modelNum;i++){
+
+            var loadedGeometry = systemModelList[i].geo;
+            var tempMtr = systemModelList[i].mtrName;
+
+            var loader = new THREE.ObjectLoader();
+
+            loadedMesh = loader.parse(loadedGeometry);
+
+            loadedMesh.material =  Lemon.useTexture(tempMtr.name);
+            loadedMesh.material.color.setHex('0x'+tempMtr.color);
+
+            objects.push(loadedMesh);
+            scene.add(loadedMesh);
+     }
+}
+
+
+// 下载系统预定义模型数据
+Lemon.exportModel = function(name){
+
+    if(name == ''){name="default"}
+    var saveIndex = 0;
+
+    var tempJSON =[];
+
+    for(var i=0;i<objects.length;i++){
+        if(objects[i].able == 'false') continue;
+
+        // tempJSON.push(JSON.stringify(objects[i]));
+
+        var tempMtr = objects[i].material.textureName? objects[i].material.textureName: 'blank';
+        tempMesh = objects[i].clone();
+        tempMesh.material = Lemon.Material.base();
+        var tempModel = tempMesh.toJSON();
+
+        localStorage.setItem(name+"-model-"+saveIndex, JSON.stringify(tempModel));
+        localStorage.setItem(name+"-model-mtr-"+saveIndex, JSON.stringify(tempMtr));
+
+        tempJSON.push(tempModel);
+        
+        saveIndex++;
+    }
+
+    var oMyBlob = new Blob([JSON.stringify(tempJSON)],{type: 'text/plain'});
+    var reader = new FileReader();
+    reader.onload = function(){
+
+        var urlData = this.result;
+        Lemon.saveFile(urlData, "test.json");
+    };
+    reader.readAsDataURL(oMyBlob);
+}
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * 框选模块
+ * ------------------------------------------------------------------
+ */
+
+//初始化框选
+Lemon.selectedInit = function(event){
+
+    Lemon.isSelect = true; 
     var evt = window.event || arguments[0]; 
     // 鼠标初始位置
-    var startX = (evt.x || evt.clientX); 
-    var startY = (evt.y-50 || evt.clientY-50); 
+    Lemon.startX = (evt.x || evt.clientX); 
+    Lemon.startY = (evt.y-50 || evt.clientY-50); 
     // 创建选择框
-    var selDiv = document.createElement("div"); 
-    selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
-    selDiv.id = "selectDiv"; 
-    document.body.appendChild(selDiv); 
+    Lemon.selDiv = document.createElement("div"); 
+    Lemon.selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
+    Lemon.selDiv.id = "selectDiv"; 
+    document.body.appendChild(Lemon.selDiv); 
     
     // 选择框初始定位
-    selDiv.style.left = startX + "px"; 
-    selDiv.style.top = startY + "px"; 
+    Lemon.selDiv.style.left = Lemon.startX + "px"; 
+    Lemon.selDiv.style.top = Lemon.startY + "px"; 
     // 鼠标位置预定义
-    var _x = null; 
-    var _y = null; 
-    clearEventBubble(evt); 
+    Lemon._x = null; 
+    Lemon._y = null; 
+    Lemon.clearEventBubble(evt); 
 }
-function clearEventBubble(evt) { 
+// 阻止冒泡
+Lemon.clearEventBubble = function(evt) { 
 
   if (evt.stopPropagation) 
     evt.stopPropagation(); 
@@ -263,7 +431,8 @@ function clearEventBubble(evt) {
   else 
     evt.returnValue = false; 
 } 
-function isObjectInSelect(object3D){
+// 判断obj是否被选中
+Lemon.isObjectInSelect = function(object3D){
 
     if(object3D.able == 'false') return false;
     // 获取控制区域宽高
@@ -273,7 +442,7 @@ function isObjectInSelect(object3D){
     // 关键算法
     var vector = new THREE.Vector3();
     var projector = new THREE.Projector();
-    projector.projectVector( vector.setFromMatrixPosition( object3D.matrixWorld ), camera );
+    vector.project( camera );
     // 2D坐标
     vector.x = ( vector.x * widthHalf ) + widthHalf;
     vector.y = - ( vector.y * heightHalf ) + heightHalf;
@@ -451,42 +620,42 @@ Lemon.EventList={
             render();
 
         },
-        selected: function(){
-
+        selected: function(event){
+                    console.log('move')
                       evt = window.event || arguments[0]; 
-                      if (isSelect) { 
+                      if (Lemon.isSelect) { 
                         // 显示选择框
-                        if (selDiv.style.display == "none") { 
-                          selDiv.style.display = ""; 
+                        if (Lemon.selDiv.style.display == "none") { 
+                          Lemon.selDiv.style.display = ""; 
                         } 
                         // 获取鼠标实时位置
-                        _x = (evt.x || evt.clientX); 
-                        _y = (evt.y-50 || evt.clientY-50); 
+                        Lemon._x = (evt.x || evt.clientX) -10; 
+                        Lemon._y = (evt.y-50 || evt.clientY-50)-10; 
      
-                        Lemon.selectFrame.left = Math.min(_x, startX); 
-                        Lemon.selectFrame.top = Math.min(_y, startY)+50; 
+                        Lemon.selectFrame.left = Math.min(Lemon._x, Lemon.startX); 
+                        Lemon.selectFrame.top = Math.min(Lemon._y, Lemon.startY)+50; 
 
-                        Lemon.selectFrame.width = Math.abs(_x - startX); 
-                        Lemon.selectFrame.height = Math.abs(_y - startY); 
+                        Lemon.selectFrame.width = Math.abs(Lemon._x - Lemon.startX); 
+                        Lemon.selectFrame.height = Math.abs(Lemon._y - Lemon.startY); 
 
                         // 判断选择框位置
-                        selDiv.style.left = Math.min(_x, startX) + "px"; 
-                        selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
+                        Lemon.selDiv.style.left = Math.min(Lemon._x, Lemon.startX) + "px"; 
+                        Lemon.selDiv.style.top  = Math.min(Lemon._y, Lemon.startY)+50 + "px"; 
                         // 计算选择框长度、高度
-                        selDiv.style.width = Math.abs(_x - startX) + "px"; 
-                        selDiv.style.height = Math.abs(_y - startY) + "px"; 
+                        Lemon.selDiv.style.width = Math.abs(Lemon._x - Lemon.startX) + "px"; 
+                        Lemon.selDiv.style.height = Math.abs(Lemon._y - Lemon.startY) + "px"; 
                  
                         clearTimeout(Lemon.tempTimeout);
                         Lemon.tempTimeout = setTimeout(function(){
                             for(var i=0;i<objects.length;i++){
-                                if(isObjectInSelect(objects[i])){
+                                if(Lemon.isObjectInSelect(objects[i])){
                                     console.log('catch it');
                                 }
                             }
                         },100)
                         
                       } 
-                      clearEventBubble(evt); 
+                      Lemon.clearEventBubble(evt); 
         }
     },
 
@@ -537,23 +706,23 @@ Lemon.EventList={
 
                 // 框选  --------------
 
-                selectedInit(event);
+                Lemon.selectedInit(event);
                 Lemon.EventListener.bind("default",2);
-                Lemon.EventListener.bind("selected");
+                Lemon.EventListener.bind("selected",1,window);
                     // var isSelect = true; 
                     // var evt = window.event || arguments[0]; 
                     // // 鼠标初始位置
                     // var startX = (evt.x || evt.clientX); 
                     // var startY = (evt.y-50 || evt.clientY-50); 
                     // // 创建选择框
-                    // var selDiv = document.createElement("div"); 
-                    // selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
-                    // selDiv.id = "selectDiv"; 
-                    // document.body.appendChild(selDiv); 
+                    // var Lemon.selDiv = document.createElement("div"); 
+                    // Lemon.selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
+                    // Lemon.selDiv.id = "selectDiv"; 
+                    // document.body.appendChild(Lemon.selDiv); 
                     
                     // // 选择框初始定位
-                    // selDiv.style.left = startX + "px"; 
-                    // selDiv.style.top = startY + "px"; 
+                    // Lemon.selDiv.style.left = startX + "px"; 
+                    // Lemon.selDiv.style.top = startY + "px"; 
                     // // 鼠标位置预定义
                     // var _x = null; 
                     // var _y = null; 
@@ -563,8 +732,8 @@ Lemon.EventList={
                     //   evt = window.event || arguments[0]; 
                     //   if (isSelect) { 
                     //     // 显示选择框
-                    //     if (selDiv.style.display == "none") { 
-                    //       selDiv.style.display = ""; 
+                    //     if (Lemon.selDiv.style.display == "none") { 
+                    //       Lemon.selDiv.style.display = ""; 
                     //     } 
                     //     // 获取鼠标实时位置
                     //     _x = (evt.x || evt.clientX); 
@@ -577,11 +746,11 @@ Lemon.EventList={
                     //     Lemon.selectFrame.height = Math.abs(_y - startY); 
 
                     //     // 判断选择框位置
-                    //     selDiv.style.left = Math.min(_x, startX) + "px"; 
-                    //     selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
+                    //     Lemon.selDiv.style.left = Math.min(_x, startX) + "px"; 
+                    //     Lemon.selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
                     //     // 计算选择框长度、高度
-                    //     selDiv.style.width = Math.abs(_x - startX) + "px"; 
-                    //     selDiv.style.height = Math.abs(_y - startY) + "px"; 
+                    //     Lemon.selDiv.style.width = Math.abs(_x - startX) + "px"; 
+                    //     Lemon.selDiv.style.height = Math.abs(_y - startY) + "px"; 
                  
                     //     clearTimeout(Lemon.tempTimeout);
                     //     Lemon.tempTimeout = setTimeout(function(){
@@ -599,10 +768,10 @@ Lemon.EventList={
                     // document.onmouseup = function() { 
                     //   isSelect = false; 
 
-                    //   if (selDiv) { 
-                    //     document.body.removeChild(selDiv); 
+                    //   if (Lemon.selDiv) { 
+                    //     document.body.removeChild(Lemon.selDiv); 
                     //   } 
-                    //    _x = null, _y = null, selDiv = null, startX = null, startY = null, evt = null; 
+                    //    _x = null, _y = null, Lemon.selDiv = null, startX = null, startY = null, evt = null; 
                     // } 
                 // 框选  END  --------------
 
@@ -680,12 +849,12 @@ Lemon.EventList={
         },
         selected:function( event){
 
-            isSelect = false; 
-            if (selDiv) { 
-                document.body.removeChild(selDiv); 
+            Lemon.isSelect = false; 
+            if (Lemon.selDiv) { 
+                document.body.removeChild(Lemon.selDiv); 
             } 
-            _x = null, _y = null, selDiv = null, startX = null, startY = null, evt = null; 
-            Lemon.EventListener.bind("selected",2);
+            _x = null, _y = null, Lemon.selDiv = null, startX = null, startY = null, evt = null; 
+            Lemon.EventListener.bind("selected",2,window);
             Lemon.EventListener.bind("default");
         }
 	},

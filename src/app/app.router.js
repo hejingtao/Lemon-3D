@@ -23,6 +23,15 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
+  .state('index1', {
+    url: '/index',
+    views: {
+        "main": {
+          templateUrl: 'index/index.html',
+          controller: 'index'
+        }
+      }   
+  })
   // 热门排行
   .state('popular', {
     url: '/',
@@ -49,15 +58,15 @@ angular.module('Lemon3D.router',['ui.router'])
       }   
   })
   // 忘记密码界面
-  // .state('register', {
-  //   url: '/register',
-  //   views: {
-  //       "main": {
-  //         templateUrl: 'login/register.html',
-  //         controller: 'register'
-  //       }
-  //     }   
-  // })
+  .state('register', {
+    url: '/register',
+    views: {
+        "main": {
+          templateUrl: 'login/register.html',
+          controller: 'register'
+        }
+      }   
+  })
 
 
 
@@ -96,7 +105,7 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
-  // // 私信中心
+  // // 产品列表
   .state('productList', {
     url: '/productList',
     views: {

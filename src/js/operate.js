@@ -118,32 +118,32 @@ function($, THREE, Layer) {
         });
 
 
-        // 保存当前数据
+        // 保存当前数据（系统预定义模型）
         $('#save').bind("click",function(){
+            Lemon.layer.msg('本地保存目前只支持保存系统预定义模型（即不包括上传模型）');
+            Lemon.layer.prompt({
+              title: '请输入存储名（默认为default）',
+              formType: 2 //prompt风格，支持0-2
+            }, function(name){
+
+                if(name == ''){name="default"};
+                Lemon.saveLocalSystemModel(name); 
+            });
+
+
+        });
+
+
+        // 恢复数据
+        $('#recover').bind("click",function(){
             Lemon.layer.prompt({
               title: '请输入存储名',
               formType: 2 //prompt风格，支持0-2
             }, function(name){
-                if(name == ''){name="0"}
-                var saveIndex = 0;
-                for(var i=0;i<objects.length;i++){
-                    if(objects[i].able == 'false') continue;
-                    var tempMtr = objects[i].material.textureName;
-                    tempMesh = objects[i].clone();
-                    tempMesh.material = Lemon.Material.base();
-                    var tempModel = tempMesh.toJSON();
-                    localStorage.setItem(name+"-model-"+saveIndex, JSON.stringify(tempModel));
-                    localStorage.setItem(name+"-model-mtr-"+saveIndex, JSON.stringify(tempMtr));
 
-                    saveIndex++;
-                }
-                localStorage.setItem(name+"-model-num", saveIndex);
-
-                layer.msg('保存成功！名称：'+name);
-                console.log('save'+saveIndex);
-
+                if(name == ''){name="default"};
+                Lemon.recoverLocalSystemModel(name);
             });
-
 
         });
 
@@ -155,9 +155,10 @@ function($, THREE, Layer) {
 
             try {
                 var strMime = "image/jpeg";
+                var strDownloadMime = "image/octet-stream";
                 imgData = renderer.domElement.toDataURL(strMime);
 
-                saveFile(imgData.replace(strMime, strDownloadMime), "test.jpg");
+                Lemon.saveFile(imgData.replace(strMime, strDownloadMime), "screenCut.jpg");
 
             } catch (e) {
                 console.log(e);
@@ -171,10 +172,12 @@ function($, THREE, Layer) {
             control.object = undefined;
             control.visible = false;
             if(!Lemon.commentClickNum){
+
                 Lemon.layer.prompt({
                   title: '请输入评论内容',
                   formType: 2 //prompt风格，支持0-2
                 }, function(name){
+
                     Lemon.commentContent = name;
                     Lemon.setmodelType('comment');
                     Lemon.addTempModel();
@@ -184,6 +187,7 @@ function($, THREE, Layer) {
                     layer.msg('请放置评论球到你想展示评论的位置，再点击此按钮。');
                 });
             }else if(Lemon.commentClickNum == 1){
+
                 layer.msg('请放置箭头球到你想指向的位置，再点击此按钮。');
                 Lemon.setmodelType('position');
                 Lemon.addTempModel();
@@ -191,6 +195,7 @@ function($, THREE, Layer) {
                 Lemon.EventListener.bind('model');
                 Lemon.commentClickNum =2;
             }else{
+
                 for(i=0;i<objects.length;i++){
                     if(objects[i].arrowLocate == "position"){
                         Lemon.arrowEndPosition = objects[i].position;
@@ -213,50 +218,13 @@ function($, THREE, Layer) {
                         scene.remove(objects[i]);
                     }
                 }
+                Lemon.commentClickNum =false;
             }
-            
         });
 
 
 
 
-
-        // 恢复数据
-        $('#recover').bind("click",function(){
-            Lemon.layer.prompt({
-              title: '请输入存储名',
-              formType: 2 //prompt风格，支持0-2
-            }, function(name){
-                if(name == ''){name="0"}
-                 var modelNum = localStorage.getItem(name+"-model-num");
-                 for(var i=0;i<modelNum;i++){
-
-                    var tempModelJson = localStorage.getItem(name+"-model-"+i);
-
-
-                    var tempMtrJson = localStorage.getItem(name+"-model-mtr-"+i);
-                    tempMtrJson = tempMtrJson.replace("\"","");
-                    tempMtrJson = tempMtrJson.replace("\"","");
-
-                    if (tempModelJson) {
-                        var loadedGeometry = JSON.parse(tempModelJson);
-                        var loader = new THREE.ObjectLoader();
-
-                        loadedMesh = loader.parse(loadedGeometry);
-
-                        if(tempMtrJson != 'undefined'){
-                            loadedMesh.material =  Lemon.useTexture(tempMtrJson);
-                        }
-
-                        objects.push(loadedMesh);
-                        scene.add(loadedMesh);
-                        layer.msg('读取成功！名称：'+name);
-                    }
-                 }
-
-            });
-
-        });
 
 
         // 监听文件上传

@@ -8,12 +8,12 @@ require.config({
 
         ShadowMaterial: '/assets/libs/three/js/materials/ShadowMaterial',
         OrbitControls: '/assets/libs/three/js/controls/OrbitControls',
-        TransformControls: '/assets/libs/three/js/controls/TransformControls',
         Projector: '/assets/libs/three/js/Projector',
 
         loadScene: '/assets/js/three/loadScene',
         model: '/assets/js/three/model',
         class: '/assets/js/three/class',
+
         VRControls: '/assets/libs/three/js/vr/VRControls',
         VREffect: '/assets/libs/three/js/vr/VREffect',
         webvrPolyfill: '/assets/libs/three/js/vr/webvr-polyfill'
@@ -35,7 +35,6 @@ require.config({
         //threejs libs
         "ShadowMaterial": ['three'],
         "OrbitControls": ['three'],
-        "TransformControls": ['three'],
         "Projector": ['three'],
 
         "VRControls": ['three','webvrPolyfill'],
@@ -49,7 +48,7 @@ require.config({
 
 require([
     'jquery','three','stats','datGui',
-    'ShadowMaterial','OrbitControls','TransformControls','Projector',
+    'ShadowMaterial','OrbitControls','Projector',
     'model',
     'VRControls','VREffect','webvrPolyfill'
     ],
@@ -220,7 +219,28 @@ function($, THREE) {
             // scene.add(test) ;
         }
         
+        var geometry = new THREE.BoxGeometry( 50, 50, 50 );
 
+        for ( var i = 0; i < 100; i ++ ) {
+
+            var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
+
+            object.position.x = Math.random() * 800 - 400;
+            object.position.y = Math.random() * 800 - 400;
+            object.position.z = Math.random() * 800 - 400;
+
+            object.rotation.x = Math.random() * 2 * Math.PI;
+            object.rotation.y = Math.random() * 2 * Math.PI;
+            object.rotation.z = Math.random() * 2 * Math.PI;
+
+            object.scale.x = Math.random() + 0.5;
+            object.scale.y = Math.random() + 0.5;
+            object.scale.z = Math.random() + 0.5;
+
+            scene.add( object );
+            objects.push( object );
+
+        }
 
 
         // 添加渲染DOM节点
@@ -247,6 +267,10 @@ function($, THREE) {
              // transformControl.update();
         }
         function render() {
+
+            camera.position.x +=0.1;
+            // camera.position.y +=0.1;
+            camera.position.z +=0.1;
 
             renderer.render(scene, camera);
 

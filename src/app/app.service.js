@@ -123,6 +123,22 @@ angular.module('Lemon3D.service',[ ])
           ,closeBtn: 0
           ,shift: 0 //动画类型
         });
+    },
+
+    msg: function(message){
+
+      layer.msg(message);
+    },
+
+    prompt: function(message,func){
+
+      layer.prompt({
+        title: message,
+        formType: 1 //prompt风格，支持0-2
+      }, function(pass){
+
+          func(pass);
+      });
     }
   }
 })
@@ -131,6 +147,7 @@ angular.module('Lemon3D.service',[ ])
 .factory('httpInterceptor', [ '$q', '$injector','$rootScope',function($q, $injector, $rootScope) {  
         var httpInterceptor = {  
             request: function (config) {
+
               if($rootScope.$storage.authtoken != undefined){
                    config.headers['Authorization'] = 'Token token="'+$rootScope.$storage.authtoken +'"';
               }
@@ -140,24 +157,15 @@ angular.module('Lemon3D.service',[ ])
               return config;
             },
             'responseError' : function(response) {  
-                if(response.data.code == 1006){
-                    layer.confirm('您是如何看待前端开发？', {
-                      btn: ['重要','奇葩'] //按钮
-                    }, function(){
-                      layer.msg('的确很重要', {icon: 1});
-                    }, function(){
-                      layer.msg('也可以这样', {
-                        time: 20000, //20s后自动关闭
-                        btn: ['明白了', '知道了']
-                      });
-                    });
-                }else if(response.data.code>= 1000){
-                    alert(response.data.error)
-                }else if (response.status == 401) {  
-                    alert('未知错误［error code：401］')
-                } else if (response.status === 404) {  
-                    alert('未知错误［error code：404］')
-                }  
+
+                console.log(response)
+                console.log(response.data.error)
+                
+                alert(response.data.error)
+                layer.closeAll('loading');
+                $rootScope.loading = false;
+
+
                 return $q.reject(response);  
             },  
             'response' : function(response) {  

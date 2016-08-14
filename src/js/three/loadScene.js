@@ -143,7 +143,7 @@
             // scene.add(test) ;
         }
         
-        // 初始化控制器
+        // 初始化模型控制器
         control = new THREE.TransformControls( camera, renderer.domElement );
         control.able = "false";
         control.addEventListener( 'change', render );
