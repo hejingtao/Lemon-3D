@@ -256,7 +256,7 @@ Lemon.saveFile = function (strData, filename) {
     }
 }
 
-// 遍历获取系统预定义模型数据
+// 遍历获取当前系统预定义模型数据
 Lemon.getSystemModel = function(){
 
     var saveIndex = 0;
@@ -287,7 +287,7 @@ Lemon.getSystemModel = function(){
     return tempResult;
 }
 
-// 保存系统预定义模型
+// 保存系统预定义模型至localStorage
 Lemon.saveLocalSystemModel = function(name){
 
     var result = Lemon.getSystemModel();
@@ -302,8 +302,8 @@ Lemon.saveLocalSystemModel = function(name){
 }
 
 
-// 恢复localstorage中的系统预定义模型
-Lemon.recoverLocalSystemModel = function(name){
+// 获取localStorage中的系统预定义模型数据
+Lemon.getLocalSystemModel = function(name){
 
      var modelNum = localStorage.getItem(name+"-model-num");
      var tempModelList = [];
@@ -318,6 +318,13 @@ Lemon.recoverLocalSystemModel = function(name){
             tempModelList.push(tempModel);
         }
      }
+     return tempModelList;
+}
+
+// 恢复localstorage中的系统预定义模型
+Lemon.recoverLocalSystemModel = function(name){
+
+     var tempModelList = Lemon.getLocalSystemModel(name);
      Lemon.recoverSystemModel(tempModelList);
      layer.msg('读取成功！名称：'+name);
 }
@@ -346,39 +353,24 @@ Lemon.recoverSystemModel = function(systemModelList){
 
 
 // 下载系统预定义模型数据
-Lemon.exportModel = function(name){
+Lemon.exportModelToFile = function(name){
 
-    if(name == ''){name="default"}
-    var saveIndex = 0;
+    if(name == ''){name="default"};
 
-    var tempJSON =[];
-
-    for(var i=0;i<objects.length;i++){
-        if(objects[i].able == 'false') continue;
-
-        // tempJSON.push(JSON.stringify(objects[i]));
-
-        var tempMtr = objects[i].material.textureName? objects[i].material.textureName: 'blank';
-        tempMesh = objects[i].clone();
-        tempMesh.material = Lemon.Material.base();
-        var tempModel = tempMesh.toJSON();
-
-        localStorage.setItem(name+"-model-"+saveIndex, JSON.stringify(tempModel));
-        localStorage.setItem(name+"-model-mtr-"+saveIndex, JSON.stringify(tempMtr));
-
-        tempJSON.push(tempModel);
-        
-        saveIndex++;
-    }
+    var tempJSON =Lemon.getLocalSystemModel(name);
 
     var oMyBlob = new Blob([JSON.stringify(tempJSON)],{type: 'text/plain'});
     var reader = new FileReader();
     reader.onload = function(){
 
         var urlData = this.result;
-        Lemon.saveFile(urlData, "test.json");
+        Lemon.saveFile(urlData, name+".lem3d");
     };
     reader.readAsDataURL(oMyBlob);
+}
+
+Lemon.loadModelFromFile = function(){
+    
 }
 /**
  *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗

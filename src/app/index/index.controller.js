@@ -4,6 +4,12 @@
  * ------------------------------------------------------------------
  */
 
+app.controller('common', function($scope, $rootScope, $timeout, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
+  
+  $rootScope.bodyState = 'index';  
+
+})
+
 app.controller('index', function($scope, $rootScope, $timeout, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
   
   $rootScope.bodyState = 'index';  

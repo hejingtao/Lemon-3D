@@ -13,7 +13,7 @@
   //   ]
   // });
 
-app.controller('login', function($scope, $ocLazyLoad,  authService, tools, ENV) {
+app.controller('login', function($scope, $rootScope , $ocLazyLoad,  authService, tools, ENV) {
 
   $rootScope.bodyState = 'index';  
     $ocLazyLoad.load({
@@ -29,11 +29,11 @@ app.controller('login', function($scope, $ocLazyLoad,  authService, tools, ENV) 
 
 
   $scope.login = function(){
-    var reg = /^1[0-9]{10}$/;
-    if(!reg.test($scope.account)){
-      tools.alert('请输入正确的手机号！');
+
+    if($scope.account.length == 0){
+      tools.alert('请输入正确的帐号！');
       return null;
-    }else if($scope.password.length < 6 ){
+    }else if($scope.password.length < 3 ){
       tools.alert('密码长度过短');
       return null;
     }
@@ -45,7 +45,7 @@ app.controller('login', function($scope, $ocLazyLoad,  authService, tools, ENV) 
 // 注册
 // @@页面不完善，未绑定model
 
-app.controller('register', function($scope, $rootScope, $localStorage, authService, tools) {
+app.controller('register', function($scope, $rootScope, $ocLazyLoad,  $localStorage, authService, tools) {
 
   $rootScope.bodyState = 'index';  
     $ocLazyLoad.load({

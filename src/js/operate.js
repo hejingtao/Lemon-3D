@@ -88,7 +88,7 @@
 require([
     'jquery','three', 'colpick','stats','datGui',
     'ShadowMaterial','OrbitControls','TransformControls','Projector',
-    'model','loadScene',
+    'loadScene',
     'OBJLoader','DDSLoader','TGALoader','ColladaLoader','STLLoader',
     'VTKLoader','PDBLoader','PLYLoader','AWDLoader','AssimpJSONLoader',
     'VRMLLoader','BabylonLoader',
@@ -129,8 +129,6 @@ function($, THREE, Layer) {
                 if(name == ''){name="default"};
                 Lemon.saveLocalSystemModel(name); 
             });
-
-
         });
 
 
@@ -147,7 +145,18 @@ function($, THREE, Layer) {
 
         });
 
+        // 恢复数据
+        $('#downloadSystem').bind("click",function(){
+            Lemon.layer.prompt({
+              title: '请输入存储名',
+              formType: 2 //prompt风格，支持0-2
+            }, function(name){
 
+                if(name == ''){name="default"};
+                Lemon.exportModelToFile(name);
+            });
+
+        });
         // 截图
         $('#screenshot').bind("click",function(){
 

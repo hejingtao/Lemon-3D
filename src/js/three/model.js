@@ -290,6 +290,16 @@ Lemon.loadModel = function(postfix){
 
       switch(postfix){
 
+        case ".lem3d": //   error
+
+            loaderStatus = true;
+            Lemon.loadModelFuc = function () {
+            var urlData = this.result;
+            console.log(urlData)
+            Lemon.recoverSystemModel(urlData);
+        }
+        break;
+
         case ".obj":
 
             loader = new THREE.OBJLoader();

@@ -14,29 +14,39 @@ angular.module('Lemon3D.router',['ui.router'])
    * ------------------------------------------------------------------
    */
   // 首页
-  .state('index', {
+  .state('main', {
+    url: '/main',
+    views: {  
+        "page": {
+          templateUrl: 'main.html',
+          controller: 'common'
+        }
+      }   
+  })
+  .state('main.index', {
     url: '/',
-    views: {
-        "main": {
+    views: {  
+
+        "contain@main": {
           templateUrl: 'index/index.html',
           controller: 'index'
         }
       }   
   })
-  .state('index1', {
+  .state('main.index1', {
     url: '/index',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'index/index.html',
           controller: 'index'
         }
       }   
   })
   // 热门排行
-  .state('popular', {
-    url: '/',
+  .state('main.popular', {
+    url: '/popular',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'index/popular.html',
           controller: 'popular'
         }
@@ -48,20 +58,20 @@ angular.module('Lemon3D.router',['ui.router'])
    * ------------------------------------------------------------------
    */
   // 登录界面
-  .state('login', {
+  .state('main.login', {
     url: '/login',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'login/login.html',
-          // controller: 'login'
+          controller: 'login'
         }
       }   
   })
   // 忘记密码界面
-  .state('register', {
+  .state('main.register', {
     url: '/register',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'login/register.html',
           controller: 'register'
         }
@@ -125,7 +135,7 @@ angular.module('Lemon3D.router',['ui.router'])
   .state('operate', {
     url: '/operate',
     views: {
-        "main": {
+        "index": {
           templateUrl: 'product/operate.html',
           controller: 'operate'
         }
