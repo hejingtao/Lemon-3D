@@ -3,6 +3,7 @@
  * User模块 控制器
  * ------------------------------------------------------------------
  */
+// 用户中心
 app.controller('userCentre', function($scope, $rootScope, $state, $http, tools, ENV) {
   	
   	$rootScope.bodyState = 'index';
@@ -45,7 +46,7 @@ app.controller('userCentre', function($scope, $rootScope, $state, $http, tools, 
 
 
 
-
+// 用户关注列表
 app.controller('userFollowing', function($scope, $rootScope, $state, $http, tools, ENV) {
   
 	$rootScope.bodyState = 'index';  
@@ -68,7 +69,7 @@ app.controller('userFollowing', function($scope, $rootScope, $state, $http, tool
 
 
 
-
+// 用户粉丝列表
 app.controller('userFollower', function($scope, $rootScope, $state, $http, tools, ENV) {
 
 	// 获取用户关注者列表
@@ -93,7 +94,7 @@ app.controller('userFollower', function($scope, $rootScope, $state, $http, tools
 
 
 
-
+// 消息中心
 app.controller('userMessage', function($scope, $rootScope, $state, $http, tools, ENV) {
   
 	$rootScope.bodyState = 'index'; 
@@ -142,12 +143,12 @@ app.controller('userMessage', function($scope, $rootScope, $state, $http, tools,
 
 
 
-
+// 作品列表
 app.controller('productList', function($scope, $rootScope, $state, $stateParams, $http, tools, ENV) {
   
 	$rootScope.bodyState = 'index';  
 	// $stateParams.userId;
-	
+
 	// $http({
 	// 	method: 'POST', 
 	// 	url: ENV.baseUrl + '/user/getUserMessageList',

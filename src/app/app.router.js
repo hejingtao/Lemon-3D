@@ -176,6 +176,15 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
+  .state('main.post', {
+    url: '/post',
+    views: {
+        "contain@main": {
+          templateUrl: 'community/post.html',
+          controller: 'post'
+        }
+      }   
+  })
 
 
   $urlRouterProvider.otherwise(function($injector, $location){
