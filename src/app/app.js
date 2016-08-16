@@ -64,54 +64,12 @@ app.run(
 
 
 
-app.controller('main', function($scope, $rootScope ,$timeout ,$localStorage,$state, $http, authService, tools) {
-
-
-  // @method headHover 用户信息浮动展示控制部分
-  // 用户信息展示状态
-  $scope.headState = false;
-  // 定时器存储标识
-  $scope.headTimeout = null;
-  /**
-   * 切换用户信息浮动展示状态
-   *
-   * 0为hover头像姓名，展示用户信息；1为hover用户信息，消除定时器；-1为mouseleave，添加定时器（0.5s）
-   *
-   * @param    {number}  type     类型
-   * @returns  void
-   *
-   * @date     2016-07-12
-   * @author   hejingtao<hejigntao95@foxmail.com>
-   */
-  $scope.headHover = function(type){
-
-    if(type ==0){ 
-      // hover头像姓名时显示用户信息栏
-      $timeout.cancel($scope.headTimeout);
-      $scope.headState = true;
-    }else if(type == -1){
-      // 鼠标离开头像姓名或者用户信息栏时，添加定时器，500毫秒后隐藏用户信息栏
-      $timeout.cancel($scope.headTimeout);
-      $scope.headTimeout = $timeout(function(){
-        $scope.headState = false;
-      },500)
-    }else if(type == 1){
-      // hover用户信息栏时取消定时器
-      $timeout.cancel($scope.headTimeout);
-    }
+app.controller('main', function($scope, $rootScope, authService) {
+  
+  $rootScope.bodyState = 'index';  
+  $scope.exit = function(){
+    authService.logout();
   }
-
-
-
-    // 退出
-    $scope.exit = function(){
-      authService.logout();
-      localStorage.clear();
-      tools.alert('退出成功');
-      $state.go('login');
-    }
 })
-
-
 
 

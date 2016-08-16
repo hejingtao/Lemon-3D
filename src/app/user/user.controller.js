@@ -51,7 +51,7 @@ app.controller('userFollowing', function($scope, $rootScope, $state, $http, tool
 	$rootScope.bodyState = 'index';  
 	$http({
 		method: 'POST', 
-		url: ENV.baseUrl + '',
+		url: ENV.baseUrl + '/user/getUserStartList',
 		params: { 
 			'userId': 10,
 		  	'page': 0,
@@ -143,8 +143,23 @@ app.controller('userMessage', function($scope, $rootScope, $state, $http, tools,
 
 
 
-app.controller('productList', function($scope, $rootScope, $state, $http, tools, ENV) {
+app.controller('productList', function($scope, $rootScope, $state, $stateParams, $http, tools, ENV) {
   
 	$rootScope.bodyState = 'index';  
+	// $stateParams.userId;
+	
+	// $http({
+	// 	method: 'POST', 
+	// 	url: ENV.baseUrl + '/user/getUserMessageList',
+	// 	params: { 
+	// 	  	'page': 0,
+	// 	  	'size': 10
+	// 	}
+	// })
+	// .success(function(data, status, headers, config) {
 
+	// 		$scope.data = data.data;
+	// 		$scope.totalPage = data.totalPage;
+	// 		$scope.nowPage = data.nowPage;
+	// });
 })

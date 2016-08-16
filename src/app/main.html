@@ -3,15 +3,16 @@
 <div id="index-nav">
     <div class="nav-logo"><img src="/assets/images/icon/Lemon3D.png" alt=""></div>
     <ul class="nav-item-list-left">
-        <li class="nav-item">首页</li>
-        <li class="nav-item">最新作品</li>
-        <li class="nav-item">排行</li>
-        <li class="nav-item">社区</li>
+        <li class="nav-item" ui-sref="main.index" >首页</li>
+        <li class="nav-item" ui-sref="main.login" >最新作品</li>
+        <li class="nav-item" ui-sref="main.login" >排行</li>
+        <li class="nav-item" ui-sref="main.community" >社区</li>
     </ul>
     <ul class="nav-item-list-right">
-        <li class="nav-item" ng-if="!loginState" ui-sref="login">登录</li>
-        <li class="nav-item" ng-if="!loginState" ui-sref="register">注册</li>
-        
+        <li class="nav-item" ng-if="!loginState" ui-sref="main.login">登录</li>
+        <li class="nav-item" ng-if="!loginState" ui-sref="main.register">注册</li>
+        <li class="nav-item" ng-if="loginState" ui-sref="main.userCentre">个人中心</li>
+        <li class="nav-item" ng-if="loginState" ng-click="exit()">退出</li>
     </ul>
     </div>
 </div>

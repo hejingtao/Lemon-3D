@@ -62,20 +62,23 @@ function login(loginData) {
 
 
   function loginComplete(response) { 
+    console.log(response);
     if (response.status === 200 ) {
+
+      var user = response.data.data.user;
      // 将token存入localStorage
-     $localStorage.authtoken = response.data.userCurrentToken; 
+     $localStorage.authtoken = user.userCurrentToken; 
      console.log($localStorage.authtoken);
      // 设置授权状态
      setAuthorizationParams(true);
-     $localStorage.userData = $rootScope.userData = response.data.user;
+     $localStorage.userData = $rootScope.userData = user;
      // 设置用户信息
-     $localStorage.USER_ID = $rootScope.USER_ID = response.data.user.userId;
-     $localStorage.USER_NAME = $rootScope.USER_NAME = response.data.user.userName;
-     $localStorage.USER_PHONE = $rootScope.USER_PHONE = response.data.user.userPhone;
-     $localStorage.USER_ACCOUNT = $rootScope.USER_ACCOUNT = response.data.user.userAccount;
+     $localStorage.USER_ID = $rootScope.USER_ID = user.userId;
+     $localStorage.USER_NAME = $rootScope.USER_NAME = user.userName;
+     $localStorage.USER_PHONE = $rootScope.USER_PHONE = user.userPhone;
+     $localStorage.USER_ACCOUNT = $rootScope.USER_ACCOUNT = user.userAccount;
 
-     $state.go('index',{},{'reload': true});
+     $state.go('main.index',{},{'reload': true});
 
     }else { 
         if(response.code == 1005){
@@ -103,7 +106,8 @@ function logout() {
 
       setAuthorizationParams(false);
       $rootScope.$storage.authtoken = null;
-      $state.go('index',{},{'reload': true});
+      tools.msg('退出成功！');
+      $state.go('main.index',{},{'reload': true});
 } 
 
 /**        

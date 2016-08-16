@@ -45,7 +45,7 @@ app.controller('login', function($scope, $rootScope , $ocLazyLoad,  authService,
 // 注册
 // @@页面不完善，未绑定model
 
-app.controller('register', function($scope, $rootScope, $ocLazyLoad,  $localStorage, authService, tools) {
+app.controller('register', function($scope, $rootScope, $ocLazyLoad, $state, $http, authService, ENV, tools) {
 
   $rootScope.bodyState = 'index';  
     $ocLazyLoad.load({

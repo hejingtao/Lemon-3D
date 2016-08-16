@@ -19,12 +19,13 @@ angular.module('Lemon3D.router',['ui.router'])
     views: {  
         "page": {
           templateUrl: 'main.html',
-          controller: 'common'
+          controller: 'main'
         }
       }   
   })
   .state('main.index', {
-    url: '/',
+    url: '/index',
+    cache: false,
     views: {  
 
         "contain@main": {
@@ -34,7 +35,7 @@ angular.module('Lemon3D.router',['ui.router'])
       }   
   })
   .state('main.index1', {
-    url: '/index',
+    url: '/index1',
     views: {
         "contain@main": {
           templateUrl: 'index/index.html',
@@ -86,37 +87,37 @@ angular.module('Lemon3D.router',['ui.router'])
    * ------------------------------------------------------------------
    */
   // 用户主界面
-  .state('userCentre', {
+  .state('main.userCentre', {
     url: '/userCentre',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'user/userCentre.html',
           controller: 'userCentre'
         }
       }   
   })
   // // 关注列表
-  .state('userFollowing', {
+  .state('main.userFollowing', {
     url: '/userFollowing',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'user/userFollowing.html',
           controller: 'userFollowing'
         }
       }   
   })
   // // 私信中心
-  .state('userMessage', {
+  .state('main.userMessage', {
     url: '/userMessage',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'user/userMessage.html',
           controller: 'userMessage'
         }
       }   
   })
   // // 产品列表
-  .state('productList', {
+  .state('main.productList', {
     url: '/productList',
     views: {
         "main": {
@@ -135,7 +136,7 @@ angular.module('Lemon3D.router',['ui.router'])
   .state('operate', {
     url: '/operate',
     views: {
-        "index": {
+        "page": {
           templateUrl: 'product/operate.html',
           controller: 'operate'
         }
@@ -145,7 +146,7 @@ angular.module('Lemon3D.router',['ui.router'])
   .state('product', {
     url: '/product',
     views: {
-        "main": {
+        "page": {
           templateUrl: 'product/product.html',
           controller: 'product'
         }
@@ -155,7 +156,7 @@ angular.module('Lemon3D.router',['ui.router'])
   .state('test', {
     url: '/test',
     views: {
-        "main": {
+        "page": {
           templateUrl: 'product/test.html',
           controller: 'test'
         }
@@ -166,10 +167,10 @@ angular.module('Lemon3D.router',['ui.router'])
    * ------------------------------------------------------------------
    */
   // 
-  .state('community', {
+  .state('main.community', {
     url: '/community',
     views: {
-        "main": {
+        "contain@main": {
           templateUrl: 'community/community.html',
           controller: 'community'
         }
