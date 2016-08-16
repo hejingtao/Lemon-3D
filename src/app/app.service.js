@@ -74,7 +74,7 @@ angular.module('Lemon3D.service',[ ])
       $rootScope.loading = false;
     },
 
-    // 分页方法，暂时无用
+    // 分页方法
     splitPage :function(nowPage,totalPage) {
       var resultArr = new Array();
       var tempLeftArr = new Array();
@@ -87,7 +87,7 @@ angular.module('Lemon3D.service',[ ])
         tempMin = nowPage-i;
         tempMax = nowPage+i;
         if(tempMin>0){
-          tempLeftArr.push(tempMin);
+          tempLeftArr.unshift(tempMin);
         }
         if(tempMax<=totalPage){
           tempRightArr.push(tempMax);

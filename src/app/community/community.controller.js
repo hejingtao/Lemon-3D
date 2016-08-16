@@ -35,7 +35,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 		
 		angular.forEach($rootScope.sections,function(item){
 
-			if(item.sectionId == $stateParams.sectionId){
+			if(item.sectionId == $scope.sectionId){
 				$scope.title = item.sectionName;
 				$scope.postsNum = item.sectionPostNum;
 				$scope.commentNum = item.sectionCommentNum;
@@ -57,6 +57,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 	           $scope.posts = res.post;  //???????????????????????????
 	           $scope.totalPage = res.totalPage;
 	           $scope.nowPage = res.nowPage;
+	           $scope.pageList = tools.splitPage($scope.nowPage, $scope.totalPage);
 	      })
 	}
 
@@ -87,7 +88,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 
 }
 
-app.controller('community', function($scope, $rootScope, $stateParams, $state, $http, tools, ENV) {
+app.controller('post', function($scope, $rootScope, $stateParams, $state, $http, tools, ENV) {
   	
 	if($stateParams.postId == undefined){
 		tools.alert('帖子id为空！');
@@ -126,6 +127,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 	   $scope.commentList = res.data;
 	   $scope.totalPage = res.totalPage;
 	   $scope.nowPage = res.nowPage;
+	   $scope.pageList = tools.splitPage($scope.nowPage, $scope.totalPage);
 	})
 
 	// 发表评论

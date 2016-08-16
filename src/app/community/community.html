@@ -28,8 +28,14 @@
 		<div class="num">9</div>
 	</div>
 
-	<div class="page"><span class="active">1</span><span>2</span><span>下一页</span></div>
-	
+	<div class="page">
+		<span ui-sref="community({'sectionId':sectionId, 'pageNum': pageList[0]})">上一页</span></div>
+		<span ng-repeat="item in pageList[1]" ui-sref="community({'sectionId':sectionId, 'pageNum': item })">{{item}}</span>
+		<span class="active">{{pageList[2][0]}}</span>
+		<span ng-repeat="item in pageList[3]" ui-sref="community({'sectionId':sectionId, 'pageNum': item })">{{item}}</span>
+		<span ui-sref="community({'sectionId':sectionId, 'pageNum': pageList[4]})">下一页</span>
+	</div>
+
 </div>
 <div id="index-page4">
 	<div class="left">
