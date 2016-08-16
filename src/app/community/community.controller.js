@@ -13,6 +13,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 	$scope.todayNum = 0;
 
 	$scope.sectionId = $stateParams.sectionId ? $stateParams.sectionId: 1;
+	$scope.pageNum = $stateParams.pageNum ? $stateParams.pageNum: 1;
 	// 已加载板块列表，且传入板块id
 	if($rootScope.sections != undefined){
 
@@ -47,7 +48,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 	        url: ENV.baseUrl + '/bbs/getPostList',
 	        params: { 
 	          'sectionId': $scope.sectionId,
-	          'page': 0,
+	          'page': ($scope.pageNum-1),
 	          'size': 15
 	        }
 	      })
@@ -62,6 +63,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 	$scope.postTitle = '';
 	$scope.postContent ='';
 
+	// 发表帖子
 	$scope.post = function(){
 
 		if($scope.postTitle.length<3 || $scope.postContent.length< 10){
@@ -78,10 +80,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 		        }
 		      })
 		      .success(function(res) {
-
-		           $scope.posts = res.post;  //???????????????????????????
-		           $scope.totalPage = res.totalPage;
-		           $scope.nowPage = res.nowPage;
+		      	tools.msg('发帖成功');
 		      })
 		}
 	}
