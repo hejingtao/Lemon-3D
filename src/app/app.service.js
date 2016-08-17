@@ -159,9 +159,9 @@ angular.module('Lemon3D.service',[ ])
             'responseError' : function(response) {  
 
                 console.log(response)
-                console.log(response.data.error)
+
                 
-                alert(response.data.error)
+                alert(response.data.message)
                 layer.closeAll('loading');
                 $rootScope.loading = false;
 

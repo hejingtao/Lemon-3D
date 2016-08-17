@@ -283,7 +283,7 @@ Lemon.useTexture = function(name) {
 
 // 加载模型文件
 Lemon.loadModelFuc = null;
-Lemon.loadModel = function(postfix){
+Lemon.loadModel = function(postfix, file){
 
       var loader= null;
       var loaderStatus = false;
@@ -547,20 +547,22 @@ Lemon.loadModel = function(postfix){
 
       if(loaderStatus){
 
-        var resultFile = document.getElementById("upload-file").files[0];
-        if (resultFile) {
+        // var resultFile = document.getElementById("upload-file").files[0];
+        if (file) {
 
             var reader = new FileReader();
             reader.onloadstart = function(){
+                
                 Lemon.modelLoading = Lemon.layer.load(1, {shade: [0.5, '#ffffff'],time: 10*1000});
             }
             reader.onloadend = function(){
+
+                Lemon.uploadFileList.push({'file': file, 'state': true});
                 Lemon.layer.close(Lemon.modelLoading);  
             }
             reader.onload = Lemon.loadModelFuc;
-            reader.readAsDataURL(resultFile);
+            reader.readAsDataURL(file);
         }
       }
-      console.log(reader);
-      console.log($('#upload-file').val());
+
 }

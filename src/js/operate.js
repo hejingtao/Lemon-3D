@@ -108,18 +108,23 @@ function($, THREE, Layer) {
         });
 
 
+        // 撤销
         $('#undo').bind("click",function(){
+
             Lemon.Command.undo();
         });
 
 
+        // 重做
         $('#redo').bind("click",function(){
+
             Lemon.Command.redo();
         });
 
 
         // 保存当前数据（系统预定义模型）
         $('#save').bind("click",function(){
+
             Lemon.layer.msg('本地保存目前只支持保存系统预定义模型（即不包括上传模型）');
             Lemon.layer.prompt({
               title: '请输入存储名（默认为default）',
@@ -134,6 +139,7 @@ function($, THREE, Layer) {
 
         // 恢复数据
         $('#recover').bind("click",function(){
+
             Lemon.layer.prompt({
               title: '请输入存储名',
               formType: 2 //prompt风格，支持0-2
@@ -145,8 +151,10 @@ function($, THREE, Layer) {
 
         });
 
+
         // 恢复数据
         $('#downloadSystem').bind("click",function(){
+
             Lemon.layer.prompt({
               title: '请输入存储名',
               formType: 2 //prompt风格，支持0-2
@@ -157,6 +165,8 @@ function($, THREE, Layer) {
             });
 
         });
+
+
         // 截图
         $('#screenshot').bind("click",function(){
 
@@ -178,6 +188,7 @@ function($, THREE, Layer) {
         
         // 3d评论
         $('#3d-comment').bind("click",function(){
+
             control.object = undefined;
             control.visible = false;
             if(!Lemon.commentClickNum){
@@ -187,29 +198,19 @@ function($, THREE, Layer) {
                   formType: 2 //prompt风格，支持0-2
                 }, function(name){
 
-                    Lemon.commentContent = name;
-                    Lemon.setmodelType('comment');
-                    Lemon.addTempModel();
-                    Lemon.EventListener.bind('default',2);
-                    Lemon.EventListener.bind('model');
-                    Lemon.commentClickNum =1;
-                    layer.msg('请放置评论球到你想展示评论的位置，再点击此按钮。');
+                    Lemon.addCommentBox(name);
                 });
             }else if(Lemon.commentClickNum == 1){
 
-                layer.msg('请放置箭头球到你想指向的位置，再点击此按钮。');
-                Lemon.setmodelType('position');
-                Lemon.addTempModel();
-                Lemon.EventListener.bind('default',2);
-                Lemon.EventListener.bind('model');
-                Lemon.commentClickNum =2;
+                Lemon.setCommentArrow();
             }else{
 
                 for(i=0;i<objects.length;i++){
                     if(objects[i].arrowLocate == "position"){
                         Lemon.arrowEndPosition = objects[i].position;
                     }
-                    if(objects[i].comment == "comment"){
+                    if(objects[i].comment == "current-comment"){
+                         objects[i].comment = 'comment';
                          Lemon.arrowStartPosition = objects[i].position;
                     }
                 }
@@ -225,6 +226,7 @@ function($, THREE, Layer) {
                 for(i=0;i<objects.length;i++){
                     if(objects[i].arrowLocate == "position"){
                         scene.remove(objects[i]);
+                        objects.splice(i, 1);
                     }
                 }
                 Lemon.commentClickNum =false;
@@ -238,23 +240,31 @@ function($, THREE, Layer) {
 
         // 监听文件上传
         $('#upload').bind("click",function(){
+
                 $('#upload-file').click();
         });
         $('#upload-file').on('change', function() {
-          var reg = /[^\\\/]*[\\\/]+/g; //匹配文件的名称和后缀的正则表达式
-          var name = $(this).val().replace(reg, '');
-          var postfix = /\.[^\.]+/.exec(name);//获取文件的后缀 例如： .js
-          postfix = postfix[0].toLowerCase(); //后缀转换成小写
-          var text =name.substr(0,postfix['index']);//获取没有后缀的名称
 
-          Lemon.loadModel(postfix);
+          var fileNameList = Lemon.getPostfix($(this).val());
+
+          var resultFile = document.getElementById("upload-file").files[0];
+
+          Lemon.loadModel(fileNameList.postfix, resultFile);
 
 
         });
+
+// $.get("/assets/libs/three/upload-test/pinecone.obj", [], function(data){
+
+//     var oMyBlob = new Blob([data], { "type" : "text/plain" });
+//     Lemon.loadModel('.obj', oMyBlob);
+// });
+
 
 
         // 监听模型选择
         $('.ModelList').bind("mousedown",function(event){
+
                 control.object = undefined;
                 control.visible = false;
                 if($(event.target).data("modelType") == null){
@@ -271,6 +281,7 @@ function($, THREE, Layer) {
 
         // 监听Text选择
         $('.TextList').bind("mousedown",function(event){
+
                 if($(event.target).data("modelType") == null){
                     console.log('text???');
                     return null;
@@ -284,7 +295,9 @@ function($, THREE, Layer) {
                 
                 console.log("data-model-type "+$(event.target).data("modelType"));
             });
+
         $('#text-btn').bind("mousedown",function(){
+
                 if($('#text-input-content').val() == ''){
                     return null;
                 }
@@ -299,6 +312,7 @@ function($, THREE, Layer) {
 
         // 线框显示控制
         $('#nav-top-01').bind('click',function(){
+
             objects.forEach(function(e){
                 if((e.able != 'false') && e.children[0]){
                     e.children.forEach(function(e){
@@ -337,6 +351,7 @@ function($, THREE, Layer) {
 
          //删除模型
          $("#deleted").bind('click',function(event){
+
             console.log(Lemon.SELECTED);
                 if(Lemon.SELECTED.userData.parent){
                     var deletedObject = Lemon.SELECTED.userData.parent;
@@ -364,6 +379,7 @@ function($, THREE, Layer) {
 
         // 贴图显示控制
         $("#texture").bind('click',function(event){
+
             console.log('click textuure')
              $("#texture-list").show(300);
             event.stopPropagation();//阻止冒泡
@@ -378,6 +394,7 @@ function($, THREE, Layer) {
 
         // 监听贴图选择
          $('.texture-content').bind("mousedown",function(event){
+
             // control.object = undefined;
             // control.visible = false;
             if($(event.target).data("textureType") == null){

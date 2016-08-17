@@ -86,10 +86,10 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 		}
 	}
 
-}
+})
 
 app.controller('post', function($scope, $rootScope, $stateParams, $state, $http, tools, ENV) {
-  	
+
 	if($stateParams.postId == undefined){
 		tools.alert('帖子id为空！');
 		$state.go('main.community');
@@ -152,7 +152,6 @@ app.controller('post', function($scope, $rootScope, $stateParams, $state, $http,
 			})
 		}
 	}
-}
-
-
 })
+
+

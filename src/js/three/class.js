@@ -70,6 +70,98 @@ Lemon.hiddenCommentDiv = function(){
     }
 }
 
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * 3D评论模块
+ * ------------------------------------------------------------------
+ */
+
+// 添加评论球
+Lemon.addCommentBox = function(name){
+
+    // 清除可能残余的评论球
+    for(i=0;i<objects.length;i++){
+        if(objects[i].comment == "current-comment"){
+             scene.remove(objects[i]);
+             objects.splice(i,1);
+        }
+    }
+    Lemon.commentContent = name;
+    Lemon.setmodelType('comment');
+    Lemon.addTempModel();
+    Lemon.EventListener.bind('default',2);
+    Lemon.EventListener.bind('model');
+    Lemon.commentClickNum =1;
+    layer.msg('请放置评论球到你想展示评论的位置，再点击此按钮。');
+}
+
+// 添加定位球
+Lemon.setCommentArrow = function(){
+
+    layer.msg('请放置箭头球到你想指向的位置，再点击此按钮。');
+    Lemon.setmodelType('position');
+    Lemon.addTempModel();
+    Lemon.EventListener.bind('default',2);
+    Lemon.EventListener.bind('model');
+    Lemon.commentClickNum =2;
+}
+
+
+
+/**
+ *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
+ *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
+ *      █╔█╬█║█║  █║█║ ╚█╗█║  █║█║    █║    
+ *      █║╚╝█║█║  █║█║  █║█║  █║█║    ████╗ 
+ *      █║  █║█║  █║█║  █║█║  █║█║    █╔══╝ 
+ *      █║  █║█║  █║█║ █╬╝█║  █║█║    █║    
+ *      █║  █║╚███╬╝███╬╝ ╚███╬╝█████╗█████╗
+ *      ╚╝  ╚╝ ╚══╝ ╚══╝   ╚══╝ ╚════╝╚════╝
+ */
+
+/**
+ * ------------------------------------------------------------------
+ * VR操作模块
+ * ------------------------------------------------------------------
+ */
+
+// 控制camera移动路径
+Lemon.vrPath = function(camera, pathList){
+
+    pathList= [
+        {
+            'x': 10,
+            'y': 10,
+            'z': 10,
+            'speed': 5
+        },
+        {
+            'x': 20,
+            'y': 20,
+            'z': 20,
+            'speed': 10
+        }
+    ];
+
+    if(pathList.length <= 1){ return null};
+
+
+
+}
+
+
+
 
 /**
  *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
@@ -239,8 +331,24 @@ Lemon.ChangeColorCommand.prototype = {
  * 文件操作模块
  * ------------------------------------------------------------------
  */
+// 用户上传文件存储列表
+Lemon.uploadFileList = [];
 
+// 获取后缀名  .xxx
+Lemon.getPostfix = function(value){
 
+      var reg = /[^\\\/]*[\\\/]+/g; //匹配文件的名称和后缀的正则表达式
+      var name = value.replace(reg, '');
+      var postfix = /\.[^\.]+/.exec(name);//获取文件的后缀 例如： .js
+      postfix = postfix[0].toLowerCase(); //后缀转换成小写
+      var text =name.substr(0,postfix['index']);//获取没有后缀的名称
+      var tempResult = {
+        'postfix': postfix,
+        'name': text
+      }
+
+      return tempResult;
+}
 
 //保存文件
 Lemon.saveFile = function (strData, filename) {
@@ -369,9 +477,7 @@ Lemon.exportModelToFile = function(name){
     reader.readAsDataURL(oMyBlob);
 }
 
-Lemon.loadModelFromFile = function(){
-    
-}
+
 /**
  *      █╗  █╗ ███╗ ███╗  █╗  █╗█╗    █████╗
  *      ██╗██║█╬══█╗█╔═█╗ █║  █║█║    █╔═══╝
@@ -794,7 +900,7 @@ Lemon.EventList={
                     
                     //3d评论 评论球
                     if(Lemon.modelType == "comment"){
-                        voxel.comment = "comment";
+                        voxel.comment = "current-comment";
                         voxel.commentContent = Lemon.commentContent;
                     }
                     //3d评论 箭头球

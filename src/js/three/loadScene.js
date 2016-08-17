@@ -188,19 +188,12 @@
         control.object = undefined;
         control.visible = false;
 
-$.get("/assets/js/three/test1.lem3d", [], function(data){
+// $.get("/assets/js/three/test1.lem3d", [], function(data){
 
- Lemon.recoverSystemModel(JSON.parse(data));
-});
+//  Lemon.recoverSystemModel(JSON.parse(data));
+// });
 
-// var oMyBlob = new Blob("/assets/js/three/test1.lem3d", { "type" : "text/plain" }); // the blob
-// var reader = new FileReader();
-// reader.onload = function(){
 
-//     var urlData = this.result;
-//     Lemon.recoverSystemModel(urlData);
-// };
-// reader.readAsText(oMyBlob);
         
 
         // 添加渲染DOM节点
