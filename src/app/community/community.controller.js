@@ -14,22 +14,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 
 	$scope.sectionId = $stateParams.sectionId ? $stateParams.sectionId: 1;
 	$scope.pageNum = $stateParams.pageNum ? $stateParams.pageNum: 1;
-	// 已加载板块列表，且传入板块id
-	if($rootScope.sections != undefined){
 
-		$scope.init();
-	}else{
-	  	// 获取版块列表
-		$http({
-			method: 'POST', 
-			url: ENV.baseUrl + '/bbs/getSections'
-		})
-		.success(function(data, status, headers, config) {
-
-				$rootScope.sections = data.section;
-				$scope.init();
-		});
-	}
 
 	$scope.init = function(){
 		
@@ -60,6 +45,25 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 	           $scope.pageList = tools.splitPage($scope.nowPage, $scope.totalPage);
 	      })
 	}
+
+
+	// 已加载板块列表，且传入板块id
+	if($rootScope.sections != undefined){
+
+		$scope.init();
+	}else{
+	  	// 获取版块列表
+		$http({
+			method: 'POST', 
+			url: ENV.baseUrl + '/bbs/getSections'
+		})
+		.success(function(data, status, headers, config) {
+
+				$rootScope.sections = data.section;
+				$scope.init();
+		});
+	}
+
 
 	$scope.postTitle = '';
 	$scope.postContent ='';

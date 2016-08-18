@@ -89,7 +89,7 @@ angular.module('Lemon3D.service',[ ])
         if(tempMin>0){
           tempLeftArr.unshift(tempMin);
         }
-        if(tempMax<=totalPage){
+        if(tempMax<totalPage){
           tempRightArr.push(tempMax);
         }
       }

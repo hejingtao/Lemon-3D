@@ -6,6 +6,10 @@ layer.config({
 });
 Lemon.layer = layer;
 
+Lemon.commentClickNum = 0;
+
+
+
 
 Lemon.selectFrame={
     'top': 0,
@@ -552,7 +556,7 @@ Lemon.loadModel = function(postfix, file){
 
             var reader = new FileReader();
             reader.onloadstart = function(){
-                
+
                 Lemon.modelLoading = Lemon.layer.load(1, {shade: [0.5, '#ffffff'],time: 10*1000});
             }
             reader.onloadend = function(){

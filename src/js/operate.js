@@ -197,43 +197,43 @@ function($, THREE, Layer) {
                   title: '请输入评论内容',
                   formType: 2 //prompt风格，支持0-2
                 }, function(name){
-
+                    // 添加评论球
                     Lemon.addCommentBox(name);
                 });
             }else if(Lemon.commentClickNum == 1){
-
+                // 设置箭头指向位置
                 Lemon.setCommentArrow();
-            }else{
 
-                for(i=0;i<objects.length;i++){
-                    if(objects[i].arrowLocate == "position"){
-                        Lemon.arrowEndPosition = objects[i].position;
-                    }
-                    if(objects[i].comment == "current-comment"){
-                         objects[i].comment = 'comment';
-                         Lemon.arrowStartPosition = objects[i].position;
-                    }
-                }
-
-                var from = Lemon.arrowStartPosition;
-                var to = Lemon.arrowEndPosition;
-                var direction = to.clone().sub(from);
-                var length = direction.length();
-                var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0xff0000 );
-                
-                objects.push(arrowHelper);
-                scene.add( arrowHelper );
-                for(i=0;i<objects.length;i++){
-                    if(objects[i].arrowLocate == "position"){
-                        scene.remove(objects[i]);
-                        objects.splice(i, 1);
-                    }
-                }
-                Lemon.commentClickNum =false;
+            }else if(Lemon.commentClickNum == 2){
+                // 创建3d评论
+                Lemon.creat3dComment();
             }
         });
 
 
+        // 添加vr路径
+        $('#vr-add').bind("click",function(){
+
+            control.object = undefined;
+            control.visible = false;
+            if(!Lemon.commentClickNum){
+
+                Lemon.layer.prompt({
+                  title: '请输入评论内容',
+                  formType: 2 //prompt风格，支持0-2
+                }, function(name){
+                    // 添加评论球
+                    Lemon.addCommentBox(name);
+                });
+            }else if(Lemon.commentClickNum == 1){
+                // 设置箭头指向位置
+                Lemon.setCommentArrow();
+
+            }else if(Lemon.commentClickNum == 2){
+                // 创建3d评论
+                Lemon.creat3dComment();
+            }
+        });
 
 
 

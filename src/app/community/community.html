@@ -8,7 +8,7 @@
 	</div>
 	<div id="sections-list">
 		<ul>
-			<li class="section" ng-repeat="section in sections" ui-sref="main.community({sectionId: section.sectionId})">section.sectionName</li>
+			<li class="section" ng-repeat="section in sections" ui-sref="main.community({sectionId: section.sectionId})">{{section.sectionName}}</li>
 		</ul>
 	</div>
 </div>
@@ -20,7 +20,7 @@
 		<div class="content">
 			<div class="name">{{post.postTitle}}</div>
 			<div class="bottom">
-				<span class="author" ui-sref="main.userDetail({userId: post.userId})">作者：{{userName}}</span>
+				<span class="author" ui-sref="main.userDetail({userId: post.userId})">作者：{{post.userName}}</span>
 				<span class="time">1小时20分前</span>
 				<span class="reply">最后回复来自<span class="bold" ui-sref="main.userDetail({userId: post.lastReplyUserId})">{{post.lastReplyUserName}}</span></span>
 			</div>
@@ -29,11 +29,11 @@
 	</div>
 
 	<div class="page">
-		<span ui-sref="community({'sectionId':sectionId, 'pageNum': pageList[0]})">上一页</span></div>
-		<span ng-repeat="item in pageList[1]" ui-sref="community({'sectionId':sectionId, 'pageNum': item })">{{item}}</span>
-		<span class="active">{{pageList[2][0]}}</span>
-		<span ng-repeat="item in pageList[3]" ui-sref="community({'sectionId':sectionId, 'pageNum': item })">{{item}}</span>
-		<span ui-sref="community({'sectionId':sectionId, 'pageNum': pageList[4]})">下一页</span>
+		<span ng-if="pageList[0].length >0" ui-sref="main.community({'sectionId':sectionId, 'pageNum': pageList[0]})">上一页</span>
+		<span ng-repeat="item in pageList[1]" ui-sref="main.community({'sectionId':sectionId, 'pageNum': item })">{{item}}</span>
+		<span class="active">{{pageList[2]+1}}</span>
+		<span ng-repeat="item in pageList[3]" ui-sref="main.community({'sectionId':sectionId, 'pageNum': item })">{{item}}</span>
+		<span ng-if="pageList[4].length >0" ui-sref="main.community({'sectionId':sectionId, 'pageNum': pageList[4]})">下一页</span>
 	</div>
 
 </div>

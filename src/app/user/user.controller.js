@@ -15,7 +15,8 @@ app.controller('userCentre', function($scope, $rootScope, $state, $http, tools, 
 		url: ENV.baseUrl + '/user/getUserActivityList',
 		params: { 
 			'page': 0,
-			'size': 10
+			'size': 10,
+			'userId': 4
 		}
 	})
 	.success(function(data, status, headers, config) {
@@ -67,7 +68,9 @@ app.controller('userFollowing', function($scope, $rootScope, $state, $http, tool
 	});
 })
 
-
+app.controller('userDetails', function($scope, $rootScope, $state, $http, tools, ENV) {
+  	
+})
 
 // 用户粉丝列表
 app.controller('userFollower', function($scope, $rootScope, $state, $http, tools, ENV) {

@@ -87,8 +87,10 @@ Lemon.hiddenCommentDiv = function(){
  * ------------------------------------------------------------------
  */
 
+// Lemon.3dCommentData = {};
+
 // 添加评论球
-Lemon.addCommentBox = function(name){
+Lemon.addCommentBox = function(content){
 
     // 清除可能残余的评论球
     for(i=0;i<objects.length;i++){
@@ -97,7 +99,7 @@ Lemon.addCommentBox = function(name){
              objects.splice(i,1);
         }
     }
-    Lemon.commentContent = name;
+    Lemon.commentContent = content;
     Lemon.setmodelType('comment');
     Lemon.addTempModel();
     Lemon.EventListener.bind('default',2);
@@ -114,9 +116,88 @@ Lemon.setCommentArrow = function(){
     Lemon.addTempModel();
     Lemon.EventListener.bind('default',2);
     Lemon.EventListener.bind('model');
-    Lemon.commentClickNum =2;
+    
 }
 
+// 创建3d评论
+Lemon.creat3dComment = function(){
+
+    var tempData = {};
+
+    for(i=0;i<objects.length;i++){
+        if(objects[i].arrowLocate == "position"){
+            Lemon.arrowEndPosition = objects[i].position;
+            tempData.end = objects[i].position;
+        }
+        if(objects[i].comment == "current-comment"){
+             objects[i].comment = 'comment';
+             objects[i].control = 'false';
+             Lemon.arrowStartPosition = objects[i].position;
+             // 保存数据
+             tempData.start = objects[i].position;
+             tempData.commentContent = objects[i].commentContent;
+
+        }
+    }
+
+
+    var from = Lemon.arrowStartPosition;
+    var to = Lemon.arrowEndPosition;
+    Lemon.creatArrowhelper(from, to);
+
+
+    for(i=0;i<objects.length;i++){
+        if(objects[i].arrowLocate == "position"){
+            scene.remove(objects[i]);
+            objects.splice(i, 1);
+        }
+        
+    }
+
+    // 上传3d评论数据
+    Lemon.upload3dComment(tempData);
+    Lemon.commentClickNum =0;
+}
+
+
+// 创建箭头
+Lemon.creatArrowhelper = function(from, to){
+
+    var direction = to.clone().sub(from);
+    var length = direction.length();
+    var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0xff0000 );
+    
+    // objects.push(arrowHelper);
+    scene.add( arrowHelper );
+}
+
+// 上传3d评论数据
+Lemon.upload3dComment = function(){
+
+
+}
+
+
+// 渲染3d评论
+Lemon.load3dComment = function(data){
+
+    var voxel = new THREE.Mesh(  Lemon.Geometry['comment'], Lemon.Material.base() );
+    
+
+    voxel.comment = "comment";
+    voxel.control = 'false';
+    voxel.commentContent = data.commentContent;
+    voxel.position.x = data.start.x;
+    voxel.position.y = data.start.y;
+    voxel.position.z = data.start.z;
+
+    var from = new THREE.Vector3(data.start.x, data.start.y, data.start.z);
+    var to = new THREE.Vector3(data.end.x, data.end.y, data.end.z);
+    Lemon.creatArrowhelper(from, to);
+
+    scene.add( voxel );
+    objects.push( voxel );
+}
 
 
 /**
@@ -774,6 +855,7 @@ Lemon.EventList={
             var intersects = raycaster.intersectObjects( objects,true);
 
             console.log(objects);
+            if(intersects[0].object.control == 'false'){return null};
             // 如果选中了模型
             if ( intersects.length > 0  && intersects[0].object.able != 'false') {
                 Lemon.modelOperate(true);
@@ -807,72 +889,6 @@ Lemon.EventList={
                 Lemon.selectedInit(event);
                 Lemon.EventListener.bind("default",2);
                 Lemon.EventListener.bind("selected",1,window);
-                    // var isSelect = true; 
-                    // var evt = window.event || arguments[0]; 
-                    // // 鼠标初始位置
-                    // var startX = (evt.x || evt.clientX); 
-                    // var startY = (evt.y-50 || evt.clientY-50); 
-                    // // 创建选择框
-                    // var Lemon.selDiv = document.createElement("div"); 
-                    // Lemon.selDiv.style.cssText = "position:absolute;width:0px;height:0px;font-size:0px;margin:0px;padding:0px;border:1px dashed #0099FF;background-color:#C3D5ED;z-index:1000;filter:alpha(opacity:60);opacity:0.6;display:none;"; 
-                    // Lemon.selDiv.id = "selectDiv"; 
-                    // document.body.appendChild(Lemon.selDiv); 
-                    
-                    // // 选择框初始定位
-                    // Lemon.selDiv.style.left = startX + "px"; 
-                    // Lemon.selDiv.style.top = startY + "px"; 
-                    // // 鼠标位置预定义
-                    // var _x = null; 
-                    // var _y = null; 
-                    // clearEventBubble(evt); 
-                 
-                    // document.onmousemove = function() { 
-                    //   evt = window.event || arguments[0]; 
-                    //   if (isSelect) { 
-                    //     // 显示选择框
-                    //     if (Lemon.selDiv.style.display == "none") { 
-                    //       Lemon.selDiv.style.display = ""; 
-                    //     } 
-                    //     // 获取鼠标实时位置
-                    //     _x = (evt.x || evt.clientX); 
-                    //     _y = (evt.y-50 || evt.clientY-50); 
-     
-                    //     Lemon.selectFrame.left = Math.min(_x, startX); 
-                    //     Lemon.selectFrame.top = Math.min(_y, startY)+50; 
-
-                    //     Lemon.selectFrame.width = Math.abs(_x - startX); 
-                    //     Lemon.selectFrame.height = Math.abs(_y - startY); 
-
-                    //     // 判断选择框位置
-                    //     Lemon.selDiv.style.left = Math.min(_x, startX) + "px"; 
-                    //     Lemon.selDiv.style.top  = Math.min(_y, startY)+50 + "px"; 
-                    //     // 计算选择框长度、高度
-                    //     Lemon.selDiv.style.width = Math.abs(_x - startX) + "px"; 
-                    //     Lemon.selDiv.style.height = Math.abs(_y - startY) + "px"; 
-                 
-                    //     clearTimeout(Lemon.tempTimeout);
-                    //     Lemon.tempTimeout = setTimeout(function(){
-                    //         for(var i=0;i<objects.length;i++){
-                    //             if(isObjectInSelect(objects[i])){
-                    //                 console.log('catch it');
-                    //             }
-                    //         }
-                    //     },100)
-                        
-                    //   } 
-                    //   clearEventBubble(evt); 
-                    // } 
-                 
-                    // document.onmouseup = function() { 
-                    //   isSelect = false; 
-
-                    //   if (Lemon.selDiv) { 
-                    //     document.body.removeChild(Lemon.selDiv); 
-                    //   } 
-                    //    _x = null, _y = null, Lemon.selDiv = null, startX = null, startY = null, evt = null; 
-                    // } 
-                // 框选  END  --------------
-
             }
         },
         model : function( event ) {
@@ -906,6 +922,7 @@ Lemon.EventList={
                     //3d评论 箭头球
                     if(Lemon.modelType == "position"){
                         voxel.arrowLocate = "position";
+                        Lemon.commentClickNum =2;
                     }
                     // var voxel = Lemon.Texture(Lemon.Geometry[Lemon.modelType]);
                     voxel.children.forEach( function(e){ e.userData.parent = voxel; });
@@ -913,6 +930,7 @@ Lemon.EventList={
                     voxel.position.copy( intersect.point ).add( intersect.face.normal );
                     voxel.position.divideScalar( 10 ).floor().multiplyScalar( 10 ).addScalar( 10 );
                     voxel.position.y = 10;
+
 
                     scene.add( voxel );
                     objects.push( voxel );

@@ -6,6 +6,7 @@
         offset = new THREE.Vector3(),
         INTERSECTED, SELECTED;
 
+
         // 初始化FPS状态栏
         var stats = initStats();
         function initStats() {
