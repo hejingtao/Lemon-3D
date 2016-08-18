@@ -1,4 +1,3 @@
-
         var container, stats;
         var camera, controls, scene, renderer;
         var objects = [], plane;
@@ -28,10 +27,9 @@
         var scene = new THREE.Scene();
 
         // 新建相机，并且添加至场景 
-        $('body').css("height",($(window).height())+"px");
-        $('#operate-content').css("width",($(window).width())+"px");
-        $('#operate-content').css("height",($(window).height())+"px");
-        var camera = new THREE.PerspectiveCamera(70, $('#operate-content').width() / $('#operate-content').height(), 1, 20000);
+        $('#VR').css("width",($(window).width())+"px");
+        $('#VR').css("height",($(window).height())+"px");
+        var camera = new THREE.PerspectiveCamera(70, $('#VR').width() / $('#VR').height(), 1, 20000);
         scene.add(camera);
 
 
@@ -53,7 +51,7 @@
             preserveDrawingBuffer: true});
         renderer.setClearColor(new THREE.Color(0xfafafa, 1.0));
         // renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize($('#operate-content').width(), $('#operate-content').height());
+        renderer.setSize($('#VR').width(), $('#VR').height());
         
         // 视图控制 
         controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -129,19 +127,13 @@
         scene.add( plane );
         objects.push( plane );
         
-        // 移动时的工作plane
-        // workPlane = new THREE.Mesh(
-        //     new THREE.PlaneBufferGeometry( 2000, 2000, 8, 8 ),
-        //     new THREE.MeshBasicMaterial({ visible: false })
-        //     // new THREE.MeshBasicMaterial( { visible: false } )
-        // );
-        // scene.add( workPlane );
+
         
 
         // 设置相机位置，并且定义方向 
-        camera.position.x = 0;
-        camera.position.y = 180;
-        camera.position.z = 180;
+        camera.position.x = -50;
+        camera.position.y = 50;
+        camera.position.z = -50;
         camera.lookAt(scene.position);
         
 
@@ -171,11 +163,70 @@
             // scene.add(test) ;
         }
         
+        // var geometry = new THREE.BoxGeometry( 50, 50, 50 );
 
+        // for ( var i = 0; i < 100; i ++ ) {
+
+        //     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
+
+        //     object.position.x = Math.random() * 800 - 400;
+        //     object.position.y = Math.random() * 800 - 400;
+        //     object.position.z = Math.random() * 800 - 400;
+
+        //     object.rotation.x = Math.random() * 2 * Math.PI;
+        //     object.rotation.y = Math.random() * 2 * Math.PI;
+        //     object.rotation.z = Math.random() * 2 * Math.PI;
+
+        //     object.scale.x = Math.random() + 0.5;
+        //     object.scale.y = Math.random() + 0.5;
+        //     object.scale.z = Math.random() + 0.5;
+
+        //     scene.add( object );
+        //     objects.push( object );
+
+        // }
+
+$.get("/assets/js/three/test1.lem3d", [], function(data){
+
+    Lemon.recoverSystemModel(JSON.parse(data));
+});
+        var pathList= [
+        {
+            'position': {
+                'x': -50,
+                'y': 50,
+                'z': -50 
+            },
+            'speed': 0.1,
+            'step': 200,
+            'num': 1
+        },
+        {
+            'position': {
+                'x': 50,
+                'y': 50,
+                'z': -50 
+            },
+            'speed': 0.1,
+            'step': 100,
+            'num': 2
+        },
+        {
+            'position': {
+                'x': 150,
+                'y': 50,
+                'z': 50 
+            },
+            'speed': 0.1,
+            'step': 100,
+            'num': 3
+        }
+    ];
 
 
         // 添加渲染DOM节点
-        container = document.getElementById("WebGL-output").appendChild(renderer.domElement);
+        container = document.getElementById("VR").appendChild(renderer.domElement);
+
         window.addEventListener( 'resize', onWindowResize, false );
         function onWindowResize() {
 
@@ -186,7 +237,8 @@
 
         }
 
-            
+        Lemon.zIndex = 1;
+        Lemon.zIndexAdd = true;
         // 场景渲染定义
         function animate() {
 
@@ -197,6 +249,8 @@
              // transformControl.update();
         }
         function render() {
+
+            Lemon.vrPath(camera, pathList);
 
             renderer.render(scene, camera);
 

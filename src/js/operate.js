@@ -216,26 +216,24 @@ function($, THREE, Layer) {
 
             control.object = undefined;
             control.visible = false;
-            if(!Lemon.commentClickNum){
 
-                Lemon.layer.prompt({
-                  title: '请输入评论内容',
-                  formType: 2 //prompt风格，支持0-2
-                }, function(name){
-                    // 添加评论球
-                    Lemon.addCommentBox(name);
-                });
-            }else if(Lemon.commentClickNum == 1){
-                // 设置箭头指向位置
-                Lemon.setCommentArrow();
+            Lemon.layer.prompt({
+              title: '请输入移动速度',
+              formType: 2 //prompt风格，支持0-2
+            }, function(speed){
+                // 添加评论球
+                Lemon.addVrPath(speed);
+            });
 
-            }else if(Lemon.commentClickNum == 2){
-                // 创建3d评论
-                Lemon.creat3dComment();
-            }
         });
 
+        // 创建vr路径
+        $('#vr-add').bind("click",function(){
 
+            var data = Lemon.creatVrPath();
+            console.log(data);
+
+        });
 
 
         // 监听文件上传

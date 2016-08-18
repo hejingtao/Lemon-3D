@@ -10,7 +10,7 @@ require.config({
         OrbitControls: '/assets/libs/three/js/controls/OrbitControls',
         Projector: '/assets/libs/three/js/Projector',
 
-        loadScene: '/assets/js/three/test.loadScreen',
+        loadScene: '/assets/js/three/loadScene.test',
         model: '/assets/js/three/model',
         class: '/assets/js/three/class',
 

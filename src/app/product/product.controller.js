@@ -16,6 +16,8 @@ app.controller('operate', function($scope, $rootScope, $timeout, $state, $http, 
 	    '/assets/libs/css/colpick.css'
 	  ]
 	});
+
+	
 })
 
 

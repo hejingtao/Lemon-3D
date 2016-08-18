@@ -7,7 +7,7 @@ layer.config({
 Lemon.layer = layer;
 
 Lemon.commentClickNum = 0;
-
+Lemon.vrPathNum = 0;
 
 
 
@@ -51,6 +51,8 @@ Lemon.TextGeoFuc = function(text){
 
 // 模型数据定义
 Lemon.Geometry = {
+
+    vrPath : new THREE.SphereGeometry( 4, 10, 10, 0 ),
 
 	comment : new THREE.SphereGeometry( 4, 10, 10, 0 ),
 	

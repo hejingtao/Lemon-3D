@@ -151,7 +151,6 @@ Lemon.creat3dComment = function(){
             scene.remove(objects[i]);
             objects.splice(i, 1);
         }
-        
     }
 
     // 上传3d评论数据
@@ -217,28 +216,139 @@ Lemon.load3dComment = function(data){
  * ------------------------------------------------------------------
  */
 
-// 控制camera移动路径
-Lemon.vrPath = function(camera, pathList){
+Lemon.vrPathList = [];
 
-    pathList= [
+Lemon.addVrPath = function(speed){
+
+    // 清除可能残余的评论球
+    for(i=0;i<objects.length;i++){
+        if(objects[i].comment == "current-comment"){
+             scene.remove(objects[i]);
+             objects.splice(i,1);
+        }
+    }
+    Lemon.vrPathSpeed = speed;
+    Lemon.setmodelType('vrPath');
+    Lemon.addTempModel();
+    Lemon.EventListener.bind('default',2);
+    Lemon.EventListener.bind('model');
+    layer.msg('请放置vr路径点到你想放置的位置');
+}
+
+Lemon.creatVrPath = function(){
+
+    var tempVrPathList = [];
+    if(Lemon.vrPathNum <2){
+        Lemon.layer.alert('路径点数小于2个！');
+    }
+    for(var i=0;i<objects.length;i++){
+         if(objects[i].vrPath == "vrPath"){
+
+            var tempData = {};
+            tempData.position = objects[i].position;
+            tempData.speed = objects[i].vrPathSpeed;
+            tempData.num = objects[i].vrPathNum
+
+            tempVrPathList.push(tempData);
+            scene.remove(objects[i]);
+            // objects.splice(i, 1);
+        }
+    }
+    // 计算到下一个坐标的距离
+    var currentNum = 0;
+    var tempLength = 0;
+    for(var i =0;i<tempVrPathList.length;i++){
+
+            if(currentNum+1 < tempVrPathList.length){
+                tempLength = Lemon.getLength(tempVrPathList[currentNum],tempVrPathList[currentNum+1])
+            }else{
+                tempLength = Lemon.getLength(tempVrPathList[currentNum],tempVrPathList[0]);
+            }
+            tempVrPathList[currentNum].length = tempLength;
+            tempVrPathList[currentNum].step = Math.round(tempLength/tempVrPathList[currentNum].speed);
+    }
+
+    return tempVrPathList;
+}
+Lemon.getLength = function(start, end){
+    Math.sqrt((start.position.x-x2)*(start.position.x-end.position.x) + (start.position.y-end.position.y)*(start.position.y-end.position.y) + (start.position.z - end.position.z)*(start.position.z-end.position.z));
+}
+Lemon.pathList= [
         {
-            'x': 10,
-            'y': 10,
-            'z': 10,
-            'speed': 5
+            'position': {
+                'x': 10,
+                'y': 10,
+                'z': 10 
+            },
+            'speed': 5,
+            'length': 100,
+            'num': 1
         },
         {
-            'x': 20,
-            'y': 20,
-            'z': 20,
-            'speed': 10
+            'position': {
+                'x': 50,
+                'y': 50,
+                'z': 10 
+            },
+            'speed': 5,
+            'length': 200,
+            'num': 2
         }
     ];
 
+
+Lemon.currentPathStep = 0;
+// 控制camera移动路径
+Lemon.vrPath = function(camera, pathList){
+
+    var maxStep = pathList.length;
+    var temp = 0;
     if(pathList.length <= 1){ return null};
+    if(Lemon.currentPathStep+1 < maxStep){
+        if(parseFloat(pathList[Lemon.currentPathStep].position.x) < parseFloat(pathList[Lemon.currentPathStep+1].position.x)){
 
+        camera.position.x -= (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[Lemon.currentPathStep+1].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.y -= (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[Lemon.currentPathStep+1].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.z -= (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[Lemon.currentPathStep+1].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
+        
+        }else{
+        camera.position.x += (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[Lemon.currentPathStep+1].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.y += (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[Lemon.currentPathStep+1].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.z += (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[Lemon.currentPathStep+1].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
+        
+        }
 
+        temp = parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[Lemon.currentPathStep+1].position.x);
+        console.log(parseFloat(camera.position.x)  )
+        console.log(parseFloat(pathList[Lemon.currentPathStep+1].position.x))
+        if(temp < 0 && parseFloat(camera.position.x) > parseFloat(pathList[Lemon.currentPathStep+1].position.x)){
+            Lemon.currentPathStep++;
+            console.log('++')
+        }else if(temp > 0 && parseFloat(camera.position.x) < parseFloat(pathList[Lemon.currentPathStep+1].position.x)){
+            Lemon.currentPathStep++;
+            console.log('++')
+        }
+    }else{
+        console.log((parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x))/parseFloat(pathList[Lemon.currentPathStep].step));
+        if(parseFloat(pathList[Lemon.currentPathStep].position.x) < parseFloat(pathList[0].position.x)){
 
+        camera.position.x -= (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.y -= (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[0].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.z -= (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[0].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
+        
+        }else{
+        camera.position.x += (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.y += (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[0].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
+        camera.position.z += (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[0].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
+         }
+
+        temp = parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x);
+        if(temp < 0 && parseFloat(camera.position.x) > parseFloat(pathList[0].position.x)){
+            Lemon.currentPathStep = 0;
+        }else if(temp > 0 && parseFloat(camera.position.x) < parseFloat(pathList[0].position.x)){
+            Lemon.currentPathStep = 0;
+        }
+    }
 }
 
 
@@ -923,6 +1033,15 @@ Lemon.EventList={
                     if(Lemon.modelType == "position"){
                         voxel.arrowLocate = "position";
                         Lemon.commentClickNum =2;
+                    }
+                    if(Lemon.modelType == "vrPath"){
+                        Lemon.vrPathNum++;
+
+                        voxel.vrPath = "vrPath";
+                        voxel.vrPathSpeed = Lemon.vrPathSpeed;
+                        voxel.vrPathNum = Lemon.vrPathNum;
+                        voxel.material = Lemon.useTexture('metalRust');
+                        
                     }
                     // var voxel = Lemon.Texture(Lemon.Geometry[Lemon.modelType]);
                     voxel.children.forEach( function(e){ e.userData.parent = voxel; });
