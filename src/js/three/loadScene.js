@@ -189,10 +189,10 @@
         control.object = undefined;
         control.visible = false;
 
-// $.get("/assets/js/three/test1.lem3d", [], function(data){
+$.get("/assets/js/three/test1.lem3d", [], function(data){
 
-//  Lemon.recoverSystemModel(JSON.parse(data));
-// });
+ Lemon.recoverSystemModel(JSON.parse(data));
+});
 
 
         

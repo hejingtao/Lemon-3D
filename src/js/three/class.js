@@ -344,26 +344,56 @@ Lemon.vrPath = function(camera, pathList){
     camera.position.z += parseFloat(pathList[Lemon.currentPathStep].move.z) ;
 
     if(Lemon.currentPathStep+1 < maxStep){
-        console.log('test1')
-        if(pathList[Lemon.currentPathStep].position.x<= pathList[Lemon.currentPathStep+1].position.x){
+
+        if(pathList[Lemon.currentPathStep].position.x< pathList[Lemon.currentPathStep+1].position.x){
             if(camera.position.x > pathList[Lemon.currentPathStep+1].position.x){
                 Lemon.currentPathStep++;
             }
-        }else{
+        }else if(pathList[Lemon.currentPathStep].position.x > pathList[Lemon.currentPathStep+1].position.x){
             if(camera.position.x < pathList[Lemon.currentPathStep+1].position.x){
+                Lemon.currentPathStep++;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.y< pathList[Lemon.currentPathStep+1].position.y){
+            if(camera.position.y > pathList[Lemon.currentPathStep+1].position.y){
+                Lemon.currentPathStep++;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.y > pathList[Lemon.currentPathStep+1].position.y){
+            if(camera.position.y < pathList[Lemon.currentPathStep+1].position.y){
+                Lemon.currentPathStep++;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.z< pathList[Lemon.currentPathStep+1].position.z){
+            if(camera.position.z > pathList[Lemon.currentPathStep+1].position.z){
+                Lemon.currentPathStep++;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.z > pathList[Lemon.currentPathStep+1].position.z){
+            if(camera.position.z < pathList[Lemon.currentPathStep+1].position.z){
                 Lemon.currentPathStep++;
             }
         }
 
-
     }else{
-        console.log('test2')
-        if(pathList[Lemon.currentPathStep].position.x<= pathList[0].position.x){
+        if(pathList[Lemon.currentPathStep].position.x < pathList[0].position.x){
             if(camera.position.x > pathList[0].position.x){
                 Lemon.currentPathStep = 0;
             }
-        }else{
+        }else if(pathList[Lemon.currentPathStep].position.x > pathList[0].position.x){
             if(camera.position.x < pathList[0].position.x){
+                Lemon.currentPathStep = 0;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.y < pathList[0].position.y){
+            if(camera.position.y > pathList[0].position.y){
+                Lemon.currentPathStep = 0;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.y > pathList[0].position.y){
+            if(camera.position.y < pathList[0].position.y){
+                Lemon.currentPathStep = 0;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.z < pathList[0].position.z){
+            if(camera.position.z > pathList[0].position.z){
+                Lemon.currentPathStep = 0;
+            }
+        }else if(pathList[Lemon.currentPathStep].position.z > pathList[0].position.z){
+            if(camera.position.z < pathList[0].position.z){
                 Lemon.currentPathStep = 0;
             }
         }
