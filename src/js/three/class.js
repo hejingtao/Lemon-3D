@@ -254,25 +254,59 @@ Lemon.creatVrPath = function(){
             // objects.splice(i, 1);
         }
     }
-    // 计算到下一个坐标的距离
-    var currentNum = 0;
+         console.log('length:'+ tempVrPathList.length);
+    // 计算到下一个坐标的距离 与 移动步数
     var tempLength = 0;
     for(var i =0;i<tempVrPathList.length;i++){
-
-            if(currentNum+1 < tempVrPathList.length){
-                tempLength = Lemon.getLength(tempVrPathList[currentNum],tempVrPathList[currentNum+1])
+            console.log(i);
+           console.log('length');
+            if(i+1 < tempVrPathList.length){
+                tempLength = Lemon.getLength(tempVrPathList[i],tempVrPathList[i+1])
             }else{
-                tempLength = Lemon.getLength(tempVrPathList[currentNum],tempVrPathList[0]);
+                tempLength = Lemon.getLength(tempVrPathList[i],tempVrPathList[0]);
             }
-            tempVrPathList[currentNum].length = tempLength;
-            tempVrPathList[currentNum].step = Math.round(tempLength/tempVrPathList[currentNum].speed);
+            tempVrPathList[i].length = tempLength;
+            tempVrPathList[i].step = Math.round(tempLength/tempVrPathList[i].speed);
+
+    }
+    // 计算x、y、z 每步移动距离
+    for(var i =0;i<tempVrPathList.length;i++){
+         console.log(i);
+           console.log('calculate');
+            if(i+1 < tempVrPathList.length){
+                Lemon.calculateMove(tempVrPathList[i],tempVrPathList[i+1])
+            }else{
+                Lemon.calculateMove(tempVrPathList[i],tempVrPathList[0]);
+            }
+
     }
 
+
+    console.log(JSON.stringify(tempVrPathList))
     return tempVrPathList;
 }
+
+
 Lemon.getLength = function(start, end){
-    Math.sqrt((start.position.x-x2)*(start.position.x-end.position.x) + (start.position.y-end.position.y)*(start.position.y-end.position.y) + (start.position.z - end.position.z)*(start.position.z-end.position.z));
+
+    return Math.sqrt((start.position.x-end.position.x)*(start.position.x-end.position.x) + (start.position.y-end.position.y)*(start.position.y-end.position.y) + (start.position.z - end.position.z)*(start.position.z-end.position.z));
 }
+
+
+Lemon.calculateMove = function(start, end){
+
+    var xLength = start.position.x-end.position.x;
+    var yLength = start.position.y-end.position.y;
+    var zLength = start.position.z-end.position.z;
+
+    start.move = {
+        'x': -(xLength/start.step),
+        'y': -(yLength/start.step),
+        'z': -(zLength/start.step)
+    }
+}
+
+
 Lemon.pathList= [
         {
             'position': {
@@ -300,54 +334,40 @@ Lemon.pathList= [
 Lemon.currentPathStep = 0;
 // 控制camera移动路径
 Lemon.vrPath = function(camera, pathList){
-
+    // parseFloat()
     var maxStep = pathList.length;
     var temp = 0;
     if(pathList.length <= 1){ return null};
+
+    camera.position.x += parseFloat(pathList[Lemon.currentPathStep].move.x) ;
+    camera.position.y += parseFloat(pathList[Lemon.currentPathStep].move.y) ;
+    camera.position.z += parseFloat(pathList[Lemon.currentPathStep].move.z) ;
+
     if(Lemon.currentPathStep+1 < maxStep){
-        if(parseFloat(pathList[Lemon.currentPathStep].position.x) < parseFloat(pathList[Lemon.currentPathStep+1].position.x)){
-
-        camera.position.x -= (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[Lemon.currentPathStep+1].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.y -= (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[Lemon.currentPathStep+1].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.z -= (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[Lemon.currentPathStep+1].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
-        
+        console.log('test1')
+        if(pathList[Lemon.currentPathStep].position.x<= pathList[Lemon.currentPathStep+1].position.x){
+            if(camera.position.x > pathList[Lemon.currentPathStep+1].position.x){
+                Lemon.currentPathStep++;
+            }
         }else{
-        camera.position.x += (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[Lemon.currentPathStep+1].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.y += (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[Lemon.currentPathStep+1].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.z += (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[Lemon.currentPathStep+1].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
-        
+            if(camera.position.x < pathList[Lemon.currentPathStep+1].position.x){
+                Lemon.currentPathStep++;
+            }
         }
 
-        temp = parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[Lemon.currentPathStep+1].position.x);
-        console.log(parseFloat(camera.position.x)  )
-        console.log(parseFloat(pathList[Lemon.currentPathStep+1].position.x))
-        if(temp < 0 && parseFloat(camera.position.x) > parseFloat(pathList[Lemon.currentPathStep+1].position.x)){
-            Lemon.currentPathStep++;
-            console.log('++')
-        }else if(temp > 0 && parseFloat(camera.position.x) < parseFloat(pathList[Lemon.currentPathStep+1].position.x)){
-            Lemon.currentPathStep++;
-            console.log('++')
-        }
+
     }else{
-        console.log((parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x))/parseFloat(pathList[Lemon.currentPathStep].step));
-        if(parseFloat(pathList[Lemon.currentPathStep].position.x) < parseFloat(pathList[0].position.x)){
-
-        camera.position.x -= (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.y -= (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[0].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.z -= (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[0].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
-        
+        console.log('test2')
+        if(pathList[Lemon.currentPathStep].position.x<= pathList[0].position.x){
+            if(camera.position.x > pathList[0].position.x){
+                Lemon.currentPathStep = 0;
+            }
         }else{
-        camera.position.x += (parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.y += (parseFloat(pathList[Lemon.currentPathStep].position.y) - parseFloat(pathList[0].position.y))/parseFloat(pathList[Lemon.currentPathStep].step);
-        camera.position.z += (parseFloat(pathList[Lemon.currentPathStep].position.z) - parseFloat(pathList[0].position.z))/parseFloat(pathList[Lemon.currentPathStep].step);
-         }
-
-        temp = parseFloat(pathList[Lemon.currentPathStep].position.x) - parseFloat(pathList[0].position.x);
-        if(temp < 0 && parseFloat(camera.position.x) > parseFloat(pathList[0].position.x)){
-            Lemon.currentPathStep = 0;
-        }else if(temp > 0 && parseFloat(camera.position.x) < parseFloat(pathList[0].position.x)){
-            Lemon.currentPathStep = 0;
+            if(camera.position.x < pathList[0].position.x){
+                Lemon.currentPathStep = 0;
+            }
         }
+
     }
 }
 

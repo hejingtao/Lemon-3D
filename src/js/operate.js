@@ -228,7 +228,7 @@ function($, THREE, Layer) {
         });
 
         // 创建vr路径
-        $('#vr-add').bind("click",function(){
+        $('#vr-creat').bind("click",function(){
 
             var data = Lemon.creatVrPath();
             console.log(data);

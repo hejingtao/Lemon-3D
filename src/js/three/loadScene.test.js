@@ -131,9 +131,9 @@
         
 
         // 设置相机位置，并且定义方向 
-        camera.position.x = -50;
-        camera.position.y = 50;
-        camera.position.z = -50;
+        camera.position.x = 50;
+        camera.position.y = 10;
+        camera.position.z = -140;
         camera.lookAt(scene.position);
         
 
@@ -190,38 +190,7 @@ $.get("/assets/js/three/test1.lem3d", [], function(data){
 
     Lemon.recoverSystemModel(JSON.parse(data));
 });
-        var pathList= [
-        {
-            'position': {
-                'x': -50,
-                'y': 50,
-                'z': -50 
-            },
-            'speed': 0.1,
-            'step': 200,
-            'num': 1
-        },
-        {
-            'position': {
-                'x': 50,
-                'y': 50,
-                'z': -50 
-            },
-            'speed': 0.1,
-            'step': 100,
-            'num': 2
-        },
-        {
-            'position': {
-                'x': 150,
-                'y': 50,
-                'z': 50 
-            },
-            'speed': 0.1,
-            'step': 100,
-            'num': 3
-        }
-    ];
+        var pathList= [{"position":{"x":-60,"y":10,"z":60},"speed":"2","num":1,"length":228.25424421026653,"step":114,"move":{"x":0.9649122807017544,"y":0,"z":-1.7543859649122806}},{"position":{"x":50,"y":10,"z":-140},"speed":"3","num":2,"length":173.48198753761153,"step":58,"move":{"x":1.3793103448275863,"y":1.103448275862069,"z":2.413793103448276}},{"position":{"x":130,"y":74,"z":0},"speed":"4","num":3,"length":209.27493877672023,"step":52,"move":{"x":-3.6538461538461537,"y":-1.2307692307692308,"z":1.1538461538461537}}];
 
 
         // 添加渲染DOM节点
