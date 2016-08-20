@@ -173,12 +173,12 @@ angular.module('Lemon3D.router',['ui.router'])
       }   
   })
   // test
-  .state('test', {
-    url: '/test',
+  .state('vr', {
+    url: '/vr',
     views: {
         "page": {
-          templateUrl: 'product/test.html',
-          controller: 'test'
+          templateUrl: 'product/vr.html',
+          controller: 'vr'
         }
       }   
   })

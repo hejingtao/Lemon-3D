@@ -152,11 +152,11 @@ function($, THREE, Layer) {
         });
 
 
-        // 恢复数据
+        // 下载数据
         $('#downloadSystem').bind("click",function(){
 
             Lemon.layer.prompt({
-              title: '请输入存储名',
+              title: '请输入存储名（本地保存的名称）',
               formType: 2 //prompt风格，支持0-2
             }, function(name){
 

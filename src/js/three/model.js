@@ -288,6 +288,7 @@ Lemon.useTexture = function(name) {
 
 
 // 加载模型文件
+Lemon.loadModelList = [];
 Lemon.loadModelFuc = null;
 Lemon.loadModel = function(postfix, file){
 
@@ -301,8 +302,12 @@ Lemon.loadModel = function(postfix, file){
             loaderStatus = true;
             Lemon.loadModelFuc = function () {
             var urlData = this.result;
-            console.log(urlData)
-            Lemon.recoverSystemModel(urlData);
+
+            $.get(urlData, [], function(data){
+
+             Lemon.recoverSystemModel(JSON.parse(data));
+            });
+
         }
         break;
 

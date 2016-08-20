@@ -707,7 +707,7 @@ Lemon.exportModelToFile = function(name){
     if(name == ''){name="default"};
 
     var tempJSON =Lemon.getLocalSystemModel(name);
-
+    console.log(tempJSON);
     var oMyBlob = new Blob([JSON.stringify(tempJSON)],{type: 'text/plain'});
     var reader = new FileReader();
     reader.onload = function(){
