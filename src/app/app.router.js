@@ -98,7 +98,7 @@ angular.module('Lemon3D.router',['ui.router'])
   })
   // 用户详情
   .state('main.userDetails', {
-    url: '/userDetails',
+    url: '/userDetails/:userId',
     views: {
         "contain@main": {
           templateUrl: 'user/userDetails.html',
@@ -108,11 +108,21 @@ angular.module('Lemon3D.router',['ui.router'])
   })
   // 关注列表
   .state('main.userFollowing', {
-    url: '/userFollowing',
+    url: '/userFollowing/:userId',
     views: {
         "contain@main": {
           templateUrl: 'user/userFollowing.html',
           controller: 'userFollowing'
+        }
+      }   
+  })
+  // 关注列表
+  .state('main.userFollower', {
+    url: '/userFollower/:userId',
+    views: {
+        "contain@main": {
+          templateUrl: 'user/userFollower.html',
+          controller: 'userFollower'
         }
       }   
   })
@@ -128,7 +138,7 @@ angular.module('Lemon3D.router',['ui.router'])
   })
   // // 产品列表
   .state('main.productList', {
-    url: '/productList',
+    url: '/productList:userId',
     views: {
         "contain@main": {
           templateUrl: 'user/productList.html',

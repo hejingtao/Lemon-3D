@@ -1,44 +1,25 @@
 
 <div id="user-info">
-	<div id="user-name">Struggle 
-		<div id="user-followers" class="user-msg"><span class="num">{{userData.userFansCount}}</span><span class="title">Followers</span></div>
-		<div id="user-starred" class="user-msg"><span class="num">{{userData.userCollectionCount}}</span><span class="title">Starred</span></div>
-		<div id="user-following" class="user-msg"><span class="num">{{userData.userFollowerCount}}</span><span class="title">Following</span></div>
+	<div id="user-name">{{USER_NAME}} 
+		<div id="user-followers" class="user-msg" ui-sref="main.userFollower({'userId': USER_ID})"><span class="num">{{userData.userFansCount}}</span><span class="title">Followers</span></div>
+		<div id="user-starred" class="user-msg" ui-sref="main.collect({'userId': USER_ID})"><span class="num">{{userData.userCollectionCount}}</span><span class="title">Starred</span></div>
+		<div id="user-following" class="user-msg" ui-sref="main.userFollowing({'userId': USER_ID})"><span class="num">{{userData.userFollowerCount}}</span><span class="title">Following</span></div>
 	</div>
 
 	<div id="user-head">
 		<img src="/assets/images/head/head01.jpg" alt="">
 	</div>
-	<div id="user-product">我的作品</div>
-	<div id="user-message">消息中心<div id="new-msg">2</div></div>
+	<div id="user-product" ui-sref="main.productList({'userId': USER_ID})">我的作品</div>
+<!-- 	<div id="user-message">消息中心<div id="new-msg">2</div></div> -->
 </div>
 <div id="user-timeline">
 	<div class="title">动态</div>
-	<div class="message">
-		<div class="left system">系统</div>
-		<div class="right system-msg">张三关注了你！</div>
-		<div class="time">2016-07-01 21:00:00</div>
+	<div class="message" ng-repeat="item in timeline">
+		<div class="left system">心情</div>
+		<div class="right system-msg">{{item.activityContent}}</div>
+		<div class="time">{{item.activityTime | date:'yyyy-MM-dd HH:mm:ss' }}</div>
 	</div>
-	<div class="message">
-		<div class="left"><img src="/assets/images/head/head1.png" alt=""><span class="name">李四</span></div>
-		<div class="right">哈哈哈哈今天终于做出来飞机模型了！</div>
-		<div class="time">2016-07-01 21:00:00</div>
-	</div>
-	<div class="message">
-		<div class="left system">系统</div>
-		<div class="right system-msg">李四发布了<span class="product">飞机模型一号机</span></div>
-		<div class="time">2016-07-01 21:00:00</div>
-	</div>
-	<div class="message">
-		<div class="left"><img src="/assets/images/head/head2.png" alt=""></div>
-		<div class="right">求分享有什么好的贴图资源～</div>
-		<div class="time">2016-07-01 21:00:00</div>
-	</div>
-	<div class="message">
-		<div class="left system">系统</div>
-		<div class="right system-msg">你的<span class="product">飞机模型X1</span>收到1条新的评论</div>
-		<div class="time">2016-07-01 21:00:00</div>
-	</div>
+
 </div>
 <div id="index-page4">
 	<div class="left">

@@ -1,41 +1,24 @@
 
 
 <div id="user-info">
-	<div id="user-name">Struggle 
-		<div id="user-followers" class="user-msg"><span class="num">7</span><span class="title">Followers</span></div>
-		<div id="user-starred" class="user-msg"><span class="num">3</span><span class="title">Starred</span></div>
-		<div id="user-following" class="user-msg"><span class="num">2</span><span class="title">Following</span></div>
+	<div id="user-name">{{currentUser.userName}} 
+		<div id="user-followers" class="user-msg" ui-sref="main.userFollower({'userId': currentUser.userId})"><span class="num">{{currentUser.userFansCount}}</span><span class="title">Followers</span></div>
+		<div id="user-starred" class="user-msg" ui-sref="main.collect({'userId': currentUser.userId})"><span class="num">{{currentUser.userCollectionCount}}</span><span class="title">Starred</span></div>
+		<div id="user-following" class="user-msg" ui-sref="main.userFollowing({'userId': currentUser.userId})"><span class="num">{{currentUser.userFollowerCount}}</span><span class="title">Following</span></div>
 	</div>
-
 	<div id="user-head">
 		<img src="/assets/images/head/head01.jpg" alt="">
 	</div>
-	<div id="user-product">我的作品</div>
-	<div id="user-message">消息中心<div id="new-msg">2</div></div>
 </div>
 <div id="product">
 	<div class="title">作品列表</div>
 	<ul class="product-list">
-		<li class="product">
-			<div class="top"><img src="/assets/images/product/product01.jpg" alt=""></div>
-			<div class="bottom">2333</div>
-			<div class="time">2016-07-01 12:30:30</div>
+		<li class="product"  ng-repeat="product in productList">
+			<div class="top"><img src="{{product.productImgUrl}}" alt=""></div>
+			<div class="bottom">{{product.productTitle}}</div>
+			<div class="time">{{product.productAddTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
 		</li>
-		<li class="product">
-			<div class="top"><img src="/assets/images/product/product02.jpg" alt=""></div>
-			<div class="bottom">2333</div>
-			<div class="time">2016-07-01 12:30:30</div>
-		</li>
-		<li class="product">
-			<div class="top"><img src="/assets/images/product/product03.jpg" alt=""></div>
-			<div class="bottom">2333</div>
-			<div class="time">2016-07-01 12:30:30</div>
-		</li>
-		<li class="product">
-			<div class="top"><img src="/assets/images/product/product04.jpg" alt=""></div>
-			<div class="bottom">2333</div>
-			<div class="time">2016-07-01 12:30:30</div>
-		</li>
+
 
 	</ul>
 </div>

@@ -48,14 +48,14 @@ app.run(
         if(toState.name == 'login'){
           return null;
         }
-        if($rootScope.loginState == false && (toState.name.indexOf('user') != -1)){
-          event.preventDefault();
-          tools.alert('您尚未登陆')
-          $state.go('login'); 
-          // console.log($rootScope.loginState);
-        }
-        console.log(fromState);
-        console.log(toState);
+        // if($rootScope.loginState == false && (toState.name.indexOf('user') != -1)){
+        //   event.preventDefault();
+        //   tools.alert('您尚未登陆')
+        //   $state.go('login'); 
+        //   // console.log($rootScope.loginState);
+        // }
+        // console.log(fromState);
+        // console.log(toState);
     })
 
 
@@ -64,11 +64,28 @@ app.run(
 
 
 
-app.controller('main', function($scope, $rootScope, authService) {
+app.controller('main', function($scope, $rootScope, $http, ENV, tools, authService) {
   
   $rootScope.bodyState = 'index';  
   $scope.exit = function(){
     authService.logout();
+  }
+
+  // 关注用户
+  $scope.startUser = function(userId, type){
+
+    $http({
+      method: 'POST', 
+      url: ENV.baseUrl + '/user/startUser',
+      params: { 
+        'targetUserId': userId,
+        'type': type
+      }
+    })
+    .success(function(data, status, headers, config) {
+
+        tools.msg('操作成功');
+    });
   }
 })
 

@@ -81,7 +81,7 @@ app.controller('register', function($scope, $rootScope, $ocLazyLoad, $state, $ht
       }).
       success(function(data, status, headers, config) {
         tools.alert('注册成功！请登陆');
-        $state.go('login');
+        $state.go('main.login');
       }).
       error(function(data, status, headers, config) {
         tools.alert('注册失败，请稍后重试');

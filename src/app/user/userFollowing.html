@@ -1,50 +1,36 @@
 
 
 <div id="user-info">
-	<div id="user-name">Struggle 
-		<div id="user-followers" class="user-msg"><span class="num">7</span><span class="title">Followers</span></div>
-		<div id="user-starred" class="user-msg"><span class="num">3</span><span class="title">Starred</span></div>
-		<div id="user-following" class="user-msg"><span class="num">2</span><span class="title">Following</span></div>
+	<div id="user-name">{{currentUser.userName}} 
+		<div id="user-followers" class="user-msg" ui-sref="main.userFollower({'userId': currentUser.userId})"><span class="num">{{currentUser.userFansCount}}</span><span class="title">Followers</span></div>
+		<div id="user-starred" class="user-msg" ui-sref="main.collect({'userId': currentUser.userId})"><span class="num">{{currentUser.userCollectionCount}}</span><span class="title">Starred</span></div>
+		<div id="user-following" class="user-msg" ui-sref="main.userFollowing({'userId': currentUser.userId})"><span class="num">{{currentUser.userFollowerCount}}</span><span class="title">Following</span></div>
 	</div>
 
 	<div id="user-head">
 		<img src="/assets/images/head/head01.jpg" alt="">
 	</div>
-	<div id="user-product">我的作品</div>
-	<div id="user-message">消息中心<div id="new-msg">2</div></div>
 </div>
 
 <div id="user-list">
 	<div class="title">Following List</div>
 	<ul>
-		<li class="user">
+		<li class="user" ng-repeat="item in user">
 			<div class="col1"></div>
-			<div class="col2"><img src="/assets/images/head/head02.jpg" alt=""></div>
+			<div class="col2" ui-sref="main.userDetails({'userId': item.userId})"><img src="/assets/images/head/head02.jpg" alt=""></div>
 			<div class="col3">
-				<div class="name">Billow</div>
-				<div class="details">简介：热爱web</div>
+				<div class="name" ui-sref="main.userDetails({'userId': item.userId})">{{item.userName}}</div>
+				<div class="details">简介：{{item.userDetails}}</div>
 				<div class="message">
-					<span>Followers: 2</span>
-					<span>Starred: 2</span>
-					<span>Following: 3</span>
+					<span ui-sref="main.userFollower({'userId': item.userId})">Followers: {{item.userFansCount}}</span>
+					<span ui-sref="main.collect({'userId': item.userId})">Starred: {{item.userCollectionCount}}</span>
+					<span ui-sref="main.userFollowing({'userId': item.userId})">Following: {{item.userFollowerCount}}</span>
 				</div>
 			</div>
-			<div class="col4"><span>已关注</span></div>
+			<div class="col4" ng-if="currentUser.userId != USER_ID"><span ng-click="startUser(item.userId, 1)">关注</span></div>
+			<div class="col4" ng-if="currentUser.userId == USER_ID"><span ng-click="startUser(item.userId, 0)">取消关注</span></div>
 		</li>
-		<li class="user">
-			<div class="col1"></div>
-			<div class="col2"><img src="/assets/images/head/head03.jpg" alt=""></div>
-			<div class="col3">
-				<div class="name">Lion</div>
-				<div class="details">简介：狮子王</div>
-				<div class="message">
-					<span>Followers: 3</span>
-					<span>Starred: 2</span>
-					<span>Following: 3</span>
-				</div>
-			</div>
-			<div class="col4"><span>已关注</span></div>
-		</li>
+
 
 	</ul>
 </div>
