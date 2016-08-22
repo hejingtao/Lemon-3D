@@ -228,12 +228,12 @@ function($, THREE, Layer) {
         });
 
         // 创建vr路径
-        $('#vr-creat').bind("click",function(){
+        // $('#vr-creat').bind("click",function(){
 
-            var data = Lemon.creatVrPath();
-            console.log(data);
+        //     var data = Lemon.creatVrPath();
+        //     console.log(data);
 
-        });
+        // });
 
 
         // 监听文件上传

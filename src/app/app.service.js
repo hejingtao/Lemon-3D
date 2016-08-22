@@ -23,6 +23,7 @@ angular.module('Lemon3D.service',[ ])
  * ------------------------------------------------------------------
  */
 .service('tools', function($state,$rootScope) {
+
   return {
     // 检查登录状态，后期移动到路由改变事件，无需手动监测
     checkLogin: function(address) {
@@ -151,8 +152,8 @@ angular.module('Lemon3D.service',[ ])
               if($rootScope.$storage.authtoken != undefined){
                    config.headers['Authorization'] = 'Token token="'+$rootScope.$storage.authtoken +'"';
               }
-              config.headers['Content-Type'] = 'application/json';
-              config.headers['Accept'] = 'application/json';
+              // config.headers['Content-Type'] = 'application/json';
+              // config.headers['Accept'] = 'application/json';
               config.requestTimestamp = new Date().getTime();
               return config;
             },

@@ -71,21 +71,20 @@ app.controller('userFollowing', function($scope, $rootScope, $state, $http, tool
 			$scope.currentUser = data.user;
 	});
 
-	$http({
-		method: 'POST', 
-		url: ENV.baseUrl + '/user/getUserStartList',
-		params: { 
-			'userId': $state.params.userId,
-		  	'page': 0,
-		  	'size': 10
-		}
-	})
-	.success(function(data, status, headers, config) {
+	// // 获取start作品列表
+	// $http({
+	// 	method: 'POST', 
+	// 	url: ENV.baseUrl + '/product/getStartProductList',
+	// 	params: { 
+	// 		'userId': $state.params.userId,
+	// 		'page': 0,
+	// 		'size': 4
+	// 	}
+	// })
+	// .success(function(data, status, headers, config) {
 
-			$scope.user = data.user;
-			$scope.totalPage = data.totalPage;
-			$scope.nowPage = data.nowPage;
-	});
+	// 		$scope.productList = data.product;
+	// });
 })
 
 
@@ -260,6 +259,8 @@ app.controller('productList', function($scope, $rootScope, $state, $http, tools,
 
 			$scope.currentUser = data.user;
 	});
+
+
 	// 获取作品列表
 	$http({
 		method: 'POST', 
@@ -274,5 +275,7 @@ app.controller('productList', function($scope, $rootScope, $state, $http, tools,
 
 			$scope.productList = data.product;
 	});
+
+
 
 })

@@ -147,7 +147,7 @@
         <li>
             <div class="link"><i class="fa fa-paint-brush"></i>操作<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-                <li id=""><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>在线保存</span></li>
+                <li ng-click="creatProduct()"><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>在线保存</span></li>
                 <li id="screenshot"><div><img src="/assets/images/icon/ic_image_collections.png" alt=""></div><span>截图</span></li>
                 <li id="save"><div><img src="/assets/images/icon/ic_file_file_download.png" alt=""></div><span>本地保存</span></li>
                 <li id="recover"><div><img src="/assets/images/icon/ic_file_file_upload.png" alt=""></div><span>本地恢复</span></li>
@@ -363,9 +363,9 @@
         <li>
             <div class="link"><i class="fa fa-paint-brush"></i>VR<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-                <li id="vr-add"><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>开始设置</span></li>
-                <li id="vr-creat"><div><img src="/assets/images/icon/ic_image_collections.png" alt=""></div><span>结束</span></li>
-                <li id=""><div><img src="/assets/images/icon/ic_file_file_download.png" alt=""></div><span>说明</span></li>
+                <li id="vr-add"><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>添加路径</span></li>
+                <li id="vr-creat" ng-click="addVrData()"><div><img src="/assets/images/icon/ic_image_collections.png" alt=""></div><span>合成上传</span></li>
+                <li id="" ng-click="vrTips()"><div><img src="/assets/images/icon/ic_file_file_download.png" alt=""></div><span>说明</span></li>
             </ul>
         </li>
   

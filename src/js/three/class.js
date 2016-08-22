@@ -88,6 +88,7 @@ Lemon.hiddenCommentDiv = function(){
  */
 
 // Lemon.3dCommentData = {};
+Lemon.commentClickNum = 0;
 
 // 添加评论球
 Lemon.addCommentBox = function(content){
@@ -215,18 +216,11 @@ Lemon.load3dComment = function(data){
  * VR操作模块
  * ------------------------------------------------------------------
  */
-
+Lemon.vrPathNum = 0;
 Lemon.vrPathList = [];
 
 Lemon.addVrPath = function(speed){
 
-    // 清除可能残余的评论球
-    for(i=0;i<objects.length;i++){
-        if(objects[i].comment == "current-comment"){
-             scene.remove(objects[i]);
-             objects.splice(i,1);
-        }
-    }
     Lemon.vrPathSpeed = speed;
     Lemon.setmodelType('vrPath');
     Lemon.addTempModel();
@@ -240,6 +234,7 @@ Lemon.creatVrPath = function(){
     var tempVrPathList = [];
     if(Lemon.vrPathNum <2){
         Lemon.layer.alert('路径点数小于2个！');
+        return null;
     }
     for(var i=0;i<objects.length;i++){
          if(objects[i].vrPath == "vrPath"){
@@ -254,7 +249,14 @@ Lemon.creatVrPath = function(){
             // objects.splice(i, 1);
         }
     }
-         console.log('length:'+ tempVrPathList.length);
+    for(var y=0;y<objects.length;y++){
+        for(var i=0;i<objects.length;i++){
+             if(objects[i].vrPath == "vrPath"){
+                objects.splice(i, 1);
+                break;
+            }
+        }
+    }
     // 计算到下一个坐标的距离 与 移动步数
     var tempLength = 0;
     for(var i =0;i<tempVrPathList.length;i++){
@@ -281,6 +283,8 @@ Lemon.creatVrPath = function(){
 
     }
 
+    Lemon.vrPathNum = 0;
+    Lemon.vrPathList = [];
 
     console.log(JSON.stringify(tempVrPathList))
     return tempVrPathList;
@@ -306,29 +310,6 @@ Lemon.calculateMove = function(start, end){
     }
 }
 
-
-Lemon.pathList= [
-        {
-            'position': {
-                'x': 10,
-                'y': 10,
-                'z': 10 
-            },
-            'speed': 5,
-            'length': 100,
-            'num': 1
-        },
-        {
-            'position': {
-                'x': 50,
-                'y': 50,
-                'z': 10 
-            },
-            'speed': 5,
-            'length': 200,
-            'num': 2
-        }
-    ];
 
 
 Lemon.currentPathStep = 0;
@@ -612,6 +593,7 @@ Lemon.getSystemModel = function(){
     var tempModelList = [];
     for(var i=0;i<objects.length;i++){
         if(objects[i].able == 'false') continue;
+        if(objects[i].system != 'true') continue;
         // object.material.color.getHexString();
         var tempMtr = {};
         tempMtr.name = objects[i].material.textureName? objects[i].material.textureName: 'blank';
@@ -1073,7 +1055,7 @@ Lemon.EventList={
 
                     // var voxel = THREE.SceneUtils.createMultiMaterialObject( Lemon.Geometry[Lemon.modelType], [Lemon.Material.basic() ,Lemon.Material.wireframe()] );
                     var voxel = new THREE.Mesh(  Lemon.Geometry[Lemon.modelType], Lemon.Material.base() );
-                    
+                    voxel.system = 'true';
                     //3d评论 评论球
                     if(Lemon.modelType == "comment"){
                         voxel.comment = "current-comment";

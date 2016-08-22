@@ -6,8 +6,8 @@ layer.config({
 });
 Lemon.layer = layer;
 
-Lemon.commentClickNum = 0;
-Lemon.vrPathNum = 0;
+
+
 
 
 

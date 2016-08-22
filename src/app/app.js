@@ -12,6 +12,10 @@ var app = angular.module('Lemon3D', [
   'Lemon3D.directive'
   ]);
 
+// 1、vr数据获取的是最旧的，不是最新的
+// 2、作品添加json数据跑到file分类去了，同时json数据会多处一个空字符""
+// 3、
+
 
 app.run(
   function($rootScope, $state,  $localStorage, authService, tools) {
