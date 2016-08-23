@@ -16,7 +16,7 @@ app.controller('userCentre', function($scope, $rootScope, $state, $http, tools, 
 		params: { 
 			'page': 0,
 			'size': 10,
-			'userId': 4
+			'userId': $rootScope.USER_ID
 		}
 	})
 	.success(function(data, status, headers, config) {
@@ -30,18 +30,22 @@ app.controller('userCentre', function($scope, $rootScope, $state, $http, tools, 
 	// 发表动态
 	$scope.addActivity = function(){
 
-		$http({
-			method: 'POST', 
-			url: ENV.baseUrl + '/user/addActivity',
-			params: { 
-				'content': $scope.activityContent ,
-				'type': 1
-			}
-		})
-		.success(function(data, status, headers, config) {
+		tools.prompt('请输入动态', function(content){
 
-			tools.msg('发表动态成功')
-		});
+			$http({
+				method: 'POST', 
+				url: ENV.baseUrl + '/user/addActivity',
+				params: { 
+					'content': content ,
+					'type': 1
+				}
+			})
+			.success(function(data, status, headers, config) {
+
+				tools.msg('发表动态成功')
+			});
+        })
+
 	}
 })
 
@@ -71,20 +75,22 @@ app.controller('userFollowing', function($scope, $rootScope, $state, $http, tool
 			$scope.currentUser = data.user;
 	});
 
-	// // 获取start作品列表
-	// $http({
-	// 	method: 'POST', 
-	// 	url: ENV.baseUrl + '/product/getStartProductList',
-	// 	params: { 
-	// 		'userId': $state.params.userId,
-	// 		'page': 0,
-	// 		'size': 4
-	// 	}
-	// })
-	// .success(function(data, status, headers, config) {
+	// 获取start作品列表
+	$http({
+		method: 'POST', 
+		url: ENV.baseUrl + '/user/getUserStartList',
+		params: { 
+			'userId': $state.params.userId,
+			'page': 0,
+			'size': 10
+		}
+	})
+	.success(function(data, status, headers, config) {
 
-	// 		$scope.productList = data.product;
-	// });
+			$scope.user = data.user;
+			$scope.totalPage = data.totalPage;
+			$scope.nowPage = data.nowPage;
+	});
 })
 
 
@@ -127,6 +133,48 @@ app.controller('userFollower', function($scope, $rootScope, $state, $http, tools
 			$scope.user = data.user;
 			$scope.totalPage = data.totalPage;
 			$scope.nowPage = data.nowPage;
+	});
+})
+
+
+// 关注作品列表
+app.controller('collect', function($scope, $rootScope, $state, $http, tools, ENV) {
+  
+  	if($state.params.userId== null){
+  		tools.alert('错误的用户id!');
+  		$state.go('main.userCentre');
+  	}else{
+  		$scope.userId = $state.params.userId;
+  	}
+	$rootScope.bodyState = 'index';  
+
+	// 获取用户信息
+	$http({
+		method: 'POST', 
+		url: ENV.baseUrl + '/user/getOtherUserDetail',
+		params: { 
+			'userId': $state.params.userId
+		}
+	})
+	.success(function(data, status, headers, config) {
+
+			$scope.currentUser = data.user;
+	});
+
+
+	// 获取作品列表
+	$http({
+		method: 'POST', 
+		url: ENV.baseUrl + '/product/getStartProductList',
+		params: { 
+			'userId': $state.params.userId,
+			'page': 0,
+			'size': 4
+		}
+	})
+	.success(function(data, status, headers, config) {
+
+			$scope.productList = data.product;
 	});
 })
 
@@ -275,7 +323,4 @@ app.controller('productList', function($scope, $rootScope, $state, $http, tools,
 
 			$scope.productList = data.product;
 	});
-
-
-
 })

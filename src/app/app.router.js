@@ -117,7 +117,7 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
-  // 关注列表
+  // 粉丝列表
   .state('main.userFollower', {
     url: '/userFollower/:userId',
     views: {
@@ -145,6 +145,17 @@ angular.module('Lemon3D.router',['ui.router'])
         "contain@main": {
           templateUrl: 'user/productList.html',
           controller: 'productList'
+        }
+      }   
+  })
+  //收藏作品列表
+  .state('main.collect', {
+    url: '/collect/:userId',
+    cache: false,
+    views: {
+        "contain@main": {
+          templateUrl: 'user/productList.html',
+          controller: 'collect'
         }
       }   
   })

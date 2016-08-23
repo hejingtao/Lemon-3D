@@ -86,6 +86,7 @@ app.controller('community', function($scope, $rootScope, $stateParams, $state, $
 		      })
 		      .success(function(res) {
 		      	tools.msg('发帖成功');
+		      	$state.reload();
 		      })
 		}
 	}
@@ -113,7 +114,7 @@ app.controller('post', function($scope, $rootScope, $stateParams, $state, $http,
 	})
 	.success(function(data) {
 
-	   $scope.postDetail = data.post;
+	   $scope.postDetails = data.post;
 	})
 
 	// 获取评论列表

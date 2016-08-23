@@ -2,9 +2,6 @@
 
 <div id="user-info">
 	<div id="user-name">{{currentUser.userName}} 
-<!-- 		<div id="user-followers" class="user-msg"><span class="num">{{currentUser.userFollowerCount}}</span><span class="title">Followers</span></div>
-		<div id="user-starred" class="user-msg"><span class="num">{{currentUser.userCollectionCount}}</span><span class="title">Starred</span></div>
-		<div id="user-following" class="user-msg"><span class="num">{{currentUser.userFansCount}}</span><span class="title">Following</span></div> -->
 
 		<div id="user-followers" class="user-msg" ui-sref="main.userFollower({'userId': currentUser.userId})"><span class="num">{{currentUser.userFansCount}}</span><span class="title">Followers</span></div>
 		<div id="user-starred" class="user-msg" ui-sref="main.collect({'userId': currentUser.userId})"><span class="num">{{currentUser.userCollectionCount}}</span><span class="title">Starred</span></div>
@@ -14,6 +11,7 @@
 	<div id="user-head">
 		<img src="/assets/images/head/head01.jpg" alt="">
 	</div>
+	<div id="user-product" ng-if="currentUser.userId != USER_ID" ng-click="startUser(currentUser.userId,1)">关注</div>
 </div>
 
 <div id="user-timeline">
@@ -28,11 +26,14 @@
 <div id="product">
 	<div class="title">作品列表</div>
 	<ul class="product-list">
-		<li class="product"  ng-repeat="product in productList">
-			<div class="top"><img src="{{product.productImgUrl}}" alt=""></div>
+		<li class="product"  ng-repeat="product in productList | orderBy: 'productId':true " ui-sref="product({'productId': product.productId})">
+			<!-- <div class="top"><img src="{{product.productImgUrl}}" alt=""></div> -->
+			<div class="top"><img src="/assets/images/icon/product-default.jpg" alt=""></div>
+			
 			<div class="bottom">{{product.productTitle}}</div>
 			<div class="time">{{product.productAddTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
 		</li>
+
 
 	</ul>
 </div>

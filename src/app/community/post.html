@@ -1,112 +1,40 @@
 
 
-<div id="user-info">
-	<div id="user-name">{{title}} 
-		<div id="user-followers" class="user-msg"><span class="num">{{todayNum}}</span><span class="title">Today</span></div>
-		<div id="user-starred" class="user-msg"><span class="num">{{postsNum}}</span><span class="title">Posts</span></div>
-		<div id="user-following" class="user-msg"><span class="num">{{commentNum}}</span><span class="title">Comment</span></div>
-	</div>
-	<div id="sections-list">
-		<ul>
-			<li class="section" ng-repeat="section in sections" ui-sref="main.community({sectionId: section.sectionId})">section.sectionName</li>
-		</ul>
-	</div>
-</div>
-<div id="post-list">
-	<div class="title">帖子</div>
 
-	<div class="post" ng-repeat="post in posts">
+<div id="post-details">
+	<div class="title">标题 <span>{{postDetails.postTitle}}</span></div> 
+
+	<div class="post">
 		<div class="head"><img src="/assets/images/head/head01.jpg" alt=""></div>
 		<div class="content">
-			<div class="name">{{post.postTitle}}</div>
+			<div class="name">{{postDetails.postContent}}</div>
 			<div class="bottom">
-				<span class="author" ui-sref="main.userDetail({userId: post.userId})">作者：{{userName}}</span>
-				<span class="time">1小时20分前</span>
-				<span class="reply">最后回复来自<span class="bold" ui-sref="main.userDetail({userId: post.lastReplyUserId})">{{post.lastReplyUserName}}</span></span>
-			</div>
-		</div>
-		<div class="num">9</div>
-	</div>
-
-	<div class="post">
-		<div class="head"><img src="/assets/images/head/head02.jpg" alt=""></div>
-		<div class="content">
-			<div class="name">今天找到了一些质量挺好的贴图～</div>
-			<div class="bottom">
-				<span class="author">作者：Struggle</span>
-				<span class="time">1小时43分前</span>
-				<span class="reply">最后回复来自<span class="bold">李四</span></span>
-			</div>
-		</div>
-		<div class="num">27</div>
-	</div>
-
-	<div class="post">
-		<div class="head"><img src="/assets/images/head/head03.jpg" alt=""></div>
-		<div class="content">
-			<div class="name">想实现镜面效果，怎么样会比较真实？</div>
-			<div class="bottom">
-				<span class="author">作者：Muffin</span>
-				<span class="time">2小时10分前</span>
-				<span class="reply">最后回复来自<span class="bold">Alien</span></span>
-			</div>
-		</div>
-		<div class="num">12</div>
-	</div>
-
-	<div class="post">
-		<div class="head"><img src="/assets/images/head/head04.jpg" alt=""></div>
-		<div class="content">
-			<div class="name">强烈建议模型可以多一些自定义属性</div>
-			<div class="bottom">
-				<span class="author">作者：猴哥</span>
-				<span class="time">3小时55分前</span>
-				<span class="reply">最后回复来自<span class="bold">Lion</span></span>
-			</div>
-		</div>
-		<div class="num">2</div>
-	</div>
-
-	<div class="post">
-		<div class="head"><img src="/assets/images/head/head1.png" alt=""></div>
-		<div class="content">
-			<div class="name">系统贴图可以丰富一些比较好</div>
-			<div class="bottom">
-				<span class="author">作者：Buff</span>
-				<span class="time">7小时32分前</span>
-				<span class="reply">最后回复来自<span class="bold">路飞</span></span>
-			</div>
-		</div>
-		<div class="num">3</div>
-	</div>
-
-	<div class="post">
-		<div class="head"><img src="/assets/images/head/head2.png" alt=""></div>
-		<div class="content">
-			<div class="name">大家平时喜欢用什么建模软件？</div>
-			<div class="bottom">
-				<span class="author">作者：路飞</span>
-				<span class="time">7小时33分前</span>
-				<span class="reply">最后回复来自<span class="bold">Billow</span></span>
-			</div>
-		</div>
-		<div class="num">15</div>
-	</div>
-
-	<div class="post">
-		<div class="head"><img src="/assets/images/head/head3.png" alt=""></div>
-		<div class="content">
-			<div class="name">贴图一般是什么规格的呢？</div>
-			<div class="bottom">
-				<span class="author">作者：Lion</span>
-				<span class="time">8小时40分前</span>
-				<span class="reply">最后回复来自<span class="bold">Struggle</span></span>
+				<span class="author" ui-sref="main.userDetail({userId: post.userId})">作者：{{postDetails.userName}}</span>
+				<span class="time">{{postDetails.postTime | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+				<span class="reply"></span>
 			</div>
 		</div>
 		<div class="num">1</div>
 	</div>
 
+	<div class="post" ng-repeat="comment in commentList track by $index">
+		<div class="head"><img src="/assets/images/head/head02.jpg" alt=""></div>
+		<div class="content">
+			<div class="name">{{comment.replyContent}}</div>
+			<div class="bottom">
+				<span class="author">作者：{{comment.replyUserName}}</span>
+				<span class="time">{{comment.replyTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+				<span class="reply"></span>
+			</div>
+		</div>
+		<div class="num">{{$index+2}}</div>
+	</div>
 
+	<div class="post-content">
+		<span>内容：</span>
+		<textarea ng-model="commentContent"></textarea>
+		<div class="post-btn" ng-click="comment()">回复</div>
+	</div>
 
 	<div class="page"><span class="active">1</span><span>2</span><span>下一页</span></div>
 </div>

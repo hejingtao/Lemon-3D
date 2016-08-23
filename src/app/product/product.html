@@ -1,3 +1,4 @@
+<pdf ng-show="pdfstate" close="showpdf(0)"></pdf>
 <div id="operate-index">
 
 <div id="Stats-output">
@@ -145,7 +146,7 @@
             <ul class="submenu">
                 <li ng-click="start()"><div><img src="/assets/images/icon/ic_toggle_star.png" alt=""></div><span>Start</span></li>
                 <li ng-click="fork()"><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>fork</span></li>
-                <li ><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>说明文档</span></li>
+                <li ng-click="showpdf(1, productData.productPdfFileUrl)"><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>说明文档</span></li>
             </ul>
         </li>
         <li>

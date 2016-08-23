@@ -28,6 +28,7 @@
             <li id="screenshot">截图</li>
             <li id="recover">本地载入</li>
             <li id="save">本地保存</li> -->
+            <li ng-show="currentProductId != 0" ui-sref="product({'productId': currentProductId})"> 作品id: {{currentProductId}}</li>
             <li id="undo">撤销</li>
             <li id="redo">重做</li>
         </ul>
@@ -147,6 +148,14 @@
             <div class="link"><i class="fa fa-paint-brush"></i>操作<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
                 <li ng-click="creatProduct()"><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>在线保存</span></li>
+                <li ng-if="currentProductId !=0" ng-click="updateProduct()"><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>在线更新</span></li>
+                <li ng-if="currentProductId !=0" ngf-select="uploadPdf($files)"   ngf-max-height="1000" ngf-max-size="10MB" ngf-keep="distinct"><div><img src="/assets/images/icon/ic_action_backup.png" alt=""></div><span>上传文档</span></li>
+                
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-paint-brush"></i>本地<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
                 <li id="screenshot"><div><img src="/assets/images/icon/ic_image_collections.png" alt=""></div><span>截图</span></li>
                 <li id="save"><div><img src="/assets/images/icon/ic_file_file_download.png" alt=""></div><span>本地保存</span></li>
                 <li id="recover"><div><img src="/assets/images/icon/ic_file_file_upload.png" alt=""></div><span>本地恢复</span></li>

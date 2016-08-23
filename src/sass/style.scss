@@ -680,7 +680,13 @@ ul {
         border-bottom: 1px solid rgba(183,183,183,1);
         color:rgba(183,183,183,1);
         font-weight: bold;
-        text-shadow: 4px 3px 0 rgba(183,183,183,0.2),9px 8px 0 rgba(0,0,0,0.15);
+  
+        span{
+            display: inline-block;
+            margin-left: 50px;
+            font-size:  26px;
+            text-shadow: 0;
+        }
     }
     .post{
         width: 80%;
@@ -770,6 +776,188 @@ ul {
         .active{
             background-color: rgb(83,83,83);
             color:white;
+        }
+    }
+
+    .post-title{
+        width: 80%;
+        height: 50px;
+        margin: 30px 0 20px 100px ; 
+        
+        input{
+            width: 800px;
+            height: 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid rgb(183,183,183);
+        }
+    }
+    .post-content{
+        position: relative;
+        width: 80%;
+        height: 400px;
+        margin: 30px 0 20px 100px ; 
+        span{
+            vertical-align: top;
+        }
+        textarea{
+            display: inline-block;
+            width: 800px;
+            height: 300px;
+        }
+        .post-btn{
+            position: absolute;
+            bottom: 10px;
+            right:  150px;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: rgb(67,115,183);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    }
+}
+
+#post-details{
+    margin-top: 30px;
+    .title{
+        margin:0 0 10px 100px;
+        padding-bottom: 5px;
+        font-size: 36px;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: left;
+        border-bottom: 1px solid rgba(183,183,183,1);
+        color:rgba(183,183,183,1);
+        font-weight: bold;
+  
+        span{
+            display: inline-block;
+            margin-left: 50px;
+            font-size:  26px;
+            text-shadow: 0;
+        }
+    }
+    .post{
+        width: 80%;
+        min-height: 100px;
+        margin: -10px 0 20px 100px ; 
+        border-bottom:1px solid rgb(183,183,183);
+        text-shadow:0;
+        .head{
+            display: inline-block;
+            width: 120px;
+            height: 100px;
+            img{
+                width: 70px;
+                height: 70px;
+                margin-top: 15px;
+                border-radius:50%;
+                border: 1px solid rgb(233,233,233);
+            }
+        }
+        .content{
+            display: inline-block;
+            vertical-align: top;
+            width: 800px;
+            min-height: 100px;
+            line-height: 20px;
+            .name{
+                margin: 15px 0 15px 0;
+                width: 100%;
+                min-height: 60px;
+                font-size: 16px;
+                line-height: 20px;
+                text-align: left;
+                color: rgb(83,83,83);
+            }
+            .bottom{
+                height: 60px;
+                font-size: 12px;
+                .author{
+                    font-weight:bold;
+                    color: rgb(123,123,123);
+                    margin-right: 15px;
+                }
+                .time{
+                    color: rgb(183,183,183);
+                    margin-right: 20px;
+                }
+                .reply{
+                    color: rgb(183,183,183);
+                    .bold{
+                        margin-left: 5px;
+                        font-weight:bold;
+                        color: rgb(123,123,123);
+                    }
+                }
+            } 
+        }
+        .num{
+                float: right;
+                display: inline-block;
+                margin-top: 35px;
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                background-color:rgb(123,123,123);
+                color:white;
+                border-radius: 50%;
+            }
+    }
+    .page{
+        width: 80%;
+        height: 100px;
+        margin: 30px 0 20px 100px ; 
+        text-align: center;
+        span{
+            display: inline-block;
+            padding: 0 5px 0 5px;
+            margin-left: 10px;
+            min-width:20px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid rgb(83,83,83);
+            border-radius: 5px;
+            color: rgb(83,83,83);
+            cursor: pointer;
+        }
+        .active{
+            background-color: rgb(83,83,83);
+            color:white;
+        }
+    }
+    .post-content{
+        position: relative;
+        width: 80%;
+        height: 400px;
+        margin: 30px 0 20px 100px ; 
+        span{
+            vertical-align: top;
+        }
+        textarea{
+            display: inline-block;
+            width: 800px;
+            height: 300px;
+        }
+        .post-btn{
+            position: absolute;
+            bottom: 10px;
+            right:  150px;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: rgb(67,115,183);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
         }
     }
 }

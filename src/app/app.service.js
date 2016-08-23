@@ -12,8 +12,8 @@ angular.module('Lemon3D.service',[ ])
  */
 .service('ENV', function() {
   return{
-    // baseUrl: 'http://119.29.209.29/lemon3d'
-    baseUrl: 'http://localhost:8080/lemon3d'
+    baseUrl: 'http://119.29.209.29/lemon3d'
+    // baseUrl: 'http://localhost:8080/lemon3d'
   }
 })
 
@@ -136,7 +136,7 @@ angular.module('Lemon3D.service',[ ])
 
       layer.prompt({
         title: message,
-        formType: 1 //prompt风格，支持0-2
+        formType: 2 //prompt风格，支持0-2
       }, function(pass){
 
           func(pass);

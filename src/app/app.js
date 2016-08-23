@@ -4,7 +4,8 @@ var app = angular.module('Lemon3D', [
   'ngAnimate', //动画
   'ngStorage', //本地存储
   'oc.lazyLoad',
-
+  'ngFileUpload',
+  
   'Lemon3D.auth', //权限控制
   'Lemon3D.router', //路由定义
   // 'Lemon3D.partials', //页面组件

@@ -5,7 +5,7 @@
  */
 
 
-app.controller('operate', function($scope, $rootScope, $state, $http, $ocLazyLoad, tools, ENV) {
+app.controller('operate', function($scope, $rootScope, $state, $http, $ocLazyLoad, tools, ENV, Upload) {
 
 	$scope.currentProductId = 0;
 	$rootScope.bodyState = 'operate'; 
@@ -45,9 +45,63 @@ app.controller('operate', function($scope, $rootScope, $state, $http, $ocLazyLoa
 
 		    });
         });
+    }
+
+    // 更新作品
+    $scope.updateProduct = function(){
+
+    	if($scope.currentProductId == 0){
+    		tools.alert('请先在线保存');
+    	}
+    	$scope.currentProductId
+        tools.msg('上传数据中，请稍等');
+        $scope.addProductData($scope.currentProductId, Lemon.getSystemModel(), 1);
+        $scope.addProductFileList($scope.currentProductId, Lemon.getUploadFileModel());
+    }
 
 
+    $scope.uploadPdf = function(files){
 
+    	if(files.length == 0){
+          return null;
+        }
+
+        // 遍历文件列表检查文件后缀
+        angular.forEach(files, function(file) {
+
+          var reg =/[^\\\/]*[\\\/]+/g;  //匹配文件的名称和后缀的正则表达式
+          var name = file.name.replace(reg, '');
+          var postfix = /\.[^\.]+$/.exec(name);//获取文件的后缀 例如： .js
+          postfix = postfix[0].toLowerCase(); //后缀转换成小写
+
+          if(postfix != '.pdf'){
+              tools.alert('检测到非pdf文件！')
+          }
+        });
+        
+	     tempData=  { 
+          'productId': $scope.currentProductId,
+          'pdfFile': files[0]
+        }
+		$http({
+		　　 method: 'POST',
+		　　 url: ENV.baseUrl + '/product/addDocument',
+		  data: tempData,
+		  headers: {
+		    'Content-Type': undefined
+		  },
+		  transformRequest: function(data) {
+		    var formData = new FormData();
+		    formData.append('productId', data.productId);
+		    formData.append('pdfFile', data.pdfFile);
+		    return formData;
+		  },
+		  
+		})
+	    .success(function(data, status, headers, config) {
+
+	        tools.msg('上传pdf成功');
+	    });
     }
 
     // 添加作品json数据
@@ -55,27 +109,11 @@ app.controller('operate', function($scope, $rootScope, $state, $http, $ocLazyLoa
 
     	var tempIsNew = isNew ? isNew : 0;
 
-	    // $http({
-	    //   method: 'POST', 
-	    //   url: ENV.baseUrl + '/product/addProductData',
-
-	    //   params: { 
-	    //     'productId': productId,
-	    //     'dataContent': data,
-	    //     'isNew':  tempIsNew // 1为创建新版本
-	    //   }
-	    // })
-	    // .success(function(data, status, headers, config) {
-
-	    //     tools.msg('上传数据成功');
-	    // });
-
-
-		   tempData=  { 
-	        'productId': productId,
-	        'dataContent': data,
-	        'isNew':  tempIsNew // 1为创建新版本
-	      }
+	     tempData=  { 
+          'productId': productId,
+          'dataContent': data,
+          'isNew':  tempIsNew // 1为创建新版本
+        }
 		$http({
 		　　 method: 'POST',
 		　　 url: ENV.baseUrl + '/product/addProductData',
@@ -217,18 +255,6 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 	    '/assets/libs/css/colpick.css'
 	  ]
 	});
-
-    //stupid 
-    // var tempStatus = true;
-    // while(tempStatus){
-    // 	setTimeout(function(){
-    // 		if(typeof Lemon != 'undefined'){
-		  //   	tempStatus = false;
-		  //   }
-    // 	},50)
-	    
-    // }
-    // 
    
     $scope.init =function(){
 	    // 获取作品数据
@@ -434,8 +460,39 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 	        tools.msg('start成功');
 	    });
     }
-})
 
+  /**
+   * pdf展示控制
+   * ------------------------------------------------------------------
+   */
+    // pdf显示状态定义
+    $scope.pdfstate = false;
+    // pdf地址定义
+    $scope.url = null;
+    // pdf显示状态修改
+    $scope.showpdf = function(type, file){
+      if(type == 2){$scope.pdfstate = true; return null }
+      if(type == 0){
+
+        $scope.pdfstate = false;
+      }else{
+
+
+        $ocLazyLoad.load({
+          serie: true,
+          files: [
+            '/assets/libs/pdf/viewer/viewer.js'
+          ]
+        });
+
+        console.log(ENV.baseUrl+file)
+        DEFAULT_URL = ENV.baseUrl+file;
+        webViewerLoad();
+        $scope.pdfstate = true;
+
+      }
+    }
+})
 
 
 // vr模式
