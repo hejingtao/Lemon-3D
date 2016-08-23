@@ -164,7 +164,7 @@ angular.module('Lemon3D.router',['ui.router'])
   })
   // 作品展示
   .state('product', {
-    url: '/product',
+    url: '/product/:productId',
     views: {
         "page": {
           templateUrl: 'product/product.html',
@@ -172,13 +172,23 @@ angular.module('Lemon3D.router',['ui.router'])
         }
       }   
   })
-  // test
+  // vr
   .state('vr', {
-    url: '/vr',
+    url: '/vr/:productId',
     views: {
         "page": {
           templateUrl: 'product/vr.html',
           controller: 'vr'
+        }
+      }   
+  })
+  //vr test
+  .state('test', {
+    url: '/test',
+    views: {
+        "page": {
+          templateUrl: 'product/vr.html',
+          controller: 'vrTest'
         }
       }   
   })

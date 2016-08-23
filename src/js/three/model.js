@@ -290,6 +290,8 @@ Lemon.useTexture = function(name) {
 // 加载模型文件
 Lemon.loadModelList = [];
 Lemon.loadModelFuc = null;
+Lemon.uploadFileListNum = 0;
+Lemon.uploadFileList = [];
 Lemon.loadModel = function(postfix, file){
 
       var loader= null;
@@ -331,6 +333,8 @@ Lemon.loadModel = function(postfix, file){
                         loadedMesh.scale.set(100, 100, 100);
                         loadedMesh.rotation.x = -0.3;
                         loadedMesh.position.y = 5;
+
+                        loadedMesh.fileNum = Lemon.uploadFileListNum;
                         scene.add(loadedMesh);
                         objects.push(loadedMesh);
                     });
@@ -348,6 +352,8 @@ Lemon.loadModel = function(postfix, file){
                 loader.load(urlData, function (loadedMesh) {
                     mesh = loadedMesh.scene.children[0].children[0].clone();
                     mesh.scale.set(4, 4, 4);
+
+                    mesh.fileNum = Lemon.uploadFileListNum;
                     scene.add(mesh);
                     objects.push(mesh);
                 });
@@ -368,6 +374,8 @@ Lemon.loadModel = function(postfix, file){
                     group = new THREE.Mesh(geometry, mat);
                     group.rotation.x = -0.5 * Math.PI;
                     group.scale.set(0.6, 0.6, 0.6);
+
+                    group.fileNum = Lemon.uploadFileListNum;
                     scene.add(group);
                     objects.push(group);
                 });
@@ -386,6 +394,8 @@ Lemon.loadModel = function(postfix, file){
                     var mat = new THREE.MeshLambertMaterial({color: 0xaaffaa});
                     group = new THREE.Mesh(geometry, mat);
                     group.scale.set(50, 50, 50);
+
+                    group.fileNum = Lemon.uploadFileListNum;
                     scene.add(group);
                     objects.push(group);
                 });
@@ -421,6 +431,7 @@ Lemon.loadModel = function(postfix, file){
                         group.add(mesh);
                     }
 
+                    group.fileNum = Lemon.uploadFileListNum;
                     scene.add(group);
                     objects.push(group);
                 });
@@ -446,6 +457,8 @@ Lemon.loadModel = function(postfix, file){
                 });
                 group = new THREE.PointCloud(geometry, material);
                 group.sortParticles = true;
+
+                group.fileNum = Lemon.uploadFileListNum;
                 objects.push(group);
                 scene.add(group);
             });
@@ -470,6 +483,8 @@ Lemon.loadModel = function(postfix, file){
                 });
 
                 model.scale.set(0.1, 0.1, 0.1);
+
+                model.fileNum = Lemon.uploadFileListNum;
                 objects.push(model);
                 scene.add(model);
 
@@ -497,6 +512,8 @@ Lemon.loadModel = function(postfix, file){
                     });
 
                     model.scale.set(0.1, 0.1, 0.1);
+
+                    model.fileNum = Lemon.uploadFileListNum;
                     objects.push(model);
                     scene.add(model);
 
@@ -524,6 +541,8 @@ Lemon.loadModel = function(postfix, file){
                     });
 
                     model.scale.set(10, 10, 10);
+
+                    model.fileNum = Lemon.uploadFileListNum;
                     objects.push(model);
                     scene.add(model);
 
@@ -564,12 +583,13 @@ Lemon.loadModel = function(postfix, file){
             var reader = new FileReader();
             reader.onloadstart = function(){
 
+                Lemon.uploadFileListNum++;
                 Lemon.modelLoading = Lemon.layer.load(1, {shade: [0.5, '#ffffff'],time: 10*1000});
             }
             reader.onloadend = function(){
 
-                Lemon.uploadFileList.push({'file': file, 'state': true});
-                Lemon.layer.close(Lemon.modelLoading);  
+                Lemon.uploadFileList.push({'file': file, 'num': Lemon.uploadFileListNum ,'state': true});
+                Lemon.layer.close(Lemon.modelLoading); 
             }
             reader.onload = Lemon.loadModelFuc;
             reader.readAsDataURL(file);

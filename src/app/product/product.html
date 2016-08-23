@@ -26,8 +26,8 @@
             <li id="screenshot">截图</li>
             <li id="recover">本地载入</li>
             <li id="save">本地保存</li> -->
-            <li id="recover">作者：Struggle</li>
-            <li >2016-06-01 12:30:30</li>
+            <li ui-sref="main.userDetails({'userId': productData.userId})">作者：{{productData.userName}}</li>
+            <li>{{productData.productAddTime | date:'yyyy-MM-dd HH:mm:ss'}}</li>
         </ul>
     </div>
 
@@ -144,8 +144,8 @@
         <li>
             <div class="link"><i class="fa fa-ellipsis-v"></i>操作<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-                <li ><div><img src="/assets/images/icon/ic_toggle_star.png" alt=""></div><span>Start</span></li>
-                <li ><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>fork</span></li>
+                <li ng-click="start()"><div><img src="/assets/images/icon/ic_toggle_star.png" alt=""></div><span>Start</span></li>
+                <li ng-click="fork()"><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>fork</span></li>
                 <li ><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>说明文档</span></li>
             </ul>
         </li>
@@ -153,26 +153,17 @@
             <div class="link"><i class="fa fa-ellipsis-v"></i>发布评论<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
                 <li id="3d-comment"><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>3D评论</span></li>
-                <li ><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>普通评论</span></li>
+                <li ng-click="addCommonComment()"><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>普通评论</span></li>
             </ul>
         </li>
     </ul>
     <ul class="comment-list">
-      <li>
-        <div class="name">张三 <span>1楼</span></div>
-        <div class="content">不错不错</div>
-        <div class="time">2016-06-01 13:20:15</div>
+      <li ng-repeat="comment in commentList">
+        <div class="name" ui-sref="main.userDetails({'userId': comment.userId})">{{comment.userName}} <span><!-- 1楼 --></span></div>
+        <div class="content">{{comment.commentContent}}</div>
+        <div class="time">{{comment.commentTime  | date:'yyyy-MM-dd HH:mm:ss'}}</div>
       </li>
-      <li>
-        <div class="name">李四 <span>2楼</span></div>
-        <div class="content">挺独特的城堡哈哈</div>
-        <div class="time">2016-06-01 13:25:19</div>
-      </li>
-      <li>
-        <div class="name">Struggle <span>3楼</span></div>
-        <div class="content">谢谢大家支持</div>
-        <div class="time">2016-06-01 13:25:19</div>
-      </li>
+
     </ul>
 
     </div>

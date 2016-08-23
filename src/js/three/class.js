@@ -586,6 +586,43 @@ Lemon.saveFile = function (strData, filename) {
     }
 }
 
+// 遍历获取用户上传模型数据
+Lemon.getUploadFileModel = function(){
+
+    var saveIndex = 0;
+    var tempModelList = [];
+    for(var i=0;i<objects.length;i++){
+        if(objects[i].able == 'false') continue;
+        if(objects[i].system == 'true') continue;
+
+        for(var z=0;z<Lemon.uploadFileList.length;z++){
+            if(objects[i].fileNum == Lemon.uploadFileList[z].num){
+                var tempFile = Lemon.uploadFileList[z].file;
+            }
+        }
+
+        var tempObj = {
+            "file": tempFile,
+            "data": {
+                'position': objects[i].position,
+                'scale': objects[i].scale,
+                'rotation': objects[i].rotation
+            }
+        }
+        tempModelList.push(tempObj);
+
+        saveIndex++;
+    }
+    var tempResult = {
+        'list': tempModelList,
+        'num': saveIndex
+    };
+    console.log('fileList');
+    console.log(tempResult);
+    return tempResult;
+
+}
+
 // 遍历获取当前系统预定义模型数据
 Lemon.getSystemModel = function(){
 
