@@ -12,7 +12,8 @@ angular.module('Lemon3D.service',[ ])
  */
 .service('ENV', function() {
   return{
-    baseUrl: 'http://119.29.209.29/lemon3d'
+    // baseUrl: 'http://119.29.209.29/lemon3d'
+    baseUrl: 'http://localhost:8080/lemon3d'
   }
 })
 
@@ -150,7 +151,8 @@ angular.module('Lemon3D.service',[ ])
             request: function (config) {
 
               if($rootScope.$storage.authtoken != undefined){
-                   config.headers['Authorization'] = 'Token token="'+$rootScope.$storage.authtoken +'"';
+                   // config.headers['user_token'] = $rootScope.$storage.authtoken;
+                   config.headers['Authorization'] =  $rootScope.$storage.authtoken;
               }
               // config.headers['Content-Type'] = 'application/json';
               // config.headers['Accept'] = 'application/json';

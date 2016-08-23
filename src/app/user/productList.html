@@ -13,8 +13,10 @@
 <div id="product">
 	<div class="title">作品列表</div>
 	<ul class="product-list">
-		<li class="product"  ng-repeat="product in productList">
-			<div class="top"><img src="{{product.productImgUrl}}" alt=""></div>
+		<li class="product"  ng-repeat="product in productList | orderBy: 'productId':true " ui-sref="product({'productId': product.productId})">
+			<!-- <div class="top"><img src="{{product.productImgUrl}}" alt=""></div> -->
+			<div class="top"><img src="/assets/images/icon/product-default.jpg" alt=""></div>
+			
 			<div class="bottom">{{product.productTitle}}</div>
 			<div class="time">{{product.productAddTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
 		</li>

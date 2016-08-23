@@ -313,8 +313,18 @@ Lemon.calculateMove = function(start, end){
 
 
 Lemon.currentPathStep = 0;
+Lemon.firstPosition = false;
 // 控制camera移动路径
 Lemon.vrPath = function(camera, pathList){
+
+    if(pathList.length == 0){ return null}
+
+    if(!Lemon.firstPosition){
+        camera.position.x = pathList[0].position.x;
+        camera.position.y = pathList[0].position.y;
+        camera.position.z = pathList[0].position.z;
+        Lemon.firstPosition = true;
+    }
     // parseFloat()
     var maxStep = pathList.length;
     var temp = 0;

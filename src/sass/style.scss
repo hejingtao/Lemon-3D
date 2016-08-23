@@ -322,6 +322,7 @@ ul {
         }
         li{
             display: inline-block;
+            cursor: pointer;
             width: 250px;
             height: 220px;
             margin: 0 10px 0 10px;
@@ -1093,6 +1094,7 @@ ul {
         min-height: 300px;
         .product{
             display: inline-block;
+            cursor: pointer;
             width: 250px;
             height: 210px;
             border: 1px solid rgb(133,133,133);

@@ -89,6 +89,7 @@ angular.module('Lemon3D.router',['ui.router'])
   // 用户主界面
   .state('main.userCentre', {
     url: '/userCentre',
+    cache: false,
     views: {
         "contain@main": {
           templateUrl: 'user/userCentre.html',
@@ -138,7 +139,8 @@ angular.module('Lemon3D.router',['ui.router'])
   })
   // // 产品列表
   .state('main.productList', {
-    url: '/productList:userId',
+    url: '/productList/:userId',
+    cache: false,
     views: {
         "contain@main": {
           templateUrl: 'user/productList.html',
@@ -155,6 +157,7 @@ angular.module('Lemon3D.router',['ui.router'])
   // 编辑作品
   .state('operate', {
     url: '/operate',
+    cache: false,
     views: {
         "page": {
           templateUrl: 'product/operate.html',
@@ -165,6 +168,7 @@ angular.module('Lemon3D.router',['ui.router'])
   // 作品展示
   .state('product', {
     url: '/product/:productId',
+    cache: false,
     views: {
         "page": {
           templateUrl: 'product/product.html',
@@ -207,7 +211,7 @@ angular.module('Lemon3D.router',['ui.router'])
       }   
   })
   .state('main.post', {
-    url: '/post',
+    url: '/post/:postId',
     views: {
         "contain@main": {
           templateUrl: 'community/post.html',

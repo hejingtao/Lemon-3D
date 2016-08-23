@@ -21,23 +21,31 @@ app.controller('operate', function($scope, $rootScope, $state, $http, $ocLazyLoa
 
     // 创建作品
     $scope.creatProduct = function(){
-	    $http({
-	      method: 'POST', 
-	      url: ENV.baseUrl + '/product/addProduct',
-	      params: { 
-	        'productTitle': 'test',
-	        'productDetails': 'test', // 1代表json，0代表文件
-	        'productStatus': 1
-	      }
-	    })
-	    .success(function(data, status, headers, config) {
-	    	$scope.product = data.product;
-	    	$scope.currentProductId = $scope.product.productId;
-	        tools.msg('新建作品成功。上传数据中，请稍等');
-	        $scope.addProductData($scope.product.productId, Lemon.getSystemModel());
-	        $scope.addProductFileList($scope.product.productId, Lemon.getUploadFileModel());
 
-	    });
+	    Lemon.layer.prompt({
+          title: '请输入作品标题',
+          formType: 2 //prompt风格，支持0-2
+        }, function(name){
+
+            $http({
+		      method: 'POST', 
+		      url: ENV.baseUrl + '/product/addProduct',
+		      params: { 
+		        'productTitle': name,
+		        'productDetails': 'test', // 1代表json，0代表文件
+		        'productStatus': 1
+		      }
+		    })
+		    .success(function(data, status, headers, config) {
+		    	$scope.product = data.product;
+		    	$scope.currentProductId = $scope.product.productId;
+		        tools.msg('新建作品成功。上传数据中，请稍等');
+		        $scope.addProductData($scope.product.productId, Lemon.getSystemModel());
+		        $scope.addProductFileList($scope.product.productId, Lemon.getUploadFileModel());
+
+		    });
+        });
+
 
 
     }
@@ -349,22 +357,27 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 
 
     // 添加评论
-    $scope.addComment = function(data, type){
+    $scope.add3dComment = function(data, type){
 
-	    $http({
-	      method: 'POST', 
-	      url: ENV.baseUrl + '/product/addComment',
-	      params: { 
-	        'productId': $scope.productId,
-	        'type': type,  // 1为普通评论，2为3D评论
-	        'content': data
+        control.object = undefined;
+        control.visible = false;
+        if(!Lemon.commentClickNum){
 
-	      }
-	    })
-	    .success(function(data, status, headers, config) {
+            Lemon.layer.prompt({
+              title: '请输入评论内容',
+              formType: 2 //prompt风格，支持0-2
+            }, function(name){
+                // 添加评论球
+                Lemon.addCommentBox(name);
+            });
+        }else if(Lemon.commentClickNum == 1){
+            // 设置箭头指向位置
+            Lemon.setCommentArrow();
 
-	        tools.msg('操作成功');
-	    });
+        }else if(Lemon.commentClickNum == 2){
+            // 创建3d评论
+            Lemon.creat3dComment();
+        }
     }
 
     $scope.addCommonComment = function(){
@@ -426,7 +439,7 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 
 
 // vr模式
-app.controller('vr', function($scope, $rootScope, $timeout, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
+app.controller('vr', function($scope, $rootScope, $interval, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
 	
   	if($state.params.productId== null){
   		tools.alert('错误的作品id!');
@@ -492,7 +505,8 @@ app.controller('vr', function($scope, $rootScope, $timeout, $state, $http, $root
 	      }
 	    })
 	    .success(function(data, status, headers, config) {
-	  		$scope.vrData = data.vr.vrContent;
+
+	  		$scope.vrData = Lemon.pathList = JSON.parse(data.vr.vrContent);
 	        tools.msg('操作成功');
 	    });
 	}
@@ -506,7 +520,41 @@ app.controller('vr', function($scope, $rootScope, $timeout, $state, $http, $root
 
 	},100)
 	
-	
+    // 获取json数据
+    $scope.recoverJson = function(id){
+
+	    $http({
+	      method: 'POST', 
+	      url: ENV.baseUrl + '/product/getJson',
+	      params: { 
+	        'dataId': id
+
+	      }
+	    })
+	    .success(function(data, status, headers, config) {
+	    	var temp = JSON.parse(data.json);
+	    	Lemon.recoverSystemModel(temp.list);
+	        tools.msg('操作成功');
+	    });
+    }
+
+
+    // 获取file数据
+    $scope.getFile = function(){
+
+	    $http({
+	      method: 'POST', 
+	      url: ENV.baseUrl + '/product/getJson',
+	      params: { 
+	        'dataId': 'test'
+
+	      }
+	    })
+	    .success(function(data, status, headers, config) {
+
+	        tools.msg('操作成功');
+	    });
+    }
 
 
 })
@@ -514,7 +562,7 @@ app.controller('vr', function($scope, $rootScope, $timeout, $state, $http, $root
 
 
 // 测试vr
-app.controller('vrTest', function($scope, $rootScope, $timeout, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
+app.controller('vrTest', function($scope, $rootScope, $interval, $state, $http, $rootScope, $ocLazyLoad,  authService, tools, ENV) {
 	
 	$rootScope.bodyState = 'operate'; 
     $ocLazyLoad.load({
@@ -525,19 +573,28 @@ app.controller('vrTest', function($scope, $rootScope, $timeout, $state, $http, $
 	  ]
 	});
 
-    // 获取vr数据
-    $scope.getVrData = function(){
 
-	    $http({
-	      method: 'POST', 
-	      url: ENV.baseUrl + '/product/getVr',
-	      params: { 
-	        'productId': 'test'
-	      }
-	    })
-	    .success(function(data, status, headers, config) {
 
-	        tools.msg('操作成功');
-	    });
-    }
+    $scope.init =function(){
+	    
+		$.get("/assets/js/three/demo0.lem3d", [], function(data){
+
+		    Lemon.recoverSystemModel(JSON.parse(data));
+		});
+
+		var pathList= [{"position":{"x":95,"y":166,"z":376},"speed":"0.3","num":1,"length":68.24221567329127,"step":227,"move":{"x":-0.13215859030837004,"y":0.02643171806167401,"z":-0.2687224669603524}},{"position":{"x":65,"y":172,"z":315},"speed":"0.2","num":2,"length":96.78842906050289,"step":484,"move":{"x":0.012396694214876033,"y":0.09090909090909091,"z":-0.17768595041322313}},{"position":{"x":71,"y":216,"z":229},"speed":"0.4","num":3,"length":409.0305612053945,"step":1023,"move":{"x":-0.004887585532746823,"y":0,"z":-0.3998044965786901}},{"position":{"x":66,"y":216,"z":-180},"speed":"0.3","num":4,"length":93.4826187052973,"step":312,"move":{"x":0.003205128205128205,"y":-0.13782051282051283,"z":-0.266025641025641}},{"position":{"x":67,"y":173,"z":-263},"speed":"0.2","num":5,"length":207.5475849052453,"step":1038,"move":{"x":-0.023121387283236993,"y":0.007707129094412331,"z":-0.19845857418111754}},{"position":{"x":43,"y":181,"z":-469},"speed":"0.3","num":6,"length":221.77916944564473,"step":739,"move":{"x":0.2598105548037889,"y":-0.0013531799729364006,"z":-0.15020297699594046}},{"position":{"x":235,"y":180,"z":-580},"speed":"0.2","num":7,"length":277.34815665513264,"step":1387,"move":{"x":-0.005046863734679163,"y":0.008651766402307137,"z":-0.19971160778658975}},{"position":{"x":228,"y":192,"z":-857},"speed":"0.3","num":8,"length":384.2134823246056,"step":1281,"move":{"x":-0.2997658079625293,"y":-0.00624512099921936,"z":-0.0078064012490242}},{"position":{"x":-156,"y":184,"z":-867},"speed":"0.3","num":9,"length":263.0247136677464,"step":877,"move":{"x":-0.026225769669327253,"y":-0.0034207525655644243,"z":0.29874572405929306}},{"position":{"x":-179,"y":181,"z":-605},"speed":"0.3","num":10,"length":250.24987512484398,"step":834,"move":{"x":0.2637889688249401,"y":0.009592326139088728,"z":0.14268585131894485}},{"position":{"x":41,"y":189,"z":-486},"speed":"0.4","num":11,"length":211.00236965494014,"step":528,"move":{"x":0.03787878787878788,"y":-0.03977272727272727,"z":0.3958333333333333}},{"position":{"x":61,"y":168,"z":-277},"speed":"0.3","num":12,"length":99.443451267542,"step":331,"move":{"x":-0.015105740181268883,"y":0.1268882175226586,"z":0.2719033232628399}},{"position":{"x":56,"y":210,"z":-187},"speed":"0.2","num":13,"length":419.2636402074475,"step":2096,"move":{"x":0.006679389312977099,"y":0.002385496183206107,"z":0.19990458015267176}},{"position":{"x":70,"y":215,"z":232},"speed":"0.4","num":14,"length":91.11531155629113,"step":228,"move":{"x":-0.06578947368421052,"y":-0.2236842105263158,"z":0.32456140350877194}},{"position":{"x":55,"y":164,"z":306},"speed":"0.3","num":15,"length":80.64738061462381,"step":269,"move":{"x":0.14869888475836432,"y":0.007434944237918215,"z":0.26022304832713755}}];
+		        
+	  	$scope.vrData = Lemon.pathList = pathList;
+
+
+	}
+
+	$scope.tempInterval = $interval(function(){
+		console.log('test');
+	    	if((typeof Lemon != 'undefined') && (typeof objects != 'undefined')){
+			    $scope.init();
+			    $interval.cancel($scope.tempInterval);
+	    	}
+
+	},100)
 })

@@ -7,16 +7,15 @@
 
     <div class="nav-left">
         <ul>
-          <li>首页</li>
-          <li>最新作品</li>
-          <li>排行</li>
-          <li>社区</li>
+          <li ui-sref="main.index">首页</li>
+          <li ui-sref="main.community">社区</li>
+          <li ui-sref="operate">编辑器</li>
         </ul>
     </div>
     
     <div class="nav-right">
         <ul>
-            <li >个人中心</li>
+            <li  ui-sref="main.userCentre">个人中心</li>
         </ul>
     </div>
 
@@ -152,7 +151,7 @@
         <li>
             <div class="link"><i class="fa fa-ellipsis-v"></i>发布评论<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
-                <li id="3d-comment"><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>3D评论</span></li>
+                <li id="3d-comment" ng-click="add3dComment()"><div><img src="/assets/images/icon/ic_hardware_keyboard_tab.png" alt=""></div><span>3D评论</span></li>
                 <li ng-click="addCommonComment()"><div><img src="/assets/images/icon/ic_av_my_library_books.png" alt=""></div><span>普通评论</span></li>
             </ul>
         </li>
