@@ -95,6 +95,7 @@ require([
     'GeometryExporter','SceneExporter','SceneLoader','MaterialExporter'
     ],
 function($, THREE, Layer) {
+    console.log('operate')
     // 初始化，总入口
    function init() {
         //渲染场景- loadScenes
@@ -103,9 +104,9 @@ function($, THREE, Layer) {
 
                 
 
-        $('#clear').bind("click",function(){
-            localStorage.clear();
-        });
+        // $('#clear').bind("click",function(){
+        //     localStorage.clear();
+        // });
 
 
         // 撤销
@@ -224,7 +225,6 @@ function($, THREE, Layer) {
                 // 添加评论球
                 Lemon.addVrPath(speed);
             });
-
         });
 
         // 创建vr路径

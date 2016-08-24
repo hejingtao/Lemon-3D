@@ -5,7 +5,7 @@ var app = angular.module('Lemon3D', [
   'ngStorage', //本地存储
   'oc.lazyLoad',
   'ngFileUpload',
-  
+
   'Lemon3D.auth', //权限控制
   'Lemon3D.router', //路由定义
   // 'Lemon3D.partials', //页面组件
@@ -19,7 +19,7 @@ var app = angular.module('Lemon3D', [
 
 
 app.run(
-  function($rootScope, $state,  $localStorage, authService, tools) {
+  function($rootScope, $state,  $interval, $localStorage, authService, tools) {
 
     $rootScope.bodyState = 'index';
     // 绑定$localStorage至$storage中
@@ -48,20 +48,39 @@ app.run(
 
 
     // 监听路由变化，判断是否有权限登陆
-    $rootScope.$on('$stateChangeStart', 
-    function(event, toState, toParams, fromState, fromParams, options){ 
-        if(toState.name == 'login'){
-          return null;
-        }
-        // if($rootScope.loginState == false && (toState.name.indexOf('user') != -1)){
-        //   event.preventDefault();
-        //   tools.alert('您尚未登陆')
-        //   $state.go('login'); 
-        //   // console.log($rootScope.loginState);
-        // }
-        // console.log(fromState);
-        // console.log(toState);
-    })
+    // $rootScope.$on('$stateChangeSuccess', 
+    // function(event, toState, toParams, fromState, fromParams, options){ 
+    //     if(toState.name == 'login'){
+    //       return null;
+    //     }
+    //     console.log((toState.name.indexOf('operate') != -1));
+    //     if((toState.name.indexOf('operate') != -1) || (toState.name.indexOf('product') != -1)){
+            
+    //         event.preventDefault();
+    //         window.webGLInterval = setInterval(function(){
+
+    //           console.log($('#operate-content .left #WebGL-output').height())
+    //           if($('#operate-content .left #WebGL-output').height() > 0){
+    //             window.clearInterval(webGLInterval);
+    //           }
+                  
+                  
+    //           if(($('#operate-content .left #WebGL-output').height() == 0) && ($('#operate-content .left').height() > 0)){
+    //               container = document.getElementById("WebGL-output").appendChild(renderer.domElement);
+    //               console.log('resize webgl');
+    //               window.clearInterval(webGLInterval);
+    //           }
+
+    //         },100)
+            
+
+    //       // console.log($rootScope.loginState);
+    //     }else{
+    //       clearInterval(webGLInterval);
+    //     }
+    //     // console.log(fromState);
+    //     // console.log(toState);
+    // })
 
 
   }

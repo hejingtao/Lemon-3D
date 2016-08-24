@@ -18,7 +18,7 @@ app.controller('operate', function($scope, $rootScope, $state, $http, $ocLazyLoa
 	  ]
 	});
 
-
+    console.log('et');
     // 创建作品
     $scope.creatProduct = function(){
 
@@ -337,29 +337,36 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 	      }
 	    })
 	    .success(function(data, status, headers, config) {
+
 	    	var temp = JSON.parse(data.json);
-	    	Lemon.recoverSystemModel(temp.list);
+
+	    	if( typeof temp.list != 'undefined'){
+	    		Lemon.recoverSystemModel(temp.list);
+	    	}else if(typeof temp.start != 'undefined'){
+	    		Lemon.load3dComment(temp);
+	    	}
+	    	
 	        tools.msg('操作成功');
 	    });
     }
 
 
     // 获取file数据
-    $scope.getFile = function(){
+    // $scope.getFile = function(){
 
-	    $http({
-	      method: 'POST', 
-	      url: ENV.baseUrl + '/product/getJson',
-	      params: { 
-	        'dataId': 'test'
+	   //  $http({
+	   //    method: 'POST', 
+	   //    url: ENV.baseUrl + '/product/getJson',
+	   //    params: { 
+	   //      'dataId': 'test'
 
-	      }
-	    })
-	    .success(function(data, status, headers, config) {
+	   //    }
+	   //  })
+	   //  .success(function(data, status, headers, config) {
 
-	        tools.msg('操作成功');
-	    });
-    }
+	   //      tools.msg('操作成功');
+	   //  });
+    // }
 
 
     // 获取评论列表
@@ -377,12 +384,47 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 	    })
 	    .success(function(data, status, headers, config) {
 
+	    	$scope.commentList = data.comment;
+
+	    	$scope.commentTotalpage = data.totalpage;
+	    	$scope.commnetNowpage = data.nowpage;
 	        tools.msg('操作成功');
 	    });
     }
 
+    // 添加作品json数据
+    $scope.addProductData = function(productId,data,isNew){
 
-    // 添加评论
+    	var tempIsNew = isNew ? isNew : 0;
+
+	     tempData=  { 
+          'productId': productId,
+          'dataContent': data,
+          'isNew':  tempIsNew // 1为创建新版本
+        }
+		$http({
+		　　 method: 'POST',
+		　　 url: ENV.baseUrl + '/product/addProductData',
+		  data: tempData,
+		  headers: {
+		    'Content-Type': undefined
+		  },
+		  transformRequest: function(data) {
+		    var formData = new FormData();
+		    formData.append('productId', data.productId);
+		    formData.append('dataContent', JSON.stringify(data.dataContent));
+		    formData.append('isNew', data.isNew);
+		    return formData;
+		  },
+		  
+		})
+	    .success(function(data, status, headers, config) {
+
+	        tools.msg('上传数据成功');
+	    });
+    }
+
+    // 添加3d评论
     $scope.add3dComment = function(data, type){
 
         control.object = undefined;
@@ -402,10 +444,12 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 
         }else if(Lemon.commentClickNum == 2){
             // 创建3d评论
-            Lemon.creat3dComment();
+             var tempData = Lemon.creat3dComment();
+             $scope.addProductData($scope.productId,tempData);
         }
     }
 
+    // 添加普通评论
     $scope.addCommonComment = function(){
 
     	tools.prompt('请输入评论内容',function(data){
@@ -422,6 +466,7 @@ app.controller('product', function($scope, $rootScope, $interval, $state, $http,
 		    })
 		    .success(function(data, status, headers, config) {
 
+		    	$scope.getCommentList();
 		        tools.msg('操作成功');
 		    });
     	})
@@ -590,7 +635,17 @@ app.controller('vr', function($scope, $rootScope, $interval, $state, $http, $roo
 	    })
 	    .success(function(data, status, headers, config) {
 	    	var temp = JSON.parse(data.json);
-	    	Lemon.recoverSystemModel(temp.list);
+
+	    	var temp = JSON.parse(data.json);
+
+	    	if( typeof temp.list != 'undefined'){
+	    		Lemon.recoverSystemModel(temp.list);
+	    	}else if(typeof temp.start != 'undefined'){
+	    		// vr模式不显示3d评论
+	    		// Lemon.load3dComment(temp);
+	    	}
+
+
 	        tools.msg('操作成功');
 	    });
     }

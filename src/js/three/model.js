@@ -6,7 +6,7 @@ layer.config({
 });
 Lemon.layer = layer;
 
-
+ console.log('model')
 
 
 

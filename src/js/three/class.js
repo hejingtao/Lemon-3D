@@ -14,7 +14,7 @@
  * 其他模块
  * ------------------------------------------------------------------
  */
-
+ console.log('class')
 // 选中的模型
 Lemon.SELECTED = null;
 
@@ -156,7 +156,10 @@ Lemon.creat3dComment = function(){
 
     // 上传3d评论数据
     Lemon.upload3dComment(tempData);
+    console.log(tempData);
     Lemon.commentClickNum =0;
+
+    return tempData; 
 }
 
 
