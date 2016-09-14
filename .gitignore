@@ -5,3 +5,4 @@ gulpfile.js
 package.json
 
 .idea/*
+.Ds_Store
