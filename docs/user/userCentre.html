@@ -1,0 +1,33 @@
+
+<div id="user-info">
+	<div id="user-name">{{USER_NAME}} 
+		<div id="user-followers" class="user-msg" ui-sref="main.userFollower({'userId': USER_ID})"><span class="num">{{userData.userFansCount}}</span><span class="title">Followers</span></div>
+		<div id="user-starred" class="user-msg" ui-sref="main.collect({'userId': USER_ID})"><span class="num">{{userData.userCollectionCount}}</span><span class="title">Starred</span></div>
+		<div id="user-following" class="user-msg" ui-sref="main.userFollowing({'userId': USER_ID})"><span class="num">{{userData.userFollowerCount}}</span><span class="title">Following</span></div>
+	</div>
+
+	<div id="user-head">
+		<img src="/assets/images/head/head01.jpg" alt="">
+	</div>
+	<div id="user-product" ui-sref="main.productList({'userId': USER_ID})">我的作品</div>
+	<div id="user-message" ng-click="addActivity()">发表动态</div>
+<!-- 	<div id="user-message">消息中心<div id="new-msg">2</div></div> -->
+</div>
+<div id="user-timeline">
+	<div class="title">动态</div>
+	<div class="message" ng-repeat="item in timeline">
+		<div class="left system">心情</div>
+		<div class="right system-msg">{{item.activityContent}}</div>
+		<div class="time">{{item.activityTime | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+	</div>
+
+</div>
+<div id="index-page4">
+	<div class="left">
+		<div>想了解更多？点击下方进入个人博客</div>
+		<span class="btn">BLOG</span>
+	</div>
+	<div class="bottom">
+		Lemon3D © 2016  All Rights Reserved.
+	</div>
+</div>

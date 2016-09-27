@@ -1,0 +1,49 @@
+
+
+
+<div id="post-details">
+	<div class="title">标题 <span>{{postDetails.postTitle}}</span></div> 
+
+	<div class="post">
+		<div class="head"><img src="/assets/images/head/head01.jpg" alt=""></div>
+		<div class="content">
+			<div class="name">{{postDetails.postContent}}</div>
+			<div class="bottom">
+				<span class="author" ui-sref="main.userDetail({userId: post.userId})">作者：{{postDetails.userName}}</span>
+				<span class="time">{{postDetails.postTime | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+				<span class="reply"></span>
+			</div>
+		</div>
+		<div class="num">1</div>
+	</div>
+
+	<div class="post" ng-repeat="comment in commentList track by $index">
+		<div class="head"><img src="/assets/images/head/head02.jpg" alt=""></div>
+		<div class="content">
+			<div class="name">{{comment.replyContent}}</div>
+			<div class="bottom">
+				<span class="author">作者：{{comment.replyUserName}}</span>
+				<span class="time">{{comment.replyTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+				<span class="reply"></span>
+			</div>
+		</div>
+		<div class="num">{{$index+2}}</div>
+	</div>
+
+	<div class="post-content">
+		<span>内容：</span>
+		<textarea ng-model="commentContent"></textarea>
+		<div class="post-btn" ng-click="comment()">回复</div>
+	</div>
+
+	<div class="page"><span class="active">1</span><span>2</span><span>下一页</span></div>
+</div>
+<div id="index-page4">
+	<div class="left">
+		<div>想了解更多？点击下方进入个人博客</div>
+		<span class="btn">BLOG</span>
+	</div>
+	<div class="bottom">
+		Lemon3D © 2016  All Rights Reserved.
+	</div>
+</div>
