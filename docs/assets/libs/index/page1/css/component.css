@@ -1,0 +1,59 @@
+/* Header */
+.large-header {
+	position: relative;
+	width: 100%;
+	background: #333;
+	overflow: hidden;
+	background-size: cover;
+	background-position: center center;
+	z-index: 1;
+}
+
+.demo-1 .large-header {
+	background-image: url('../img/demo-1-bg.jpg');
+}
+
+
+.main-title {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font-size: 72px;
+	color: rgb(255,204,102);
+	text-align: center;
+	top: 30%;
+	left: 50%;
+	-webkit-transform: translate3d(-50%,-50%,0);
+	transform: translate3d(-50%,-50%,0);
+}
+.sub-title {
+	white-space: nowrap;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font-size: 48px;
+	color: rgb(255,204,102);
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate3d(-50%,-50%,0);
+	transform: translate3d(-50%,-50%,0);
+}
+
+.demo-1 .main-title, 
+
+
+
+.main-title .thin {
+	font-weight: 200;
+}
+
+@media only screen and (max-width : 768px) {
+	.demo-1 .main-title  {
+		font-size: 3em;
+	}
+
+	.demo-2 .main-title {
+		font-size: 4em;
+	}
+}

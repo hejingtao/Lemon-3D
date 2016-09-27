@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="Lemon3D">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit"> 
+<title>Lemon3D</title>
+<!-- 样式初始化  -->
+<link rel="stylesheet" href="/assets/libs/css/normalize.css" />
+<link href="/assets/libs/css/font-awesome.min.css" rel="stylesheet">
+<!-- 首页首屏 -->
+<link rel="stylesheet" type="text/css" href="/assets/libs/index/page1/css/component.css" />
+
+<!-- 自定义样式  -->
+<link rel="stylesheet" href="/assets/css/style.css" />
+
+
+<!-- angular START  -->
+<!-- angualr及其组件  -->
+<script type="text/javascript" src="/assets/libs/angular/angular.js"></script>
+<script type="text/javascript" src="/assets/libs/angular/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="/assets/libs/angular/angular-animate.min.js"></script>
+<script type="text/javascript" src="/assets/libs/angular/ngStorage.min.js"></script>
+<script type="text/javascript" src="/assets/libs/angular/ng-file-upload-all.min.js"></script>
+<script type="text/javascript" src="/assets/libs/angular/ocLazyLoad.min.js"></script>
+
+<script type="text/javascript" src="/app.js"></script>
+<script type="text/javascript" src="/partials.min.js"></script>
+<!-- jQuery START  -->
+<!-- jQuery1.x 兼容ie ，jQuery弹出层插件layer -->
+<script type="text/javascript" src="/assets/libs/jQuery/jquery-2.2.3.js"></script>
+<script type="text/javascript" src="/assets/libs/jQuery/layer/layer.js"></script>
+<!-- pdf -->
+<script src="/assets/libs/pdf/viewer/compatibility.js"></script>
+<script src="/assets/libs/pdf/viewer/l10n.js"></script>
+<script src="/assets/libs/pdf/pdf.js"></script>
+<script src="/assets/libs/pdf/viewer/debugger.js"></script>
+<script src="/assets/libs/pdf/viewer/viewer.js"></script>
+<link rel="stylesheet" href="/assets/libs/pdf/viewer/viewer.css"/>
+<link rel="resource" type="application/l10n" href="/assets/libs/pdf/viewer/locale/locale.properties"/>
+
+
+<!--  <script data-main="/assets/js/operate" src="/assets/js/require.js"></script> -->
+</head>
+
+<body  ng-controller="main" ng-class="{'operate-index': operateState == 'operate', 'index': operateState == 'index'}">
+
+
+
+<div ui-view="page" style="height:100%;width:100%;"></div>
+
+
+</body>
+</html>
