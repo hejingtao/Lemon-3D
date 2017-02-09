@@ -1,0 +1,38 @@
+{
+  "name": "Lemon-3D",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hejingtao/Lemon-3D.git"
+  },
+  "author": "hejingtao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hejingtao/Lemon-3D/issues"
+  },
+  "homepage": "https://github.com/hejingtao/Lemon-3D",
+  "devDependencies": {
+    "del": "^2.2.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cache": "^0.4.5",
+    "gulp-concat": "^2.6.0",
+    "gulp-imagemin": "^3.0.1",
+    "gulp-jshint": "^2.0.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-ng-html2js": "^0.2.2",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^1.5.4",
+    "gulp-util": "^3.0.7",
+    "gulp-webserver": "^0.9.1",
+    "jshint": "^2.9.2"
+  }
+}

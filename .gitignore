@@ -1,8 +1,4 @@
 node_modules/*
 dist/*
-gulpfile.js
-
-package.json
-
 .idea/*
 .Ds_Store
