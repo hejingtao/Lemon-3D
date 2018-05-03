@@ -316,7 +316,7 @@ app.controller('productList', function($scope, $rootScope, $state, $http, tools,
 		params: { 
 			'userId': $state.params.userId,
 			'page': 0,
-			'size': 4
+			'size': 10
 		}
 	})
 	.success(function(data, status, headers, config) {

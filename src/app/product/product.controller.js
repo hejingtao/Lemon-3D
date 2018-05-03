@@ -615,7 +615,7 @@ app.controller('vr', function($scope, $rootScope, $interval, $state, $http, $roo
 
 	$scope.tempInterval = $interval(function(){
 		console.log('test');
-	    	if(typeof Lemon != 'undefined'){
+			if((typeof Lemon != 'undefined') && (typeof objects != 'undefined')){
 			    $scope.init();
 			    $interval.cancel($scope.tempInterval);
 	    	}
@@ -634,8 +634,6 @@ app.controller('vr', function($scope, $rootScope, $interval, $state, $http, $roo
 	      }
 	    })
 	    .success(function(data, status, headers, config) {
-	    	var temp = JSON.parse(data.json);
-
 	    	var temp = JSON.parse(data.json);
 
 	    	if( typeof temp.list != 'undefined'){
